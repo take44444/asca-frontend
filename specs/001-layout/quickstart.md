@@ -16,6 +16,8 @@ npm run build
 
 Expected outcome: all commands complete successfully with no lint, type, or build errors.
 
+Validation result: passed on 2026-06-21.
+
 ## Validate Formatting
 
 ```bash
@@ -24,6 +26,8 @@ npm run format
 
 Expected outcome: Prettier formats TypeScript and TSX files. Review the resulting diff before committing.
 
+Validation result: passed on 2026-06-21.
+
 ## Validate Unit Behavior
 
 ```bash
@@ -31,6 +35,8 @@ npm run test
 ```
 
 Expected outcome: unit tests cover header rendering, active navigation state, theme toggle labels, placeholder login behavior, and collapsed navigation state. Changed layout behavior meets at least 80% coverage.
+
+Validation result: passed on 2026-06-21 with 10 unit tests. `npm run test:coverage -- --runInBand` reported 100% statements, branches, functions, and lines for the configured changed-behavior coverage scope.
 
 ## Validate End-to-End Layout Behavior
 
@@ -47,6 +53,8 @@ Expected outcome:
 - GitHub action opens `https://github.com/take44444/asca` in a new tab.
 - Theme toggle switches between readable light and dark presentations.
 - Login button remains visible and does not start authentication.
+
+Validation result: passed on 2026-06-21 with 7 Chromium Playwright tests. The suite runs against the local Next dev server on port 3100 to avoid unrelated apps on port 3000.
 
 ## Manual Smoke Check
 

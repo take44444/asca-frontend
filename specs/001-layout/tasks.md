@@ -18,11 +18,11 @@
 
 **Purpose**: Add required test tooling and shared test directories before any behavior-changing production code begins.
 
-- [ ] T001 Add Jest, Testing Library, jsdom, Playwright, and coverage script dependencies/scripts in package.json and package-lock.json
-- [ ] T002 [P] Create Jest configuration for TypeScript React tests in jest.config.ts
-- [ ] T003 [P] Create Jest setup file for DOM matchers in jest.setup.ts
-- [ ] T004 [P] Create Playwright configuration for Next.js e2e tests in playwright.config.ts
-- [ ] T005 [P] Create empty test files for later failing tests in tests/unit/app-header.test.tsx and tests/e2e/layout.spec.ts
+- [X] T001 Add Jest, Testing Library, jsdom, Playwright, and coverage script dependencies/scripts in package.json and package-lock.json
+- [X] T002 [P] Create Jest configuration for TypeScript React tests in jest.config.ts
+- [X] T003 [P] Create Jest setup file for DOM matchers in jest.setup.ts
+- [X] T004 [P] Create Playwright configuration for Next.js e2e tests in playwright.config.ts
+- [X] T005 [P] Create empty test files for later failing tests in tests/unit/app-header.test.tsx and tests/e2e/layout.spec.ts
 
 ---
 
@@ -34,17 +34,17 @@
 
 ### Tests for User Story 1 (MANDATORY - write before implementation)
 
-- [ ] T006 [P] [US1] Add failing unit tests for exact `A.S.C.A.` logo text, fixed header semantics, and main spacing contract in tests/unit/app-header.test.tsx
-- [ ] T007 [P] [US1] Add failing Playwright tests for fixed header visibility and non-overlapping main content on `/` in tests/e2e/layout.spec.ts
+- [X] T006 [P] [US1] Add failing unit tests for exact `A.S.C.A.` logo text, fixed header semantics, and main spacing contract in tests/unit/app-header.test.tsx
+- [X] T007 [P] [US1] Add failing Playwright tests for fixed header visibility and non-overlapping main content on `/` in tests/e2e/layout.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T008 [US1] Create typed AppHeader props and implement exact `A.S.C.A.` text logo, fixed full-width header structure, and header landmark behavior in components/layout/app-header.tsx
-- [ ] T009 [US1] Create client header navigation shell with placeholder exports for later active-route, menu, and theme behavior in components/layout/header-nav.tsx
-- [ ] T010 [US1] Integrate AppHeader and responsive main content wrapper below the fixed header in app/layout.tsx
-- [ ] T011 [US1] Add shared fixed-header spacing and scroll offset support in app/globals.css
-- [ ] T012 [US1] Replace default starter page content with layout-safe placeholder content in app/page.tsx
-- [ ] T013 [US1] Run User Story 1 unit and e2e tests and document passing results in specs/001-layout/quickstart.md
+- [X] T008 [US1] Create typed AppHeader props and implement exact `A.S.C.A.` text logo, fixed full-width header structure, and header landmark behavior in components/layout/app-header.tsx
+- [X] T009 [US1] Create client header navigation shell with placeholder exports for later active-route, menu, and theme behavior in components/layout/header-nav.tsx
+- [X] T010 [US1] Integrate AppHeader and responsive main content wrapper below the fixed header in app/layout.tsx
+- [X] T011 [US1] Add shared fixed-header spacing and scroll offset support in app/globals.css
+- [X] T012 [US1] Replace default starter page content with layout-safe placeholder content in app/page.tsx
+- [X] T013 [US1] Run User Story 1 unit and e2e tests and document passing results in specs/001-layout/quickstart.md
 
 **Checkpoint**: User Story 1 is independently functional and testable as the MVP.
 
@@ -58,18 +58,18 @@
 
 ### Tests for User Story 2 (MANDATORY - write before implementation)
 
-- [ ] T014 [P] [US2] Add failing unit tests for active navigation and below-`sm:` collapsed menu behavior in tests/unit/app-header.test.tsx
-- [ ] T015 [P] [US2] Add failing Playwright tests for `/about`, `/run`, active nav highlighting, and below-`sm:` menu navigation in tests/e2e/layout.spec.ts
+- [X] T014 [P] [US2] Add failing unit tests for active navigation and below-`sm:` collapsed menu behavior in tests/unit/app-header.test.tsx
+- [X] T015 [P] [US2] Add failing Playwright tests for `/about`, `/run`, active nav highlighting, and below-`sm:` menu navigation in tests/e2e/layout.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Create typed route/navigation constants for About, Run, and GitHub targets in lib/layout-navigation.ts
-- [ ] T017 [P] [US2] Create the About placeholder page with a unique heading in app/about/page.tsx
-- [ ] T018 [P] [US2] Create the Run placeholder page with a unique heading in app/run/page.tsx
-- [ ] T019 [US2] Implement desktop navigation links, active-route state, and current-page styling in components/layout/header-nav.tsx
-- [ ] T020 [US2] Implement below-`sm:` menu control and collapsed navigation links in components/layout/header-nav.tsx
-- [ ] T021 [US2] Wire navigation data from lib/layout-navigation.ts into components/layout/app-header.tsx
-- [ ] T022 [US2] Run User Story 2 unit and e2e tests and document passing results in specs/001-layout/quickstart.md
+- [X] T016 [US2] Create typed route/navigation constants for About, Run, and GitHub targets in lib/layout-navigation.ts
+- [X] T017 [P] [US2] Create the About placeholder page with a unique heading in app/about/page.tsx
+- [X] T018 [P] [US2] Create the Run placeholder page with a unique heading in app/run/page.tsx
+- [X] T019 [US2] Implement desktop navigation links, active-route state, and current-page styling in components/layout/header-nav.tsx
+- [X] T020 [US2] Implement below-`sm:` menu control and collapsed navigation links in components/layout/header-nav.tsx
+- [X] T021 [US2] Wire navigation data from lib/layout-navigation.ts into components/layout/app-header.tsx
+- [X] T022 [US2] Run User Story 2 unit and e2e tests and document passing results in specs/001-layout/quickstart.md
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
@@ -83,16 +83,16 @@
 
 ### Tests for User Story 3 (MANDATORY - write before implementation)
 
-- [ ] T023 [P] [US3] Add failing unit tests for GitHub action attributes, theme toggle tooltip labels, and placeholder Login behavior in tests/unit/app-header.test.tsx
-- [ ] T024 [P] [US3] Add failing Playwright tests for GitHub new-tab behavior, theme switching, and right-side action visibility below the `sm:` breakpoint in tests/e2e/layout.spec.ts
+- [X] T023 [P] [US3] Add failing unit tests for GitHub action attributes, theme toggle tooltip labels, and placeholder Login behavior in tests/unit/app-header.test.tsx
+- [X] T024 [P] [US3] Add failing Playwright tests for GitHub new-tab behavior, theme switching, and right-side action visibility below the `sm:` breakpoint in tests/e2e/layout.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T025 [US3] Implement GitHub repository link with accessible label, tooltip text, and new-tab attributes in components/layout/app-header.tsx
-- [ ] T026 [US3] Implement light/dark theme toggle labels and icon switching with next-themes in components/layout/header-nav.tsx
-- [ ] T027 [US3] Implement visible non-authenticating Login placeholder button in components/layout/app-header.tsx
-- [ ] T028 [US3] Verify header action ordering and responsive non-overlap styling below the `sm:` breakpoint in app/globals.css
-- [ ] T029 [US3] Run User Story 3 unit and e2e tests and document passing results in specs/001-layout/quickstart.md
+- [X] T025 [US3] Implement GitHub repository link with accessible label, tooltip text, and new-tab attributes in components/layout/app-header.tsx
+- [X] T026 [US3] Implement light/dark theme toggle labels and icon switching with next-themes in components/layout/header-nav.tsx
+- [X] T027 [US3] Implement visible non-authenticating Login placeholder button in components/layout/app-header.tsx
+- [X] T028 [US3] Verify header action ordering and responsive non-overlap styling below the `sm:` breakpoint in app/globals.css
+- [X] T029 [US3] Run User Story 3 unit and e2e tests and document passing results in specs/001-layout/quickstart.md
 
 **Checkpoint**: All user stories are independently functional.
 
@@ -102,11 +102,11 @@
 
 **Purpose**: Validate the full feature, coverage, documentation, and quality gates.
 
-- [ ] T030 [P] Verify UI contract coverage against implemented behavior in specs/001-layout/contracts/ui-contract.md
-- [ ] T031 [P] Update quickstart validation notes and any changed test commands in specs/001-layout/quickstart.md
-- [ ] T032 Verify changed behavior maintains at least 80% test coverage using package.json coverage script
-- [ ] T033 Run lint, format, typecheck, build, unit tests, and Playwright tests using package.json scripts
-- [ ] T034 Review final layout on desktop and below-`sm:` viewports against specs/001-layout/spec.md
+- [X] T030 [P] Verify UI contract coverage against implemented behavior in specs/001-layout/contracts/ui-contract.md
+- [X] T031 [P] Update quickstart validation notes and any changed test commands in specs/001-layout/quickstart.md
+- [X] T032 Verify changed behavior maintains at least 80% test coverage using package.json coverage script
+- [X] T033 Run lint, format, typecheck, build, unit tests, and Playwright tests using package.json scripts
+- [X] T034 Review final layout on desktop and below-`sm:` viewports against specs/001-layout/spec.md
 
 ---
 

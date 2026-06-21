@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export function MenuIcon({
   size = 24,
@@ -7,9 +7,9 @@ export function MenuIcon({
   className,
   ...props
 }: React.SVGProps<SVGSVGElement> & {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
+  size?: number
+  color?: string
+  strokeWidth?: number
 }) {
   return (
     <svg
@@ -25,7 +25,7 @@ export function MenuIcon({
       className={className}
       {...props}
     >
-      <path d="M4 5h16M4 12h16M4 19h16"/>
+      <path d="M4 5h16M4 12h16M4 19h16" />
     </svg>
-  );
+  )
 }
