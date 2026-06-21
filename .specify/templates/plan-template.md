@@ -24,7 +24,7 @@
 
 **Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Testing**: [Jest unit tests, Playwright end-to-end tests, or NEEDS CLARIFICATION]
 
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
 
@@ -40,7 +40,17 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **TDD**: Tests are planned before implementation, with the expected failing
+  state identified for each changed behavior.
+- **Quality Gates**: Plan includes lint, format, typecheck, full test suite, and
+  80% coverage verification for changed behavior.
+- **Type Safety**: No new `any`; public APIs, exported functions, and component
+  props have explicit stable types and required docstrings.
+- **Next.js Guidance**: Relevant installed-version docs in
+  `node_modules/next/dist/docs/` are identified for any Next.js API, routing,
+  rendering, metadata, server action, caching, or data-fetching work.
+- **Frontend Boundary**: Backend API dependencies are typed and marked as
+  existing, mocked, or requiring backend coordination.
 
 ## Project Structure
 
@@ -77,20 +87,21 @@ tests/
 ├── integration/
 └── unit/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
+# [REMOVE IF UNUSED] Option 2: A.S.C.A. frontend web application
+app/
+├── [routes]/
+└── layout.tsx
 
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
+components/
+├── ui/
+└── [feature-components]/
+
+hooks/
+lib/
+tests/
+├── e2e/
+├── integration/
+└── unit/
 
 # [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
 api/
