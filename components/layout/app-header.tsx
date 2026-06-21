@@ -1,7 +1,7 @@
 import Link from "next/link"
 import type * as React from "react"
 
-import { GithubLoopIcon } from "@/components/icons/line-md-github-loop"
+import { GithubIcon } from "@/components/icons/lucide-github"
 import {
   HeaderNav,
   MobileHeaderNav,
@@ -54,7 +54,7 @@ export function AppHeader({ className }: AppHeaderProps) {
               buttonVariants({ variant: "ghost", size: "icon-sm" })
             )}
           >
-            <GithubLoopIcon aria-hidden="true" className="size-4" />
+            <GithubIcon aria-hidden="true" className="size-4" />
           </a>
           <ThemeToggle />
           <button
