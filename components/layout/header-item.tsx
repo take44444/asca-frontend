@@ -5,11 +5,18 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 
+import { GithubIcon } from "@/components/icons/lucide-github"
 import { MenuIcon } from "@/components/icons/lucide-menu"
 import { MoonIcon } from "@/components/icons/lucide-moon"
 import { SunIcon } from "@/components/icons/lucide-sun"
-import { buttonVariants } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  GITHUB_ACTION,
   HEADER_NAVIGATION_ITEMS,
   type HeaderNavigationItem,
 } from "@/lib/layout-navigation"
@@ -66,16 +73,16 @@ export function MobileHeaderNav() {
 
   return (
     <div className="relative sm:hidden">
-      <button
-        type="button"
+      <Button
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
         aria-controls="mobile-header-navigation"
-        className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}
+        variant="ghost"
+        size="icon-sm"
         onClick={() => setIsOpen((current) => !current)}
       >
         <MenuIcon aria-hidden="true" className="size-4" />
-      </button>
+      </Button>
       {isOpen ? (
         <nav
           id="mobile-header-navigation"
@@ -95,6 +102,30 @@ export function MobileHeaderNav() {
   )
 }
 
+/** Link to the A.S.C.A. GitHub repository. */
+export function ASCARepositoryLink() {
+  return (
+    <Tooltip>
+      <TooltipTrigger render={
+        <a
+          href={GITHUB_ACTION.href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={GITHUB_ACTION.label}
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "icon-sm" })
+          )}
+        >
+          <GithubIcon aria-hidden="true" className="size-4" />
+        </a>
+      } />
+      <TooltipContent>
+        <p>{GITHUB_ACTION.label}</p>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
 /** Theme control that describes and activates the opposite visual theme. */
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
@@ -104,14 +135,29 @@ export function ThemeToggle() {
   const Icon = isDark ? SunIcon : MoonIcon
 
   return (
-    <button
-      type="button"
-      aria-label={label}
-      title={label}
-      className={cn(buttonVariants({ variant: "ghost", size: "icon-sm" }))}
-      onClick={() => setTheme(nextTheme)}
-    >
-      <Icon aria-hidden="true" className="size-4" />
-    </button>
+    <Tooltip>
+      <TooltipTrigger render={
+        <Button
+          aria-label={label}
+          variant="ghost"
+          size="icon-sm"
+          onClick={() => setTheme(nextTheme)}
+        >
+          <Icon aria-hidden="true" className="size-4" />
+        </Button>
+      } />
+      <TooltipContent>
+        <p>{label}</p>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+/** Sign in link. */
+export function SignInLink() {
+  return (
+    <Link href="#" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
+      Sign In
+    </Link>
   )
 }

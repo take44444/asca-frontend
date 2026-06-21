@@ -4,6 +4,7 @@ import { Geist_Mono, Inter } from "next/font/google"
 import "./globals.css"
 import { AppHeader } from "@/components/layout/app-header"
 import { ThemeProvider } from "@/components/theme-provider"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
@@ -26,10 +27,12 @@ export default function RootLayout({
     >
       <body className="overflow-hidden">
         <ThemeProvider>
-          <AppHeader />
-          <main id="main-content" className="app-main">
-            {children}
-          </main>
+          <TooltipProvider>
+            <AppHeader />
+            <main id="main-content" className="app-main">
+              {children}
+            </main>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

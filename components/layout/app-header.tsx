@@ -1,14 +1,13 @@
 import Link from "next/link"
 import type * as React from "react"
 
-import { GithubIcon } from "@/components/icons/lucide-github"
 import {
   HeaderNav,
   MobileHeaderNav,
+  ASCARepositoryLink,
   ThemeToggle,
-} from "@/components/layout/header-nav"
-import { buttonVariants } from "@/components/ui/button"
-import { GITHUB_ACTION } from "@/lib/layout-navigation"
+  SignInLink,
+} from "@/components/layout/header-item"
 import { cn } from "@/lib/utils"
 
 export type AppHeaderProps = {
@@ -44,25 +43,9 @@ export function AppHeader({ className }: AppHeaderProps) {
         <HeaderNav className="hidden sm:flex" />
 
         <div className="flex min-w-0 items-center justify-end gap-1.5">
-          <a
-            href={GITHUB_ACTION.href}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={GITHUB_ACTION.label}
-            title={GITHUB_ACTION.label}
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "icon-sm" })
-            )}
-          >
-            <GithubIcon aria-hidden="true" className="size-4" />
-          </a>
+          <ASCARepositoryLink />
           <ThemeToggle />
-          <button
-            type="button"
-            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
-          >
-            Login
-          </button>
+          <SignInLink />
         </div>
       </div>
     </header>
