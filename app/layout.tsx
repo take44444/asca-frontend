@@ -24,7 +24,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("font-sans antialiased", fontMono.variable, inter.variable)}
     >
-      <body>
+      <body className="overflow-hidden">
         <ThemeProvider>
           <AppHeader />
           <main id="main-content" className="app-main">
