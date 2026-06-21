@@ -1,21 +1,7 @@
-# Next.js template
+# A.S.C.A. Frontend
 
-This is a Next.js template with shadcn/ui.
+A.S.C.A. - A Slightly Clever Agent - is an autonomous research assistant designed to assist users in various tasks.
 
-## Adding components
+This project is a frontend implementation of the A.S.C.A. agent. The frontend is responsible for providing a user-friendly interface for users to interact with the A.S.C.A. agent.
 
-To add components to your app, run the following command:
-
-```bash
-npx shadcn@latest add button
-```
-
-This will place the ui components in the `components` directory.
-
-## Using components
-
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button";
-```
+The backend of A.S.C.A. is developed in another repository. The backend provides the core harness and logic for the agent's functionality. The frontend communicates with the backend to send user inputs and receive responses from the agent.
