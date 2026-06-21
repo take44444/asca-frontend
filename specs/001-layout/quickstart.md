@@ -57,7 +57,7 @@ npm run dev
 Open the local development URL and check:
 
 - The header remains fixed while scrolling.
-- Header controls do not overlap on desktop and mobile viewport widths.
+- Header controls do not overlap on desktop viewports or below the `sm:` breakpoint.
 - Navigation reaches `/about` and `/run` in one interaction.
 - Placeholder pages do not claim completed About or Run functionality.
 

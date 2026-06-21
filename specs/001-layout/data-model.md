@@ -8,7 +8,7 @@
 
 - `header`: Header displayed at the top of the viewport.
 - `mainContent`: Current route content displayed below the fixed header.
-- `supportedViewport`: Desktop or small-screen presentation mode.
+- `supportedViewport`: Desktop presentation mode or below-`sm:` presentation mode.
 
 **Relationships**:
 
@@ -32,7 +32,7 @@
 - `githubAction`: External repository action.
 - `themeToggle`: Light/dark mode control.
 - `loginAction`: Placeholder login button.
-- `isNavigationCollapsed`: Whether small-screen menu presentation is active.
+- `isNavigationCollapsed`: Whether below-`sm:` menu presentation is active.
 
 **Relationships**:
 
@@ -43,7 +43,7 @@
 
 - Logo appears on the left side.
 - Desktop navigation appears centered when space allows.
-- Collapsed navigation appears through a left-side menu control on small screens.
+- Collapsed navigation appears through a left-side menu control below the `sm:` breakpoint.
 - GitHub action, theme toggle, and login action remain visible on the right side in that order.
 - Controls remain readable, operable, and non-overlapping.
 

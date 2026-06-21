@@ -26,7 +26,7 @@ Implement the shared A.S.C.A. frontend layout: a fixed full-width header, main c
 
 **Performance Goals**: Header and static placeholder pages should render with no backend wait; navigation between the two static core pages should complete in one user interaction and feel immediate through App Router links and prefetching.
 
-**Constraints**: Header must remain fixed without hiding main content, controls must not overlap at mobile widths, theme switching must keep readable contrast, no backend dependency is introduced, and login must remain a non-authenticating placeholder.
+**Constraints**: Header must remain fixed without hiding main content, controls must not overlap on desktop viewports or below the `sm:` breakpoint, theme switching must keep readable contrast, no backend dependency is introduced, and login must remain a non-authenticating placeholder.
 
 **Scale/Scope**: One global root layout, two placeholder content pages, one responsive header/navigation surface, one frontend-only theme preference interaction, and no A.S.C.A. backend API work.
 

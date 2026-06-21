@@ -10,7 +10,7 @@
 
 ## Header Regions
 
-| Region | Desktop Contract | Small-Screen Contract |
+| Region | Desktop Contract | Below-`sm:` Contract |
 |--------|------------------|-----------------------|
 | Left | A.S.C.A. logo | Menu control followed by or paired with A.S.C.A. logo |
 | Center | Visible navigation links for `About A.S.C.A.` and `Run A.S.C.A.` | Navigation links available inside collapsed menu |
@@ -54,7 +54,7 @@
 - Main content is not hidden under the fixed header.
 - Interactive controls have keyboard-operable semantics.
 - Current page indication is available visually and programmatically where practical.
-- Header controls do not overlap at common desktop and mobile viewport widths.
+- Header controls do not overlap on desktop viewports or below the `sm:` breakpoint.
 - Each placeholder page has a unique descriptive heading for route announcements.
 
 ## Backend Contract
