@@ -10,6 +10,13 @@ export default defineConfig({
   },
   webServer: {
     command: "npm run dev -- -p 3100",
+    env: {
+      ...process.env,
+      ASCA_E2E_AUTH: "1",
+      AUTH_GOOGLE_ID: "e2e-google-id",
+      AUTH_GOOGLE_SECRET: "e2e-google-secret",
+      AUTH_SECRET: "e2e-auth-secret",
+    },
     url: "http://127.0.0.1:3100",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

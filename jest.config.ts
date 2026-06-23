@@ -11,7 +11,9 @@ const config: Config = {
     "app/**/*.{ts,tsx}",
     "components/icons/**/*.{ts,tsx}",
     "components/layout/**/*.{ts,tsx}",
-    "lib/layout-navigation.ts",
+    "lib/**/*.{ts,tsx}",
+    "auth.ts",
+    "proxy.ts",
     "!**/*.d.ts",
   ],
   coveragePathIgnorePatterns: [
@@ -35,7 +37,7 @@ const config: Config = {
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
-  testMatch: ["<rootDir>/tests/unit/**/*.test.tsx"],
+  testMatch: ["<rootDir>/tests/unit/**/*.test.{ts,tsx}"],
 }
 
 export default createJestConfig(config)

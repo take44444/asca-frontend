@@ -41,13 +41,10 @@ test.describe("shared layout", () => {
     ).toHaveAttribute("aria-current", "page")
 
     await page.getByRole("link", { name: "Run A.S.C.A." }).first().click()
-    await expect(page).toHaveURL(/\/run$/)
+    await expect(page).toHaveURL(/\/login$/)
     await expect(
-      page.getByRole("heading", { name: "Run A.S.C.A." })
+      page.getByRole("heading", { name: "Sign in to your A.S.C.A. account" })
     ).toBeVisible()
-    await expect(
-      page.getByRole("link", { name: "Run A.S.C.A." }).first()
-    ).toHaveAttribute("aria-current", "page")
   })
 
   test("uses collapsed navigation below the sm breakpoint", async ({
@@ -65,9 +62,9 @@ test.describe("shared layout", () => {
     ).toBeVisible()
     await mobileNav.getByRole("link", { name: "Run A.S.C.A." }).click()
 
-    await expect(page).toHaveURL(/\/run$/)
+    await expect(page).toHaveURL(/\/login$/)
     await expect(
-      page.getByRole("heading", { name: "Run A.S.C.A." })
+      page.getByRole("heading", { name: "Sign in to your A.S.C.A. account" })
     ).toBeVisible()
   })
 
@@ -81,7 +78,7 @@ test.describe("shared layout", () => {
     await expect(
       page.getByRole("button", { name: /Switch to .* theme/ })
     ).toBeVisible()
-    await expect(page.getByRole("button", { name: "Login" })).toBeVisible()
+    await expect(page.getByRole("link", { name: "Sign In" })).toBeVisible()
   })
 
   test("opens GitHub in a new tab without replacing the app", async ({
@@ -108,11 +105,11 @@ test.describe("shared layout", () => {
     await expect(themeButton).toHaveAttribute("title", "Switch to light theme")
   })
 
-  test("Login is a placeholder and does not navigate", async ({ page }) => {
+  test("Sign In navigates to the login page", async ({ page }) => {
     await page.goto("/")
 
-    await page.getByRole("button", { name: "Login" }).click()
+    await page.getByRole("link", { name: "Sign In" }).click()
 
-    await expect(page).toHaveURL("/")
+    await expect(page).toHaveURL(/\/login$/)
   })
 })

@@ -6,12 +6,14 @@ import {
   MobileHeaderNav,
   ASCARepositoryLink,
   ThemeToggle,
-  SignInLink,
+  HeaderAuthControl,
 } from "@/components/layout/header-item"
+import type { UserSession } from "@/lib/auth-session"
 import { cn } from "@/lib/utils"
 
 export type AppHeaderProps = {
   className?: string
+  session?: UserSession
 }
 
 type HeaderStyle = React.CSSProperties & {
@@ -19,7 +21,7 @@ type HeaderStyle = React.CSSProperties & {
 }
 
 /** Shared fixed header for all A.S.C.A. frontend pages. */
-export function AppHeader({ className }: AppHeaderProps) {
+export function AppHeader({ className, session }: AppHeaderProps) {
   return (
     <header
       role="banner"
@@ -45,7 +47,7 @@ export function AppHeader({ className }: AppHeaderProps) {
         <div className="flex min-w-0 items-center justify-end gap-1.5">
           <ASCARepositoryLink />
           <ThemeToggle />
-          <SignInLink />
+          <HeaderAuthControl session={session ?? null} />
         </div>
       </div>
     </header>

@@ -1,4 +1,14 @@
-export default function RunPage() {
+import { redirect } from "next/navigation"
+
+import { getCurrentUserSession } from "@/lib/auth-session"
+
+export default async function RunPage() {
+  const session = await getCurrentUserSession()
+
+  if (session.status !== "authenticated") {
+    redirect("/login")
+  }
+
   return (
     <div className="mx-auto flex min-h-[calc(100svh-var(--app-header-height))] w-full max-w-4xl flex-col justify-center gap-4 px-4 py-16 sm:px-6">
       <p className="text-sm font-medium text-muted-foreground">
