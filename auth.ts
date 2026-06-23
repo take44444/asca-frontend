@@ -188,6 +188,7 @@ export const authConfig = {
     jwt: updateGoogleJWT,
     session: updateGoogleSession,
   },
+  trustHost: true,
 } satisfies NextAuthConfig
 
 const nextAuth = NextAuth(authConfig)
