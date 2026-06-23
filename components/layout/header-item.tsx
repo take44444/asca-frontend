@@ -206,11 +206,11 @@ export function HeaderAuthControl({ session }: HeaderAuthControlProps) {
           <Button
             type="button"
             variant="outline"
-            size="sm"
+            size="lg"
             aria-label={`Account menu for ${user.name}`}
             className="max-w-[12rem] gap-2 px-2 sm:max-w-[16rem]"
           >
-            <Avatar aria-label={user.name} size="sm">
+            <Avatar aria-label={user.name} size="default">
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : (
