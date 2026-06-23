@@ -18,10 +18,10 @@
 
 **Purpose**: Confirm the existing Next.js/Auth.js test surface and local configuration expectations before behavior work begins.
 
-- [ ] T001 Read installed Next.js authentication, Route Handler, redirect, Proxy, and Server/Client Component docs listed in `specs/002-user-auth/plan.md`
-- [ ] T002 [P] Document required local auth variables in `.env.example`
-- [ ] T003 [P] Add reusable auth test mock helpers for Auth.js boundaries in `tests/unit/auth-test-helpers.ts`
-- [ ] T004 [P] Add Playwright auth storage/session helper scaffolding in `tests/e2e/auth-test-helpers.ts`
+- [X] T001 Read installed Next.js authentication, Route Handler, redirect, Proxy, and Server/Client Component docs listed in `specs/002-user-auth/plan.md`
+- [X] T002 [P] Document required local auth variables in `.env.example`
+- [X] T003 [P] Add reusable auth test mock helpers for Auth.js boundaries in `tests/unit/auth-test-helpers.ts`
+- [X] T004 [P] Add Playwright auth storage/session helper scaffolding in `tests/e2e/auth-test-helpers.ts`
 
 ---
 
@@ -31,10 +31,10 @@
 
 **CRITICAL**: No user story implementation should begin until this phase is complete.
 
-- [ ] T005 Define typed `AuthenticatedUser` and `UserSession` DTOs in `lib/auth-session.ts`
-- [ ] T006 [P] Add Auth.js module augmentation for typed session user fields in `types/next-auth.d.ts`
-- [ ] T007 [P] Add route/action mock reset utilities for auth tests in `tests/unit/auth-test-helpers.ts`
-- [ ] T008 Add export-safe auth boundary placeholders and docstrings in `auth.ts`
+- [X] T005 Define typed `AuthenticatedUser` and `UserSession` DTOs in `lib/auth-session.ts`
+- [X] T006 [P] Add Auth.js module augmentation for typed session user fields in `types/next-auth.d.ts`
+- [X] T007 [P] Add route/action mock reset utilities for auth tests in `tests/unit/auth-test-helpers.ts`
+- [X] T008 Add export-safe auth boundary placeholders and docstrings in `auth.ts`
 
 **Checkpoint**: Auth types and test seams are ready; user story work can begin.
 
@@ -48,19 +48,19 @@
 
 ### Tests for User Story 1 (MANDATORY - write before implementation)
 
-- [ ] T009 [P] [US1] Add failing unit tests for signed-out header `/login` link in `tests/unit/app-header-auth.test.tsx`
-- [ ] T010 [P] [US1] Add failing unit tests for `/login` heading, Google mark, retry action, pending state, and error state in `tests/unit/login-page.test.tsx`
-- [ ] T011 [P] [US1] Add failing unit tests for Google sign-in action callback behavior in `tests/unit/auth-actions.test.ts`
-- [ ] T012 [P] [US1] Add failing Playwright test for signed-out header navigation and login page provider start in `tests/e2e/auth.spec.ts`
+- [X] T009 [P] [US1] Add failing unit tests for signed-out header `/login` link in `tests/unit/app-header-auth.test.tsx`
+- [X] T010 [P] [US1] Add failing unit tests for `/login` heading, Google mark, retry action, pending state, and error state in `tests/unit/login-page.test.tsx`
+- [X] T011 [P] [US1] Add failing unit tests for Google sign-in action callback behavior in `tests/unit/auth-actions.test.ts`
+- [X] T012 [P] [US1] Add failing Playwright test for signed-out header navigation and login page provider start in `tests/e2e/auth.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T013 [US1] Implement Auth.js Google provider configuration and `signIn` export in `auth.ts`
-- [ ] T014 [US1] Implement App Router Auth.js GET/POST route handler in `app/api/auth/[...nextauth]/route.ts`
-- [ ] T015 [US1] Implement typed Google sign-in server action with callback `/` and recoverable error result in `lib/auth-actions.ts`
-- [ ] T016 [US1] Implement focused login page with Google action, pending state, and error retry path in `app/login/page.tsx`
-- [ ] T017 [US1] Wire signed-out header `Sign In` link to `/login` while preserving existing controls in `components/layout/app-header.tsx`
-- [ ] T018 [US1] Verify US1 tests fail before implementation and pass after implementation using `tests/unit/login-page.test.tsx`, `tests/unit/auth-actions.test.ts`, `tests/unit/app-header-auth.test.tsx`, and `tests/e2e/auth.spec.ts`
+- [X] T013 [US1] Implement Auth.js Google provider configuration and `signIn` export in `auth.ts`
+- [X] T014 [US1] Implement App Router Auth.js GET/POST route handler in `app/api/auth/[...nextauth]/route.ts`
+- [X] T015 [US1] Implement typed Google sign-in server action with callback `/` and recoverable error result in `lib/auth-actions.ts`
+- [X] T016 [US1] Implement focused login page with Google action, pending state, and error retry path in `app/login/page.tsx`
+- [X] T017 [US1] Wire signed-out header `Sign In` link to `/login` while preserving existing controls in `components/layout/app-header.tsx`
+- [X] T018 [US1] Verify US1 tests fail before implementation and pass after implementation using `tests/unit/login-page.test.tsx`, `tests/unit/auth-actions.test.ts`, `tests/unit/app-header-auth.test.tsx`, and `tests/e2e/auth.spec.ts`
 
 **Checkpoint**: User Story 1 is fully functional and testable independently.
 
@@ -74,16 +74,18 @@
 
 ### Tests for User Story 2 (MANDATORY - write before implementation)
 
-- [ ] T019 [P] [US2] Add failing unit tests for session DTO normalization, required name/email validation, and optional image handling in `tests/unit/auth-session.test.ts`
-- [ ] T020 [P] [US2] Add failing unit tests for Auth.js JWT session callbacks and Google profile fields in `tests/unit/auth-config.test.ts`
-- [ ] T021 [P] [US2] Add failing Playwright test for mocked successful sign-in redirect to `/` in `tests/e2e/auth.spec.ts`
+- [X] T019 [P] [US2] Add failing unit tests for session DTO normalization, required name/email validation, and optional image handling in `tests/unit/auth-session.test.ts`
+- [X] T020 [P] [US2] Add failing unit tests for Auth.js JWT session callbacks and Google profile fields in `tests/unit/auth-config.test.ts`
+- [X] T021 [P] [US2] Add failing unit tests for expired credential renewal success and renewal failure requiring sign-in in `tests/unit/auth-session.test.ts`
+- [X] T022 [P] [US2] Add failing Playwright test for mocked successful sign-in redirect to `/` in `tests/e2e/auth.spec.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T022 [US2] Implement JWT session strategy, Google basic profile scope, and typed callbacks in `auth.ts`
-- [ ] T023 [US2] Implement `getCurrentUserSession` and session normalization in `lib/auth-session.ts`
-- [ ] T024 [US2] Add deterministic signed-in session mocking support for e2e tests in `tests/e2e/auth-test-helpers.ts`
-- [ ] T025 [US2] Verify US2 tests fail before implementation and pass after implementation using `tests/unit/auth-session.test.ts`, `tests/unit/auth-config.test.ts`, and `tests/e2e/auth.spec.ts`
+- [X] T023 [US2] Implement JWT session strategy, Google basic profile scope, and typed callbacks in `auth.ts`
+- [X] T024 [US2] Implement `getCurrentUserSession` and session normalization in `lib/auth-session.ts`
+- [X] T025 [US2] Implement expired credential renewal and failed-renewal signed-out transition in `auth.ts`
+- [X] T026 [US2] Add deterministic signed-in and expired-session mocking support for e2e tests in `tests/e2e/auth-test-helpers.ts`
+- [X] T027 [US2] Verify US2 tests fail before implementation and pass after implementation using `tests/unit/auth-session.test.ts`, `tests/unit/auth-config.test.ts`, and `tests/e2e/auth.spec.ts`
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
@@ -97,16 +99,16 @@
 
 ### Tests for User Story 3 (MANDATORY - write before implementation)
 
-- [ ] T026 [P] [US3] Add failing unit tests for authenticated header name, email, image avatar, fallback initial, and absence of sign-in link in `tests/unit/app-header-auth.test.tsx`
-- [ ] T027 [P] [US3] Add failing unit tests for sign-out action redirect behavior in `tests/unit/auth-actions.test.ts`
-- [ ] T028 [P] [US3] Add failing Playwright test for authenticated header profile popover and sign-out flow in `tests/e2e/auth.spec.ts`
+- [X] T028 [P] [US3] Add failing unit tests for authenticated header name, email, image avatar, fallback initial, and absence of sign-in link in `tests/unit/app-header-auth.test.tsx`
+- [X] T029 [P] [US3] Add failing unit tests for sign-out action redirect behavior in `tests/unit/auth-actions.test.ts`
+- [X] T030 [P] [US3] Add failing Playwright test for authenticated header profile popover and sign-out flow in `tests/e2e/auth.spec.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T029 [US3] Implement typed sign-out server action with redirect `/` in `lib/auth-actions.ts`
-- [ ] T030 [US3] Implement authenticated profile trigger, popover content, avatar image, fallback initial, and sign-out form in `components/layout/app-header.tsx`
-- [ ] T031 [US3] Adjust avatar primitive behavior for auth image and fallback accessibility in `components/ui/avatar.tsx`
-- [ ] T032 [US3] Verify US3 tests fail before implementation and pass after implementation using `tests/unit/app-header-auth.test.tsx`, `tests/unit/auth-actions.test.ts`, and `tests/e2e/auth.spec.ts`
+- [X] T031 [US3] Implement typed sign-out server action with redirect `/` in `lib/auth-actions.ts`
+- [X] T032 [US3] Implement authenticated profile trigger, popover content, avatar image, fallback initial, and sign-out form in `components/layout/app-header.tsx`
+- [X] T033 [US3] Adjust avatar primitive behavior for auth image and fallback accessibility in `components/ui/avatar.tsx`
+- [X] T034 [US3] Verify US3 tests fail before implementation and pass after implementation using `tests/unit/app-header-auth.test.tsx`, `tests/unit/auth-actions.test.ts`, and `tests/e2e/auth.spec.ts`
 
 **Checkpoint**: User Stories 1, 2, and 3 work independently.
 
@@ -120,14 +122,14 @@
 
 ### Tests for User Story 4 (MANDATORY - write before implementation)
 
-- [ ] T033 [P] [US4] Add failing unit tests for `/run` server-side signed-out redirect and signed-in render behavior in `tests/unit/run-page-auth.test.tsx`
-- [ ] T034 [P] [US4] Add failing Playwright tests for signed-out `/run` redirect and signed-in `/run` access in `tests/e2e/auth.spec.ts`
+- [X] T035 [P] [US4] Add failing unit tests for `/run` server-side signed-out redirect and signed-in render behavior in `tests/unit/run-page-auth.test.tsx`
+- [X] T036 [P] [US4] Add failing Playwright tests for signed-out `/run` redirect and signed-in `/run` access in `tests/e2e/auth.spec.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T035 [US4] Add server-side session guard and `redirect('/login')` behavior in `app/run/page.tsx`
-- [ ] T036 [US4] Optionally add optimistic `/run` redirect Proxy that delegates final authorization to the page guard in `proxy.ts`
-- [ ] T037 [US4] Verify US4 tests fail before implementation and pass after implementation using `tests/unit/run-page-auth.test.tsx` and `tests/e2e/auth.spec.ts`
+- [X] T037 [US4] Add server-side session guard and `redirect('/login')` behavior in `app/run/page.tsx`
+- [X] T038 [US4] Implement optimistic `/run` redirect Proxy that delegates final authorization to the page guard in `proxy.ts`
+- [X] T039 [US4] Verify US4 tests fail before implementation and pass after implementation using `tests/unit/run-page-auth.test.tsx` and `tests/e2e/auth.spec.ts`
 
 **Checkpoint**: All user stories are independently functional.
 
@@ -137,12 +139,12 @@
 
 **Purpose**: Finish documentation, accessibility, coverage, and release quality for the complete auth feature.
 
-- [ ] T038 [P] Update auth setup and validation notes in `specs/002-user-auth/quickstart.md`
-- [ ] T039 [P] Add missing accessibility assertions for login errors, pending state, profile popover keyboard reachability, and redirect focus behavior in `tests/unit/login-page.test.tsx`
-- [ ] T040 [P] Add missing accessibility assertions for profile popover keyboard reachability in `tests/unit/app-header-auth.test.tsx`
-- [ ] T041 Run coverage verification and confirm changed auth behavior remains at or above 80% using `package.json`
-- [ ] T042 Run lint, format, typecheck, unit tests, e2e tests, and build using `package.json`
-- [ ] T043 Validate all quickstart scenarios manually or with deterministic mocks and record any credential limitations in `specs/002-user-auth/quickstart.md`
+- [X] T040 [P] Update auth setup and validation notes in `specs/002-user-auth/quickstart.md`
+- [X] T041 [P] Add missing accessibility assertions for login errors, pending state, and redirect focus behavior in `tests/unit/login-page.test.tsx`
+- [X] T042 [P] Add missing accessibility assertions for profile popover keyboard reachability in `tests/unit/app-header-auth.test.tsx`
+- [X] T043 Run coverage verification and confirm changed auth behavior remains at or above 80% using `package.json`
+- [X] T044 Run lint, format, typecheck, unit tests, e2e tests, and build using `package.json`
+- [X] T045 Validate all quickstart scenarios manually or with deterministic mocks and record any credential limitations in `specs/002-user-auth/quickstart.md`
 
 ---
 
@@ -174,9 +176,9 @@
 - T002, T003, and T004 can run in parallel after T001.
 - T006 and T007 can run in parallel with T005 once the DTO shape is agreed.
 - US1 tests T009-T012 can run in parallel before US1 implementation.
-- US2 tests T019-T021 can run in parallel before US2 implementation.
-- US3 tests T026-T028 can run in parallel before US3 implementation.
-- US4 tests T033-T034 can run in parallel before US4 implementation.
+- US2 tests T019-T022 can run in parallel before US2 implementation.
+- US3 tests T028-T030 can run in parallel before US3 implementation.
+- US4 tests T035-T036 can run in parallel before US4 implementation.
 - After Phase 2, US1 through US4 can be staffed in parallel if teams coordinate ownership of `auth.ts`, `lib/auth-actions.ts`, `components/layout/app-header.tsx`, and `tests/e2e/auth.spec.ts`.
 
 ---
@@ -197,24 +199,25 @@ Task: "T012 [US1] Add failing Playwright test for signed-out header navigation a
 # Tests that can be authored together before implementation:
 Task: "T019 [US2] Add failing unit tests for session DTO normalization, required name/email validation, and optional image handling in tests/unit/auth-session.test.ts"
 Task: "T020 [US2] Add failing unit tests for Auth.js JWT session callbacks and Google profile fields in tests/unit/auth-config.test.ts"
-Task: "T021 [US2] Add failing Playwright test for mocked successful sign-in redirect to `/` in tests/e2e/auth.spec.ts"
+Task: "T021 [US2] Add failing unit tests for expired credential renewal success and renewal failure requiring sign-in in tests/unit/auth-session.test.ts"
+Task: "T022 [US2] Add failing Playwright test for mocked successful sign-in redirect to `/` in tests/e2e/auth.spec.ts"
 ```
 
 ## Parallel Example: User Story 3
 
 ```bash
 # Tests that can be authored together before implementation:
-Task: "T026 [US3] Add failing unit tests for authenticated header name, email, image avatar, fallback initial, and absence of sign-in link in tests/unit/app-header-auth.test.tsx"
-Task: "T027 [US3] Add failing unit tests for sign-out action redirect behavior in tests/unit/auth-actions.test.ts"
-Task: "T028 [US3] Add failing Playwright test for authenticated header profile popover and sign-out flow in tests/e2e/auth.spec.ts"
+Task: "T028 [US3] Add failing unit tests for authenticated header name, email, image avatar, fallback initial, and absence of sign-in link in tests/unit/app-header-auth.test.tsx"
+Task: "T029 [US3] Add failing unit tests for sign-out action redirect behavior in tests/unit/auth-actions.test.ts"
+Task: "T030 [US3] Add failing Playwright test for authenticated header profile popover and sign-out flow in tests/e2e/auth.spec.ts"
 ```
 
 ## Parallel Example: User Story 4
 
 ```bash
 # Tests that can be authored together before implementation:
-Task: "T033 [US4] Add failing unit tests for `/run` server-side signed-out redirect and signed-in render behavior in tests/unit/run-page-auth.test.tsx"
-Task: "T034 [US4] Add failing Playwright tests for signed-out `/run` redirect and signed-in `/run` access in tests/e2e/auth.spec.ts"
+Task: "T035 [US4] Add failing unit tests for `/run` server-side signed-out redirect and signed-in render behavior in tests/unit/run-page-auth.test.tsx"
+Task: "T036 [US4] Add failing Playwright tests for signed-out `/run` redirect and signed-in `/run` access in tests/e2e/auth.spec.ts"
 ```
 
 ---

@@ -21,6 +21,10 @@
 
 2. Add local auth secrets to `.env.local`. Do not commit real secret values.
 
+   Use `.env.example` as the template. Real Google OAuth is required only for
+   live provider validation; automated tests use deterministic mocked sessions
+   and do not contact Google.
+
 3. Start the app:
 
    ```bash
@@ -76,6 +80,13 @@ Expected outcome: the session ends and the signed-out header state is restored.
 6. Confirm the `Run A.S.C.A.` heading is visible.
 
 Expected outcome: signed-out users cannot see protected content, while signed-in users can access the route.
+
+## Automated Test Mode
+
+Playwright runs the app with `ASCA_E2E_AUTH=1` and dummy Auth.js secrets. In
+that mode tests can set the `asca-e2e-auth` cookie to exercise authenticated
+header and `/run` behavior deterministically. This does not replace manual
+validation with real Google OAuth credentials before deployment.
 
 ## Required Commands
 

@@ -25,10 +25,18 @@ function Avatar({
   )
 }
 
-function AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {
+function AvatarImage({
+  className,
+  alt = "",
+  ...props
+}: React.ComponentProps<"img">) {
   return (
-    <AvatarPrimitive.Image
+    // Render a native image so authenticated avatar content is visible during
+    // server render and deterministic in tests.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       data-slot="avatar-image"
+      alt={alt}
       className={cn(
         "aspect-square size-full rounded-full object-cover",
         className

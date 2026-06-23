@@ -6,6 +6,22 @@ import Page from "@/app/page"
 import RunPage from "@/app/run/page"
 import { AppHeader } from "@/components/layout/app-header"
 
+jest.mock("@/lib/auth-session", () => ({
+  getCurrentUserSession: jest.fn(async () => ({
+    status: "authenticated",
+    expiresAt: "2099-01-01T00:00:00.000Z",
+    user: {
+      name: "Ada Lovelace",
+      email: "ada@example.com",
+      image: null,
+    },
+  })),
+}))
+
+jest.mock("@/lib/auth-actions", () => ({
+  signOutOfGoogle: jest.fn(),
+}))
+
 const mockUsePathname = jest.fn(() => "/")
 const mockSetTheme = jest.fn()
 let mockResolvedTheme = "light"
@@ -129,31 +145,25 @@ describe("AppHeader", () => {
     expect(mockSetTheme).toHaveBeenCalledWith("light")
   })
 
-  it("renders a non-authenticating Login placeholder button", async () => {
-    const user = userEvent.setup()
+  it("renders a Sign In link to the login page", () => {
     render(<AppHeader />)
 
-    await user.click(screen.getByRole("button", { name: "Login" }))
-
-    expect(mockUsePathname).toHaveBeenCalled()
-    expect(screen.getByRole("button", { name: "Login" })).toHaveAttribute(
-      "type",
-      "button"
+    expect(screen.getByRole("link", { name: "Sign In" })).toHaveAttribute(
+      "href",
+      "/login"
     )
   })
 
-  it("renders layout-safe placeholder pages with unique headings", () => {
+  it("renders layout-safe placeholder pages with unique headings", async () => {
     const { rerender } = render(<Page />)
-    expect(
-      screen.getByRole("heading", { name: "Shared layout foundation" })
-    ).toBeVisible()
+    expect(screen.getByRole("heading", { name: "A.S.C.A." })).toBeVisible()
 
     rerender(<AboutPage />)
     expect(
       screen.getByRole("heading", { name: "About A.S.C.A." })
     ).toBeVisible()
 
-    rerender(<RunPage />)
+    rerender(await RunPage())
     expect(screen.getByRole("heading", { name: "Run A.S.C.A." })).toBeVisible()
   })
 })

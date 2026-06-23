@@ -7,31 +7,35 @@ function ThemeProvider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
-  const [mounted, setMounted] = React.useState<boolean>(false);
+  const [mounted, setMounted] = React.useState<boolean>(false)
   React.useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
+    // next-themes must wait for client mount so SSR markup does not depend on
+    // browser theme state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+    return () => setMounted(false)
+  }, [])
   // React 19 / Next 16 fix: suppress the <script> tag warning by
   // telling next-themes to use type="application/json" instead of
   // type="text/javascript", which React won't try to execute
   const scriptProps =
     typeof window === "undefined"
       ? undefined
-      : ({ type: "application/json" } as const);
+      : ({ type: "application/json" } as const)
   return (
-    mounted &&
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-      {...props}
-      scriptProps={scriptProps}
-    >
-      <ThemeHotkey />
-      {children}
-    </NextThemesProvider>
+    mounted && (
+      <NextThemesProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+        {...props}
+        scriptProps={scriptProps}
+      >
+        <ThemeHotkey />
+        {children}
+      </NextThemesProvider>
+    )
   )
 }
 

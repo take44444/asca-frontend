@@ -9,8 +9,8 @@ export default function Page() {
           A.S.C.A.
         </h1>
         <p className="max-w-2xl text-base leading-7 text-muted-foreground">
-          A.S.C.A. - A Slightly Clever Agent - is an autonomous research assistant
-          designed to assist users in various tasks.
+          A.S.C.A. - A Slightly Clever Agent - is an autonomous research
+          assistant designed to assist users in various tasks.
         </p>
       </section>
     </div>

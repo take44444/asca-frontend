@@ -97,8 +97,8 @@ Only authenticated users can access the "Run A.S.C.A." page.
 - **FR-012**: The profile control MUST display the profile picture when available and the first letter of the user's name when no profile picture is available.
 - **FR-013**: The profile control MUST expose a "Sign Out" action.
 - **FR-014**: Selecting "Sign Out" MUST end the user's session and redirect the user to `/`.
-- **FR-015**: The "Run A.S.C.A." page MUST be accessible only to authenticated users.
-- **FR-016**: Unauthenticated users who attempt to access "Run A.S.C.A." MUST be redirected to `/login`.
+- **FR-015**: Authenticated users with an active session MUST be able to view the "Run A.S.C.A." page without being redirected.
+- **FR-016**: Unauthenticated users who attempt to access `/run` directly or through navigation MUST be redirected to `/login` before protected content is visible.
 - **FR-017**: System MUST define required A.S.C.A. backend API inputs, outputs, and error states, or state that no backend interaction is required.
 - **FR-018**: System MUST expose loading, error, empty, and success states for user-facing asynchronous authentication behavior.
 

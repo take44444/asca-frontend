@@ -9,12 +9,23 @@ import { GithubIcon } from "@/components/icons/lucide-github"
 import { MenuIcon } from "@/components/icons/lucide-menu"
 import { MoonIcon } from "@/components/icons/lucide-moon"
 import { SunIcon } from "@/components/icons/lucide-sun"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { signOutOfGoogle } from "@/lib/auth-actions"
+import type { UserSession } from "@/lib/auth-session"
 import {
   GITHUB_ACTION,
   HEADER_NAVIGATION_ITEMS,
@@ -106,19 +117,22 @@ export function MobileHeaderNav() {
 export function ASCARepositoryLink() {
   return (
     <Tooltip>
-      <TooltipTrigger render={
-        <a
-          href={GITHUB_ACTION.href}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={GITHUB_ACTION.label}
-          className={cn(
-            buttonVariants({ variant: "ghost", size: "icon-sm" })
-          )}
-        >
-          <GithubIcon aria-hidden="true" className="size-4" />
-        </a>
-      } />
+      <TooltipTrigger
+        render={
+          <a
+            href={GITHUB_ACTION.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={GITHUB_ACTION.label}
+            title={GITHUB_ACTION.label}
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "icon-sm" })
+            )}
+          >
+            <GithubIcon aria-hidden="true" className="size-4" />
+          </a>
+        }
+      />
       <TooltipContent>
         <p>{GITHUB_ACTION.label}</p>
       </TooltipContent>
@@ -136,16 +150,19 @@ export function ThemeToggle() {
 
   return (
     <Tooltip>
-      <TooltipTrigger render={
-        <Button
-          aria-label={label}
-          variant="ghost"
-          size="icon-sm"
-          onClick={() => setTheme(nextTheme)}
-        >
-          <Icon aria-hidden="true" className="size-4" />
-        </Button>
-      } />
+      <TooltipTrigger
+        render={
+          <Button
+            aria-label={label}
+            title={label}
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => setTheme(nextTheme)}
+          >
+            <Icon aria-hidden="true" className="size-4" />
+          </Button>
+        }
+      />
       <TooltipContent>
         <p>{label}</p>
       </TooltipContent>
@@ -156,8 +173,72 @@ export function ThemeToggle() {
 /** Sign in link. */
 export function SignInLink() {
   return (
-    <Link href="#" className={cn(buttonVariants({ variant: "outline", size: "sm" }))}>
+    <Link
+      href="/login"
+      className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+    >
       Sign In
     </Link>
+  )
+}
+
+function getAvatarFallback(name: string): string {
+  return name.trim().charAt(0).toUpperCase()
+}
+
+type HeaderAuthControlProps = {
+  session: UserSession | null
+}
+
+/** Header authentication area for signed-out and authenticated users. */
+export function HeaderAuthControl({ session }: HeaderAuthControlProps) {
+  if (session?.status !== "authenticated") {
+    return <SignInLink />
+  }
+
+  const { user } = session
+  const fallback = getAvatarFallback(user.name)
+
+  return (
+    <Popover>
+      <PopoverTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            aria-label={`Account menu for ${user.name}`}
+            className="max-w-[12rem] gap-2 px-2 sm:max-w-[16rem]"
+          >
+            <Avatar aria-label={user.name} size="sm">
+              {user.image ? (
+                <AvatarImage src={user.image} alt={user.name} />
+              ) : (
+                <AvatarFallback>{fallback}</AvatarFallback>
+              )}
+            </Avatar>
+            <span className="hidden min-w-0 flex-col items-start text-left leading-tight sm:flex">
+              <span className="max-w-28 truncate text-xs font-medium text-foreground">
+                {user.name}
+              </span>
+              <span className="max-w-32 truncate text-[0.6875rem] text-muted-foreground">
+                {user.email}
+              </span>
+            </span>
+          </Button>
+        }
+      />
+      <PopoverContent align="end" sideOffset={8} aria-label={user.name}>
+        <PopoverHeader>
+          <PopoverTitle>{user.name}</PopoverTitle>
+          <PopoverDescription>{user.email}</PopoverDescription>
+        </PopoverHeader>
+        <form action={signOutOfGoogle}>
+          <Button type="submit" variant="outline" size="sm" className="w-full">
+            Sign Out
+          </Button>
+        </form>
+      </PopoverContent>
+    </Popover>
   )
 }
