@@ -92,7 +92,7 @@ export function MobileHeaderNav() {
         size="icon-sm"
         onClick={() => setIsOpen((current) => !current)}
       >
-        <MenuIcon aria-hidden="true" className="size-4" />
+        <MenuIcon aria-hidden="true" className="size-5" />
       </Button>
       {isOpen ? (
         <nav
@@ -129,7 +129,7 @@ export function ASCARepositoryLink() {
               buttonVariants({ variant: "ghost", size: "icon-sm" })
             )}
           >
-            <GithubIcon aria-hidden="true" className="size-4" />
+            <GithubIcon aria-hidden="true" className="size-5" />
           </a>
         }
       />
@@ -159,7 +159,7 @@ export function ThemeToggle() {
             size="icon-sm"
             onClick={() => setTheme(nextTheme)}
           >
-            <Icon aria-hidden="true" className="size-4" />
+            <Icon aria-hidden="true" className="size-5" />
           </Button>
         }
       />
