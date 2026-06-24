@@ -11,16 +11,16 @@ export type HeaderExternalAction = {
 }
 
 /** Core header destinations for the A.S.C.A. frontend layout. */
-export const HEADER_NAVIGATION_ITEMS: HeaderNavigationItem[] = [
-  {
-    label: "About A.S.C.A.",
-    href: "/about",
-  },
-  {
-    label: "Run A.S.C.A.",
-    href: "/run",
-  },
-]
+export const HEADER_NAVIGATION_ABOUT_ASCA: HeaderNavigationItem = {
+  label: "About A.S.C.A.",
+  href: "/about",
+}
+
+/** Core header destinations for the A.S.C.A. frontend layout. */
+export const HEADER_NAVIGATION_RUN_ASCA: HeaderNavigationItem = {
+  label: "Run A.S.C.A.",
+  href: "/run",
+}
 
 /** External repository action surfaced from the global header. */
 export const GITHUB_ACTION: HeaderExternalAction = {
