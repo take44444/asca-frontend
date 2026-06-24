@@ -32,13 +32,13 @@ As a user, I want the Run A.S.C.A. page to present a stable two-area layout with
 
 **Why this priority**: The layout makes the chat workspace usable and prepares the interface for future multi-thread support, even though only one demonstration thread is in scope.
 
-**Independent Test**: Can be tested by opening the page at supported screen sizes and verifying the page fits within the viewport, the thread list remains available, selecting the demonstration thread shows its content, and overflowing lists or messages scroll inside their own areas.
+**Independent Test**: Can be tested by opening the page at supported screen sizes and verifying the page fits within the viewport, the thread list remains available, selecting the demonstration thread shows its content, and overflowing conversation messages scroll inside the conversation area.
 
 **Acceptance Scenarios**:
 
 1. **Given** the Run A.S.C.A. page is opened, **When** the viewport is at a supported desktop size, **Then** the page content fits within the viewport height without causing the whole page to scroll.
-2. **Given** the thread list has more entries than can fit vertically, **When** the user scrolls the list area, **Then** the thread list scrolls independently while the conversation area remains usable.
-3. **Given** a user selects a thread in the thread list, **When** the selection changes, **Then** the conversation area shows that thread's title, messages, and prompt entry area.
+2. **Given** the demonstration thread is visible in the thread list, **When** the user selects it, **Then** the thread remains visibly selected and the conversation area remains usable.
+3. **Given** a user selects the demonstration thread in the thread list, **When** the selection is confirmed, **Then** the conversation area shows that thread's title, messages, and prompt entry area.
 
 ---
 
@@ -72,7 +72,7 @@ As a user, I want long conversations to remain readable, copyable, and easy to r
 
 - **FR-001**: The Run A.S.C.A. page MUST fit within the viewport height without making the entire page scroll.
 - **FR-002**: The page MUST display a thread list area on the left side and a conversation area on the right side at supported desktop sizes.
-- **FR-003**: The thread list area MUST fill the available viewport height and scroll independently when its content exceeds the visible height.
+- **FR-003**: The thread list area MUST fill the available viewport height and keep the selected demonstration thread visible without causing whole-page scroll.
 - **FR-004**: The thread list MUST show at least one demonstration thread with a visible thread title.
 - **FR-005**: The thread list MUST include a visible "Create New Thread" action at the top, and that action MUST be presented as unavailable or non-functional for this feature scope.
 - **FR-006**: Selecting a thread from the thread list MUST show the corresponding thread title, message history, and prompt entry area in the conversation area.

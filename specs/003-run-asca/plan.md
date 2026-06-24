@@ -8,7 +8,7 @@
 
 ## Summary
 
-Build the authenticated Run A.S.C.A. workspace as a focused chat page with one demonstration thread, independent thread and message scrolling, anchored text prompt entry, markdown message rendering, copy feedback, visible loading/error/empty/success states, and no persistent thread creation. The service boundary is a typed Next.js App Router Route Handler that uses AI SDK with OpenAI, reads the model from `ASCA_MODEL`, and returns text responses for the selected thread.
+Build the authenticated Run A.S.C.A. workspace as a focused chat page with one demonstration thread, a stable thread list, independently scrolling conversation messages, anchored text prompt entry, markdown message rendering, copy feedback, visible loading/error/empty/success states, and no persistent thread creation. The service boundary is a typed Next.js App Router Route Handler that uses AI SDK with OpenAI, reads the model from `ASCA_MODEL`, and returns text responses for the selected thread.
 
 ## Technical Context
 

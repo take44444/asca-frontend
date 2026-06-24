@@ -23,7 +23,7 @@ description: "Task list for Run A.S.C.A. implementation"
 **Purpose**: Prepare dependencies, documentation context, and shared feature paths before test-first story work.
 
 - [ ] T001 Install the AI SDK core package and update `package.json` and `package-lock.json`
-- [ ] T002 [P] Add `ASCA_MODEL` documentation to `.env.example`
+- [ ] T002 [P] Add `OPENAI_API_KEY` and `ASCA_MODEL` documentation to `.env.example`
 - [ ] T003 [P] Review installed Next.js Route Handler, Server/Client Component, authentication, redirect, and Backend-for-Frontend docs listed in `specs/003-run-asca/plan.md`
 - [ ] T004 [P] Create feature source directories `components/run-asca/` and `app/api/asca/chat/`
 - [ ] T005 [P] Create placeholder test files `tests/unit/asca-chat-route.test.ts`, `tests/unit/run-asca-chat.test.tsx`, and `tests/e2e/run-asca.spec.ts`
@@ -36,8 +36,8 @@ description: "Task list for Run A.S.C.A. implementation"
 
 **Critical**: No user story implementation can begin until this phase is complete.
 
-- [ ] T006 Create shared chat domain types for Thread, ChatMessage, PromptSubmission, AscaChatRequest, AscaChatResponse, and API error payloads in `components/run-asca/types.ts`
-- [ ] T007 Create request parsing, response builders, model configuration, and provider-facing message helpers in `lib/asca-chat.ts`
+- [ ] T006 Create shared chat domain types with docstrings for Thread, ChatMessage, PromptSubmission, AscaChatRequest, AscaChatResponse, and API error payloads in `components/run-asca/types.ts`
+- [ ] T007 Create request parsing, response builders, model configuration, and provider-facing message helpers with exported-function docstrings in `lib/asca-chat.ts`
 - [ ] T008 [P] Add reusable test helpers for mocked A.S.C.A. route responses and clipboard behavior in `tests/unit/run-asca-test-helpers.ts`
 - [ ] T009 [P] Add Playwright auth and route mocking helpers for Run A.S.C.A. scenarios in `tests/e2e/run-asca.spec.ts`
 - [ ] T010 Configure Jest mocks for `ai`, `@ai-sdk/openai`, `next/navigation`, and authenticated sessions in `tests/unit/asca-chat-route.test.ts`
@@ -55,15 +55,15 @@ description: "Task list for Run A.S.C.A. implementation"
 ### Tests for User Story 1 (write first and verify failure)
 
 - [ ] T011 [P] [US1] Add route tests for signed-out `401`, invalid `400`, `ASCA_MODEL` usage, success payload mapping, and provider failure mapping in `tests/unit/asca-chat-route.test.ts`
-- [ ] T012 [P] [US1] Add component tests for whitespace rejection, valid prompt append, thinking state, successful response append, duplicate-submit prevention, and route failure state in `tests/unit/run-asca-chat.test.tsx`
+- [ ] T012 [P] [US1] Add component tests for whitespace rejection, valid prompt append, thinking state within 1 second, successful response append, duplicate-submit prevention, and route failure state in `tests/unit/run-asca-chat.test.tsx`
 - [ ] T013 [P] [US1] Add Playwright tests for signed-out `/run` redirect and signed-in prompt-to-response flow in `tests/e2e/run-asca.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T014 [US1] Implement authenticated `POST /api/asca/chat` Route Handler using `getCurrentUserSession`, `generateText`, `openai`, and typed responses in `app/api/asca/chat/route.ts`
-- [ ] T015 [US1] Implement request validation, `ASCA_MODEL` lookup, text-only message normalization, and sanitized error mapping in `lib/asca-chat.ts`
-- [ ] T016 [US1] Implement local demonstration thread state, prompt submission state, duplicate-submit prevention, route calls, and assistant response append logic in `app/run/run-asca-chat.tsx`
-- [ ] T017 [P] [US1] Implement markdown-capable message rendering and sender identity display in `components/run-asca/chat-message.tsx`
+- [ ] T014 [US1] Implement authenticated `POST /api/asca/chat` Route Handler with docstrings for exported handlers using `getCurrentUserSession`, `generateText`, `openai`, and typed responses in `app/api/asca/chat/route.ts`
+- [ ] T015 [US1] Implement request validation, `ASCA_MODEL` lookup, text-only message normalization, sanitized error mapping, and exported-function docstrings in `lib/asca-chat.ts`
+- [ ] T016 [US1] Implement local demonstration thread state, prompt submission state, duplicate-submit prevention, route calls, assistant response append logic, and component prop docstrings in `app/run/run-asca-chat.tsx`
+- [ ] T017 [P] [US1] Implement markdown-capable message rendering, sender identity display, and component prop docstrings in `components/run-asca/chat-message.tsx`
 - [ ] T018 [US1] Update `/run` authenticated Server Component to render the interactive chat client in `app/run/page.tsx`
 - [ ] T019 [US1] Update protected-page expectations for the new chat workspace heading and authenticated render path in `tests/unit/run-page-auth.test.tsx`
 
@@ -73,21 +73,21 @@ description: "Task list for Run A.S.C.A. implementation"
 
 ## Phase 4: User Story 2 - Navigate the Thread Layout (Priority: P2)
 
-**Goal**: The page presents a stable two-area desktop workspace with a left thread list, a right conversation area, independent scrolling, selected demonstration thread content, and unavailable Create New Thread action.
+**Goal**: The page presents a stable two-area desktop workspace with a left thread list, a right conversation area, independently scrolling conversation messages, selected demonstration thread content, and unavailable Create New Thread action.
 
-**Independent Test**: Open `/run` at supported desktop sizes and verify the page does not whole-page scroll, the thread list remains visible, the demonstration thread is selected, selection renders the conversation, and overflow scrolls inside the list or conversation areas.
+**Independent Test**: Open `/run` at supported desktop sizes and verify the page does not whole-page scroll, the thread list remains visible, the demonstration thread is selected, selection renders the conversation, and overflowing messages scroll inside the conversation area.
 
 ### Tests for User Story 2 (write first and verify failure)
 
 - [ ] T020 [P] [US2] Add component tests for selected demonstration thread rendering, unavailable Create New Thread action, and thread selection behavior in `tests/unit/run-asca-chat.test.tsx`
-- [ ] T021 [P] [US2] Add Playwright tests for no whole-page vertical scroll, left/right desktop layout, thread-list overflow scrolling, and conversation usability in `tests/e2e/run-asca.spec.ts`
+- [ ] T021 [P] [US2] Add Playwright tests for no whole-page vertical scroll, left/right desktop layout, selected demonstration thread visibility, and conversation usability in `tests/e2e/run-asca.spec.ts`
 
 ### Implementation for User Story 2
 
 - [ ] T022 [P] [US2] Implement thread list UI with selected demonstration thread and disabled Create New Thread action in `components/run-asca/thread-list.tsx`
 - [ ] T023 [P] [US2] Implement conversation shell with title, message viewport, empty state, anchored prompt area, loading state, and error state in `components/run-asca/conversation-panel.tsx`
 - [ ] T024 [US2] Compose thread list and conversation panel into a viewport-height workspace in `app/run/run-asca-chat.tsx`
-- [ ] T025 [US2] Add responsive workspace sizing, independent scroll containers, long-text wrapping, and supported desktop layout styles in `app/globals.css`
+- [ ] T025 [US2] Add responsive workspace sizing, conversation message scrolling, long-text wrapping, and supported desktop layout styles in `app/globals.css`
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
