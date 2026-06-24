@@ -19,6 +19,7 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { ShineBorder } from "@/components/ui/shine-border"
 import {
   Tooltip,
   TooltipContent,
@@ -28,7 +29,8 @@ import { signOutOfGoogle } from "@/lib/auth-actions"
 import type { UserSession } from "@/lib/auth-session"
 import {
   GITHUB_ACTION,
-  HEADER_NAVIGATION_ITEMS,
+  HEADER_NAVIGATION_ABOUT_ASCA,
+  HEADER_NAVIGATION_RUN_ASCA,
   type HeaderNavigationItem,
 } from "@/lib/layout-navigation"
 import { cn } from "@/lib/utils"
@@ -40,18 +42,20 @@ type HeaderNavProps = {
 type HeaderNavLinkProps = {
   item: HeaderNavigationItem
   isActive: boolean
+  shine?: boolean
 }
 
-function HeaderNavLink({ item, isActive }: HeaderNavLinkProps) {
+function HeaderNavLink({ item, isActive, shine }: HeaderNavLinkProps) {
   return (
     <Link
       href={item.href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none",
+        "relative rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none",
         isActive && "bg-secondary text-secondary-foreground"
       )}
     >
+      {shine && <ShineBorder borderWidth={2} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />}
       {item.label}
     </Link>
   )
@@ -64,15 +68,19 @@ export function HeaderNav({ className }: HeaderNavProps) {
   return (
     <nav
       aria-label="Primary navigation"
-      className={cn("items-center gap-1", className)}
+      className={cn("items-center gap-10", className)}
     >
-      {HEADER_NAVIGATION_ITEMS.map((item) => (
-        <HeaderNavLink
-          key={item.href}
-          item={item}
-          isActive={pathname === item.href}
-        />
-      ))}
+      <HeaderNavLink
+        key={HEADER_NAVIGATION_ABOUT_ASCA.href}
+        item={HEADER_NAVIGATION_ABOUT_ASCA}
+        isActive={pathname === HEADER_NAVIGATION_ABOUT_ASCA.href}
+      />
+      <HeaderNavLink
+        key={HEADER_NAVIGATION_RUN_ASCA.href}
+        item={HEADER_NAVIGATION_RUN_ASCA}
+        isActive={pathname === HEADER_NAVIGATION_RUN_ASCA.href}
+        shine
+      />
     </nav>
   )
 }
@@ -100,13 +108,17 @@ export function MobileHeaderNav() {
           aria-label="Mobile navigation"
           className="absolute top-12 left-0 z-50 grid min-w-48 gap-1 rounded-md border bg-popover p-2 text-popover-foreground shadow-lg"
         >
-          {HEADER_NAVIGATION_ITEMS.map((item) => (
-            <HeaderNavLink
-              key={item.href}
-              item={item}
-              isActive={pathname === item.href}
-            />
-          ))}
+          <HeaderNavLink
+            key={HEADER_NAVIGATION_ABOUT_ASCA.href}
+            item={HEADER_NAVIGATION_ABOUT_ASCA}
+            isActive={pathname === HEADER_NAVIGATION_ABOUT_ASCA.href}
+          />
+          <HeaderNavLink
+            key={HEADER_NAVIGATION_RUN_ASCA.href}
+            item={HEADER_NAVIGATION_RUN_ASCA}
+            isActive={pathname === HEADER_NAVIGATION_RUN_ASCA.href}
+            shine
+          />
         </nav>
       ) : null}
     </div>
@@ -211,6 +223,7 @@ export function HeaderAuthControl({ session }: HeaderAuthControlProps) {
             className="max-w-[12rem] gap-2 px-2 sm:max-w-[16rem]"
           >
             <Avatar aria-label={user.name} size="default">
+              <ShineBorder borderWidth={2} duration={7} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : (
