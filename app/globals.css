@@ -160,4 +160,28 @@
     min-height: calc(100svh - var(--app-header-height));
     margin-top: var(--app-header-height);
   }
+
+  .run-asca-workspace {
+    display: flex;
+    height: calc(100svh - var(--app-header-height));
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .run-asca-thread-list {
+    max-height: calc(100svh - var(--app-header-height));
+  }
+
+  @media (max-width: 767px) {
+    .run-asca-workspace {
+      min-height: calc(100svh - var(--app-header-height));
+      height: auto;
+      flex-direction: column;
+      overflow: visible;
+    }
+
+    .run-asca-thread-list {
+      max-height: 14rem;
+    }
+  }
 }

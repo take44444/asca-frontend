@@ -22,6 +22,10 @@ jest.mock("@/lib/auth-actions", () => ({
   signOutOfGoogle: jest.fn(),
 }))
 
+jest.mock("@/app/run/run-asca-chat", () => ({
+  RunAscaChat: () => <h1>Run A.S.C.A.</h1>,
+}))
+
 const mockUsePathname = jest.fn(() => "/")
 const mockSetTheme = jest.fn()
 let mockResolvedTheme = "light"

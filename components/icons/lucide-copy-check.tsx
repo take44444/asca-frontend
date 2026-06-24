@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export function CopyCheckIcon({
   size = 24,
@@ -7,9 +7,9 @@ export function CopyCheckIcon({
   className,
   ...props
 }: React.SVGProps<SVGSVGElement> & {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
+  size?: number
+  color?: string
+  strokeWidth?: number
 }) {
   return (
     <svg
@@ -25,7 +25,9 @@ export function CopyCheckIcon({
       className={className}
       {...props}
     >
-      <path d="m12 15l2 2l4-4"/><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+      <path d="m12 15l2 2l4-4" />
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
     </svg>
-  );
+  )
 }

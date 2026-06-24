@@ -16,7 +16,7 @@ export const ChainOfThoughtItem = ({
   className,
   ...props
 }: ChainOfThoughtItemProps) => (
-  <div className={cn("text-muted-foreground text-sm", className)} {...props}>
+  <div className={cn("text-sm text-muted-foreground", className)} {...props}>
     {children}
   </div>
 )
@@ -37,7 +37,7 @@ export const ChainOfThoughtTrigger = ({
 }: ChainOfThoughtTriggerProps) => (
   <CollapsibleTrigger
     className={cn(
-      "group text-muted-foreground hover:text-foreground flex cursor-pointer items-center justify-start gap-1 text-left text-sm transition-colors",
+      "group flex cursor-pointer items-center justify-start gap-1 text-left text-sm text-muted-foreground transition-colors hover:text-foreground",
       className
     )}
     {...props}
@@ -82,13 +82,13 @@ export const ChainOfThoughtContent = ({
   return (
     <CollapsibleContent
       className={cn(
-        "text-popover-foreground data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down overflow-hidden",
+        "overflow-hidden text-popover-foreground data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down",
         className
       )}
       {...props}
     >
       <div className="grid grid-cols-[min-content_minmax(0,1fr)] gap-x-4">
-        <div className="bg-primary/20 ml-1.75 h-full w-px group-data-[last=true]:hidden" />
+        <div className="ml-1.75 h-full w-px bg-primary/20 group-data-[last=true]:hidden" />
         <div className="ml-1.75 h-full w-px bg-transparent group-data-[last=false]:hidden" />
         <div className="mt-2 space-y-2">{children}</div>
       </div>
@@ -141,7 +141,7 @@ export const ChainOfThoughtStep = ({
     >
       {children}
       <div className="flex justify-start group-data-[last=true]:hidden">
-        <div className="bg-primary/20 ml-1.75 h-4 w-px" />
+        <div className="ml-1.75 h-4 w-px bg-primary/20" />
       </div>
     </Collapsible>
   )
