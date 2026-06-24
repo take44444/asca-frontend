@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export function MessageSquarePlusIcon({
   size = 24,
@@ -7,9 +7,9 @@ export function MessageSquarePlusIcon({
   className,
   ...props
 }: React.SVGProps<SVGSVGElement> & {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
+  size?: number
+  color?: string
+  strokeWidth?: number
 }) {
   return (
     <svg
@@ -25,7 +25,7 @@ export function MessageSquarePlusIcon({
       className={className}
       {...props}
     >
-      <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2zM12 8v6m-3-3h6"/>
+      <path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2zM12 8v6m-3-3h6" />
     </svg>
-  );
+  )
 }

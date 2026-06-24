@@ -51,11 +51,16 @@ function HeaderNavLink({ item, isActive, shine }: HeaderNavLinkProps) {
       href={item.href}
       aria-current={isActive ? "page" : undefined}
       className={cn(
-        "relative rounded-lg px-3 py-2.5 text-sm font-medium bg-background text-muted-foreground hover:bg-input/30 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
+        "relative rounded-lg bg-background px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-input/30 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
         isActive && "bg-secondary text-secondary-foreground"
       )}
     >
-      {shine && <ShineBorder borderWidth={2} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />}
+      {shine && (
+        <ShineBorder
+          borderWidth={2}
+          shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+        />
+      )}
       {item.label}
     </Link>
   )
@@ -223,7 +228,11 @@ export function HeaderAuthControl({ session }: HeaderAuthControlProps) {
             className="max-w-[12rem] gap-2 px-2 sm:max-w-[16rem]"
           >
             <Avatar aria-label={user.name} size="default">
-              <ShineBorder borderWidth={2} duration={7} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} />
+              <ShineBorder
+                borderWidth={2}
+                duration={7}
+                shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+              />
               {user.image ? (
                 <AvatarImage src={user.image} alt={user.name} />
               ) : (

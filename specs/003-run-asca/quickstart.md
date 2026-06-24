@@ -39,6 +39,12 @@ Review:
 
 ## Manual Validation
 
+The implemented `/run` workspace is a protected two-pane chat surface. It shows
+one selected demonstration thread, a disabled Create New Thread action, a
+conversation panel with markdown-capable messages, anchored prompt input,
+pending/error states, copy feedback, and return-to-latest behavior for long
+threads.
+
 1. Start the app:
 
    ```bash
@@ -54,6 +60,7 @@ Review:
 8. Verify the assistant response appears as the latest message.
 9. Copy a user and assistant message and verify temporary success feedback.
 10. Scroll away from the latest message and verify the return-to-bottom control works.
+11. Confirm the browser page itself does not vertically scroll at supported desktop sizes while the message viewport scrolls independently.
 
 ## Quality Gates
 

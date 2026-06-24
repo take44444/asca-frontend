@@ -8,6 +8,10 @@ jest.mock("@/lib/auth-session", () => ({
   getCurrentUserSession: jest.fn(),
 }))
 
+jest.mock("@/app/run/run-asca-chat", () => ({
+  RunAscaChat: () => <h1>Run A.S.C.A.</h1>,
+}))
+
 const mockRedirect = jest.fn((url: string) => {
   throw new Error(`redirect:${url}`)
 })
