@@ -11,7 +11,8 @@ import { MessagePort } from "node:worker_threads"
 import { RunAscaChat } from "@/app/run/run-asca-chat"
 import type { ChatMessage } from "@/components/run-asca/types"
 import {
-  createMockAscaResponse,
+  createControlledUIMessageStream,
+  createMockAscaUIStreamResponse,
   mockClipboardWriteText,
 } from "@/tests/unit/run-asca-test-helpers"
 
@@ -138,7 +139,7 @@ describe("RunAscaChat", () => {
     global.fetch = jest
       .fn()
       .mockResolvedValue(
-        createResponse(createMockAscaResponse("A.S.C.A. test response."))
+        createMockAscaUIStreamResponse("A.S.C.A. test response.")
       )
   })
 
@@ -154,10 +155,10 @@ describe("RunAscaChat", () => {
     expect(global.fetch).not.toHaveBeenCalled()
   })
 
-  it("appends a valid prompt, shows thinking within the pending state, and appends the response", async () => {
+  it("appends a valid prompt, shows thinking before first text, and streams chunks into one assistant message", async () => {
     const user = userEvent.setup()
-    const deferred = createDeferredResponse()
-    jest.mocked(global.fetch).mockReturnValueOnce(deferred.promise)
+    const stream = createControlledUIMessageStream()
+    jest.mocked(global.fetch).mockResolvedValueOnce(stream.response)
 
     render(<RunAscaChat />)
 
@@ -168,15 +169,34 @@ describe("RunAscaChat", () => {
     expect(screen.getByText("A.S.C.A. is thinking...")).toBeInTheDocument()
 
     await act(async () => {
-      deferred.resolve(
-        createResponse(createMockAscaResponse("A.S.C.A. test response."))
-      )
+      stream.enqueue("A.S.C.A.")
+    })
+
+    await waitFor(() => {
+      expect(
+        screen
+          .getAllByText("A.S.C.A.")
+          .some((element) => element.className.includes("prose"))
+      ).toBe(true)
+    })
+    expect(screen.getByText("Streaming")).toBeVisible()
+
+    await act(async () => {
+      stream.enqueue(" test response.")
     })
 
     expect(await screen.findByText("A.S.C.A. test response.")).toBeVisible()
+
+    await act(async () => {
+      stream.close()
+    })
+
     expect(
       screen.queryByText("A.S.C.A. is thinking...")
     ).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.queryByText("Streaming")).not.toBeInTheDocument()
+    })
   })
 
   it("prevents duplicate submissions while a response is pending", async () => {
@@ -191,6 +211,38 @@ describe("RunAscaChat", () => {
     await user.keyboard("{Enter}")
 
     expect(global.fetch).toHaveBeenCalledTimes(1)
+  })
+
+  it("marks partial assistant text incomplete when a stream read fails", async () => {
+    const user = userEvent.setup()
+    const stream = createControlledUIMessageStream()
+    jest.mocked(global.fetch).mockResolvedValueOnce(stream.response)
+
+    render(<RunAscaChat />)
+
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Fail later")
+    await user.click(screen.getByRole("button", { name: "Send prompt" }))
+
+    await act(async () => {
+      stream.enqueue("Partial answer")
+    })
+
+    expect(await screen.findByText("Partial answer")).toBeVisible()
+
+    await act(async () => {
+      stream.error(new Error("connection lost"))
+    })
+
+    expect(await screen.findByText("Partial answer")).toBeVisible()
+    expect(await screen.findByText("Incomplete")).toBeVisible()
+    expect(
+      await screen.findByText(
+        "A.S.C.A. could not complete the response. Try again."
+      )
+    ).toBeVisible()
+
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Next prompt")
+    expect(screen.getByRole("button", { name: "Send prompt" })).toBeEnabled()
   })
 
   it("shows route failure feedback and keeps the submitted message visible", async () => {
@@ -218,6 +270,26 @@ describe("RunAscaChat", () => {
         "A.S.C.A. could not return a response. Try again."
       )
     ).toBeVisible()
+  })
+
+  it("shows fetch failure feedback before any assistant text", async () => {
+    const user = userEvent.setup()
+    jest
+      .mocked(global.fetch)
+      .mockRejectedValueOnce(new Error("network unavailable"))
+
+    render(<RunAscaChat />)
+
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Fail before")
+    await user.click(screen.getByRole("button", { name: "Send prompt" }))
+
+    expect(await screen.findByText("Fail before")).toBeVisible()
+    expect(
+      await screen.findByText(
+        "A.S.C.A. could not return a response. Try again."
+      )
+    ).toBeVisible()
+    expect(screen.queryByText("Incomplete")).not.toBeInTheDocument()
   })
 
   it("renders the selected demonstration thread and unavailable create action", () => {
@@ -335,9 +407,7 @@ describe("RunAscaChat", () => {
 
     await act(async () => {
       deferred.resolve(
-        createResponse(
-          createMockAscaResponse("A.S.C.A. accessibility response.")
-        )
+        createMockAscaUIStreamResponse("A.S.C.A. accessibility response.")
       )
     })
   })

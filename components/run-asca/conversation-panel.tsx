@@ -68,7 +68,12 @@ export function ConversationPanel({
                     ))
                   )}
                   {isSubmitting ? (
-                    <TextShimmer duration={2} spread={10} className="text-sm">
+                    <TextShimmer
+                      duration={2}
+                      spread={10}
+                      className="text-sm"
+                      role="status"
+                    >
                       A.S.C.A. is thinking...
                     </TextShimmer>
                   ) : null}
