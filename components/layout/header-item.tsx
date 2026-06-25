@@ -34,6 +34,7 @@ import {
   type HeaderNavigationItem,
 } from "@/lib/layout-navigation"
 import { cn } from "@/lib/utils"
+import { Shine } from "../animate-ui/primitives/effects/shine"
 
 type HeaderNavProps = {
   className?: string
@@ -47,22 +48,24 @@ type HeaderNavLinkProps = {
 
 function HeaderNavLink({ item, isActive, shine }: HeaderNavLinkProps) {
   return (
-    <Link
-      href={item.href}
-      aria-current={isActive ? "page" : undefined}
-      className={cn(
-        "relative rounded-lg bg-background px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-input/30 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
-        isActive && "bg-secondary text-secondary-foreground"
-      )}
-    >
-      {shine && (
-        <ShineBorder
-          borderWidth={2}
-          shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-        />
-      )}
-      {item.label}
-    </Link>
+    <Shine enable={shine} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} loop={true} asChild>
+      <Link
+        href={item.href}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "relative rounded-lg bg-background px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-input/30 hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
+          isActive && "bg-input/30 text-foreground"
+        )}
+      >
+        {shine && (
+          <ShineBorder
+            borderWidth={2}
+            shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+          />
+        )}
+        {item.label}
+      </Link>
+    </Shine>
   )
 }
 
@@ -79,12 +82,13 @@ export function HeaderNav({ className }: HeaderNavProps) {
         key={HEADER_NAVIGATION_ABOUT_ASCA.href}
         item={HEADER_NAVIGATION_ABOUT_ASCA}
         isActive={pathname === HEADER_NAVIGATION_ABOUT_ASCA.href}
+        shine={false}
       />
       <HeaderNavLink
         key={HEADER_NAVIGATION_RUN_ASCA.href}
         item={HEADER_NAVIGATION_RUN_ASCA}
         isActive={pathname === HEADER_NAVIGATION_RUN_ASCA.href}
-        shine
+        shine={true}
       />
     </nav>
   )
@@ -117,12 +121,13 @@ export function MobileHeaderNav() {
             key={HEADER_NAVIGATION_ABOUT_ASCA.href}
             item={HEADER_NAVIGATION_ABOUT_ASCA}
             isActive={pathname === HEADER_NAVIGATION_ABOUT_ASCA.href}
+            shine={false}
           />
           <HeaderNavLink
             key={HEADER_NAVIGATION_RUN_ASCA.href}
             item={HEADER_NAVIGATION_RUN_ASCA}
             isActive={pathname === HEADER_NAVIGATION_RUN_ASCA.href}
-            shine
+            shine={true}
           />
         </nav>
       ) : null}

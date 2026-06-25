@@ -36,7 +36,7 @@ export function AppHeader({ className, session }: AppHeaderProps) {
           <MobileHeaderNav />
           <Link
             href="/"
-            className="shrink-0 rounded-md text-base font-semibold tracking-normal text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
+            className="shrink-0 rounded-md text-lg font-semibold tracking-normal text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 focus-visible:outline-none"
           >
             A.S.C.A.
           </Link>
