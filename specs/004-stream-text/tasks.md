@@ -33,8 +33,9 @@
 
 - [ ] T005 Add explicit streaming message/status types for ChatMessage, PromptSubmission, and StreamingAscaResponse in components/run-asca/types.ts
 - [ ] T006 Add typed chat request, sanitized error, and plain-text stream response helper contracts in lib/asca-chat.ts
-- [ ] T007 [P] Add controlled ReadableStream and chunk flushing helpers for client tests in tests/unit/run-asca-test-helpers.ts
-- [ ] T008 [P] Add route stream mock helpers for AI SDK streamText tests in tests/unit/asca-chat-route.test.ts
+- [ ] T007 Add docstrings for any new or changed public types, component props, constants, exported functions, and helpers in components/run-asca/types.ts, lib/asca-chat.ts, app/run/run-asca-chat.tsx, and components/run-asca/
+- [ ] T008 [P] Add controlled ReadableStream and chunk flushing helpers for client tests in tests/unit/run-asca-test-helpers.ts
+- [ ] T009 [P] Add route stream mock helpers for AI SDK streamText tests in tests/unit/asca-chat-route.test.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin.
 
@@ -50,17 +51,17 @@
 
 > Write these tests FIRST and confirm they fail before implementation.
 
-- [ ] T009 [P] [US1] Add route unit tests for POST /api/asca/chat returning text/plain streamed chunks and using ASCA_MODEL in tests/unit/asca-chat-route.test.ts
-- [ ] T010 [P] [US1] Add client unit tests for immediate user message rendering and chunk accumulation into one assistant message in tests/unit/run-asca-chat.test.tsx
-- [ ] T011 [P] [US1] Add authenticated Playwright streaming chat test for partial text before final response in tests/e2e/run-asca.spec.ts
+- [ ] T010 [P] [US1] Add route unit tests for POST /api/asca/chat returning text/plain streamed chunks and using ASCA_MODEL in tests/unit/asca-chat-route.test.ts
+- [ ] T011 [P] [US1] Add client unit tests for immediate user message rendering and chunk accumulation into one assistant message in tests/unit/run-asca-chat.test.tsx
+- [ ] T012 [P] [US1] Add authenticated Playwright streaming chat test for partial text before final response in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T012 [US1] Replace generateText JSON success handling with streamText and toTextStreamResponse in app/api/asca/chat/route.ts
-- [ ] T013 [US1] Preserve authenticated request validation, demo thread validation, empty prompt rejection, and sanitized JSON pre-stream errors in lib/asca-chat.ts and app/api/asca/chat/route.ts
-- [ ] T014 [US1] Implement client fetch stream reading with TextDecoder chunk accumulation into one assistant ChatMessage in app/run/run-asca-chat.tsx
-- [ ] T015 [US1] Render streaming assistant content through existing markdown/copy message components in components/run-asca/chat-message.tsx and components/ui/markdown.tsx
-- [ ] T016 [US1] Verify User Story 1 tests fail first and then pass in tests/unit/asca-chat-route.test.ts, tests/unit/run-asca-chat.test.tsx, and tests/e2e/run-asca.spec.ts
+- [ ] T013 [US1] Replace generateText JSON success handling with streamText and toTextStreamResponse in app/api/asca/chat/route.ts
+- [ ] T014 [US1] Preserve authenticated request validation, demo thread validation, empty prompt rejection, and sanitized JSON pre-stream errors in lib/asca-chat.ts and app/api/asca/chat/route.ts
+- [ ] T015 [US1] Implement client fetch stream reading with TextDecoder chunk accumulation into one assistant ChatMessage in app/run/run-asca-chat.tsx
+- [ ] T016 [US1] Render streaming assistant content through existing markdown/copy message components in components/run-asca/chat-message.tsx and components/ui/markdown.tsx
+- [ ] T017 [US1] Verify User Story 1 tests fail first and then pass in tests/unit/asca-chat-route.test.ts, tests/unit/run-asca-chat.test.tsx, and tests/e2e/run-asca.spec.ts
 
 **Checkpoint**: User Story 1 is independently functional and testable as the MVP.
 
@@ -74,17 +75,17 @@
 
 ### Tests for User Story 2 (MANDATORY - write before implementation)
 
-- [ ] T017 [P] [US2] Add client unit tests for waiting-for-first-text processing state, streaming status, completion transition, and duplicate submit prevention in tests/unit/run-asca-chat.test.tsx
-- [ ] T018 [P] [US2] Add accessibility assertions for status/error semantics and prompt/send disabled states in tests/unit/run-asca-chat.test.tsx
-- [ ] T019 [P] [US2] Add Playwright assertions for processing state, in-progress marker removal, anchored prompt, and no duplicate route calls in tests/e2e/run-asca.spec.ts
+- [ ] T018 [P] [US2] Add client unit tests for waiting-for-first-text processing state, streaming status, completion transition, and duplicate submit prevention in tests/unit/run-asca-chat.test.tsx
+- [ ] T019 [P] [US2] Add accessibility assertions for status/error semantics and prompt/send disabled states in tests/unit/run-asca-chat.test.tsx
+- [ ] T020 [P] [US2] Add Playwright assertions for processing state, in-progress marker removal, anchored prompt, and no duplicate route calls in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T020 [US2] Add waiting-for-first-text, streaming, complete, and disabled-submit state transitions in app/run/run-asca-chat.tsx
-- [ ] T021 [US2] Show the existing A.S.C.A. is thinking... processing state before first text and an in-progress marker during partial content in components/run-asca/conversation-panel.tsx and components/run-asca/chat-message.tsx
-- [ ] T022 [US2] Disable prompt input and send action while streaming while preserving accessible labels in app/run/run-asca-chat.tsx and components/ui/prompt-input.tsx
-- [ ] T023 [US2] Preserve copy-current-visible-text behavior for streaming and complete assistant messages in components/run-asca/chat-message.tsx
-- [ ] T024 [US2] Verify User Story 2 tests fail first and then pass in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts
+- [ ] T021 [US2] Add waiting-for-first-text, streaming, complete, and disabled-submit state transitions in app/run/run-asca-chat.tsx
+- [ ] T022 [US2] Show the existing A.S.C.A. is thinking... processing state before first text and an in-progress marker during partial content in components/run-asca/conversation-panel.tsx and components/run-asca/chat-message.tsx
+- [ ] T023 [US2] Disable prompt input and send action while streaming while preserving accessible labels in app/run/run-asca-chat.tsx and components/ui/prompt-input.tsx
+- [ ] T024 [US2] Preserve copy-current-visible-text behavior for streaming and complete assistant messages in components/run-asca/chat-message.tsx
+- [ ] T025 [US2] Verify User Story 2 tests fail first and then pass in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
@@ -98,18 +99,18 @@
 
 ### Tests for User Story 3 (MANDATORY - write before implementation)
 
-- [ ] T025 [P] [US3] Add route unit tests for malformed JSON, empty prompt, unsupported thread, signed-out session, missing ASCA_MODEL, and provider startup errors in tests/unit/asca-chat-route.test.ts
-- [ ] T026 [P] [US3] Add client unit tests for non-OK JSON errors before stream text, stream read errors after partial text, incomplete status, and follow-up submission in tests/unit/run-asca-chat.test.tsx
-- [ ] T027 [P] [US3] Add Playwright interrupted stream scenario covering partial text preservation, incomplete marking, and follow-up prompt submission in tests/e2e/run-asca.spec.ts
+- [ ] T026 [P] [US3] Add route unit tests for malformed JSON, empty prompt, unsupported thread, signed-out session, missing ASCA_MODEL, and provider startup errors in tests/unit/asca-chat-route.test.ts
+- [ ] T027 [P] [US3] Add client unit tests for non-OK JSON errors before stream text, stream read errors after partial text, incomplete status, and follow-up submission in tests/unit/run-asca-chat.test.tsx
+- [ ] T028 [P] [US3] Add Playwright interrupted stream scenario covering partial text preservation, incomplete marking, and follow-up prompt submission in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T028 [US3] Map pre-stream route failures to sanitized JSON error payloads without provider internals in lib/asca-chat.ts and app/api/asca/chat/route.ts
-- [ ] T029 [US3] Handle fetch rejection, non-OK JSON errors, missing response body, and stream read errors in app/run/run-asca-chat.tsx
-- [ ] T030 [US3] Preserve partial assistant content and mark the assistant message incomplete when stream reading fails after text in app/run/run-asca-chat.tsx and components/run-asca/chat-message.tsx
-- [ ] T031 [US3] Show user-facing error copy for failed-before-text and failed-after-partial-text states in components/run-asca/conversation-panel.tsx
-- [ ] T032 [US3] Re-enable prompt input and send action after stream completion or failure in app/run/run-asca-chat.tsx
-- [ ] T033 [US3] Verify User Story 3 tests fail first and then pass in tests/unit/asca-chat-route.test.ts, tests/unit/run-asca-chat.test.tsx, and tests/e2e/run-asca.spec.ts
+- [ ] T029 [US3] Map pre-stream route failures to sanitized JSON error payloads without provider internals in lib/asca-chat.ts and app/api/asca/chat/route.ts
+- [ ] T030 [US3] Handle fetch rejection, non-OK JSON errors, missing response body, and stream read errors in app/run/run-asca-chat.tsx
+- [ ] T031 [US3] Preserve partial assistant content and mark the assistant message incomplete when stream reading fails after text in app/run/run-asca-chat.tsx and components/run-asca/chat-message.tsx
+- [ ] T032 [US3] Show user-facing error copy for failed-before-text and failed-after-partial-text states in components/run-asca/conversation-panel.tsx
+- [ ] T033 [US3] Re-enable prompt input and send action after stream completion or failure in app/run/run-asca-chat.tsx
+- [ ] T034 [US3] Verify User Story 3 tests fail first and then pass in tests/unit/asca-chat-route.test.ts, tests/unit/run-asca-chat.test.tsx, and tests/e2e/run-asca.spec.ts
 
 **Checkpoint**: All user stories are independently functional.
 
@@ -119,15 +120,15 @@
 
 **Purpose**: Validate scroll behavior, formatting, coverage, and production readiness across all stories.
 
-- [ ] T034 [P] Add or update tests for user-at-bottom auto-follow, user-scrolled-away no-jump behavior, return-to-latest control, and long streamed content in tests/unit/run-asca-chat.test.tsx
-- [ ] T035 [P] Add or update Playwright checks for independent message scrolling, disabled page scroll, anchored prompt, and return-to-latest control in tests/e2e/run-asca.spec.ts
-- [ ] T036 [P] Verify partial markdown remains readable while streaming and after completion in components/ui/markdown.tsx and tests/unit/run-asca-chat.test.tsx
-- [ ] T037 Run npm run lint and fix any reported issues in app/api/asca/chat/route.ts, app/run/run-asca-chat.tsx, components/run-asca/, lib/asca-chat.ts, tests/unit/, and tests/e2e/
-- [ ] T038 Run npm run format and keep formatting changes scoped to app/api/asca/chat/route.ts, app/run/run-asca-chat.tsx, components/run-asca/, lib/asca-chat.ts, tests/unit/, and tests/e2e/
-- [ ] T039 Run npm run typecheck and resolve all TypeScript errors in app/api/asca/chat/route.ts, app/run/run-asca-chat.tsx, components/run-asca/types.ts, and lib/asca-chat.ts
-- [ ] T040 Run npm run test and npm run test:coverage, then confirm changed streaming behavior maintains at least 80% coverage in tests/unit/
-- [ ] T041 Run npm run test:e2e and verify authenticated streaming chat, interrupted stream, and layout guarantees in tests/e2e/run-asca.spec.ts
-- [ ] T042 Run npm run build and resolve any production build issues in app/api/asca/chat/route.ts, app/run/page.tsx, and app/run/run-asca-chat.tsx
+- [ ] T035 [P] Add or update tests for user-at-bottom auto-follow, user-scrolled-away no-jump behavior, return-to-latest control, and long streamed content in tests/unit/run-asca-chat.test.tsx
+- [ ] T036 [P] Add or update Playwright checks for independent message scrolling, disabled page scroll, anchored prompt, and return-to-latest control in tests/e2e/run-asca.spec.ts
+- [ ] T037 [P] Verify partial markdown remains readable while streaming and after completion in components/ui/markdown.tsx and tests/unit/run-asca-chat.test.tsx
+- [ ] T038 Run npm run lint and fix any reported issues in app/api/asca/chat/route.ts, app/run/run-asca-chat.tsx, components/run-asca/, lib/asca-chat.ts, tests/unit/, and tests/e2e/
+- [ ] T039 Run npm run format and keep formatting changes scoped to app/api/asca/chat/route.ts, app/run/run-asca-chat.tsx, components/run-asca/, lib/asca-chat.ts, tests/unit/, and tests/e2e/
+- [ ] T040 Run npm run typecheck and resolve all TypeScript errors in app/api/asca/chat/route.ts, app/run/run-asca-chat.tsx, components/run-asca/types.ts, and lib/asca-chat.ts
+- [ ] T041 Run npm run test and npm run test:coverage, then confirm changed streaming behavior maintains at least 80% coverage in tests/unit/
+- [ ] T042 Run npm run test:e2e and verify authenticated streaming chat, interrupted stream, and layout guarantees in tests/e2e/run-asca.spec.ts
+- [ ] T043 Run npm run build and resolve any production build issues in app/api/asca/chat/route.ts, app/run/page.tsx, and app/run/run-asca-chat.tsx
 
 ---
 
@@ -157,11 +158,11 @@
 ### Parallel Opportunities
 
 - T002, T003, and T004 can run in parallel after T001 starts.
-- T007 and T008 can run in parallel after T005 and T006 are understood.
-- US1 test tasks T009, T010, and T011 can run in parallel.
-- US2 test tasks T017, T018, and T019 can run in parallel.
-- US3 test tasks T025, T026, and T027 can run in parallel.
-- Polish tests T034, T035, and T036 can run in parallel after US1-US3 implementation.
+- T008 and T009 can run in parallel after T005 and T006 are understood.
+- US1 test tasks T010, T011, and T012 can run in parallel.
+- US2 test tasks T018, T019, and T020 can run in parallel.
+- US3 test tasks T026, T027, and T028 can run in parallel.
+- Polish tests T035, T036, and T037 can run in parallel after US1-US3 implementation.
 
 ---
 
@@ -169,27 +170,27 @@
 
 ```bash
 # Launch all US1 tests together:
-Task: "T009 [P] [US1] Add route unit tests for POST /api/asca/chat returning text/plain streamed chunks and using ASCA_MODEL in tests/unit/asca-chat-route.test.ts"
-Task: "T010 [P] [US1] Add client unit tests for immediate user message rendering and chunk accumulation into one assistant message in tests/unit/run-asca-chat.test.tsx"
-Task: "T011 [P] [US1] Add authenticated Playwright streaming chat test for partial text before final response in tests/e2e/run-asca.spec.ts"
+Task: "T010 [P] [US1] Add route unit tests for POST /api/asca/chat returning text/plain streamed chunks and using ASCA_MODEL in tests/unit/asca-chat-route.test.ts"
+Task: "T011 [P] [US1] Add client unit tests for immediate user message rendering and chunk accumulation into one assistant message in tests/unit/run-asca-chat.test.tsx"
+Task: "T012 [P] [US1] Add authenticated Playwright streaming chat test for partial text before final response in tests/e2e/run-asca.spec.ts"
 ```
 
 ## Parallel Example: User Story 2
 
 ```bash
 # Launch all US2 tests together:
-Task: "T017 [P] [US2] Add client unit tests for waiting-for-first-text processing state, streaming status, completion transition, and duplicate submit prevention in tests/unit/run-asca-chat.test.tsx"
-Task: "T018 [P] [US2] Add accessibility assertions for status/error semantics and prompt/send disabled states in tests/unit/run-asca-chat.test.tsx"
-Task: "T019 [P] [US2] Add Playwright assertions for processing state, in-progress marker removal, anchored prompt, and no duplicate route calls in tests/e2e/run-asca.spec.ts"
+Task: "T018 [P] [US2] Add client unit tests for waiting-for-first-text processing state, streaming status, completion transition, and duplicate submit prevention in tests/unit/run-asca-chat.test.tsx"
+Task: "T019 [P] [US2] Add accessibility assertions for status/error semantics and prompt/send disabled states in tests/unit/run-asca-chat.test.tsx"
+Task: "T020 [P] [US2] Add Playwright assertions for processing state, in-progress marker removal, anchored prompt, and no duplicate route calls in tests/e2e/run-asca.spec.ts"
 ```
 
 ## Parallel Example: User Story 3
 
 ```bash
 # Launch all US3 tests together:
-Task: "T025 [P] [US3] Add route unit tests for malformed JSON, empty prompt, unsupported thread, signed-out session, missing ASCA_MODEL, and provider startup errors in tests/unit/asca-chat-route.test.ts"
-Task: "T026 [P] [US3] Add client unit tests for non-OK JSON errors before stream text, stream read errors after partial text, incomplete status, and follow-up submission in tests/unit/run-asca-chat.test.tsx"
-Task: "T027 [P] [US3] Add Playwright interrupted stream scenario covering partial text preservation, incomplete marking, and follow-up prompt submission in tests/e2e/run-asca.spec.ts"
+Task: "T026 [P] [US3] Add route unit tests for malformed JSON, empty prompt, unsupported thread, signed-out session, missing ASCA_MODEL, and provider startup errors in tests/unit/asca-chat-route.test.ts"
+Task: "T027 [P] [US3] Add client unit tests for non-OK JSON errors before stream text, stream read errors after partial text, incomplete status, and follow-up submission in tests/unit/run-asca-chat.test.tsx"
+Task: "T028 [P] [US3] Add Playwright interrupted stream scenario covering partial text preservation, incomplete marking, and follow-up prompt submission in tests/e2e/run-asca.spec.ts"
 ```
 
 ---
