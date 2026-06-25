@@ -12,7 +12,7 @@ import {
   PromptInputTextarea,
 } from "@/components/ui/prompt-input"
 import { ScrollButton } from "@/components/ui/scroll-button"
-import { TextShimmer } from "@/components/ui/text-shimmer"
+import { GradientText } from "@/components/animate-ui/primitives/texts/gradient"
 
 /**
  * Props for the Run A.S.C.A. conversation panel.
@@ -67,16 +67,6 @@ export function ConversationPanel({
                       <ChatMessage key={message.id} message={message} />
                     ))
                   )}
-                  {isSubmitting ? (
-                    <TextShimmer
-                      duration={2}
-                      spread={10}
-                      className="text-sm"
-                      role="status"
-                    >
-                      A.S.C.A. is thinking...
-                    </TextShimmer>
-                  ) : null}
                 </div>
               </div>
               <ScrollButton
@@ -97,6 +87,13 @@ export function ConversationPanel({
               {errorMessage}
             </p>
           ) : null}
+          <GradientText
+            neon
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            className="text-sm mb-2 font-medium"
+            role="status"
+            text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
+          />
           <PromptInput
             value={prompt}
             onValueChange={onPromptChange}

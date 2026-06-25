@@ -11,6 +11,7 @@ import {
   MessageAvatar,
   MessageContent,
 } from "@/components/ui/message"
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 type CopyState = "idle" | "copied" | "failed"
@@ -84,7 +85,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
         <MessageContent
           markdown={message.role === "assistant"}
           className={cn(
-            "max-w-full rounded-lg px-3 py-2 leading-6 break-words whitespace-pre-wrap",
+            "max-w-full rounded-lg px-3 py-2 leading-6 break-words whitespace-pre-wrap text-sm",
             message.role === "user"
               ? "prose-invert bg-primary text-primary-foreground"
               : "bg-transparent p-0"
@@ -99,19 +100,24 @@ export function ChatMessage({ message }: ChatMessageProps) {
             message.role === "user" && "justify-end"
           )}
         >
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-xs"
-            aria-label={`Copy ${sender} message`}
-            onClick={handleCopy}
-          >
-            {copyState === "copied" ? (
-              <Check className="size-3" />
-            ) : (
-              <Copy className="size-3" />
-            )}
-          </Button>
+          <Tooltip>
+            <TooltipTrigger render={
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-xs"
+                aria-label={`Copy ${sender} message`}
+                onClick={handleCopy}
+              >
+                {copyState === "copied" ? (
+                  <Check className="size-3" />
+                ) : (
+                  <Copy className="size-3" />
+                )}
+              </Button>
+            } />
+            <TooltipContent side="bottom">Copy</TooltipContent>
+          </Tooltip>
           <span aria-live="polite">
             {copyState === "copied"
               ? "Copied"
