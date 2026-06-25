@@ -83,7 +83,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             "max-w-full rounded-lg px-3 py-2 leading-6 break-words whitespace-pre-wrap",
             message.role === "user"
               ? "prose-invert bg-primary text-primary-foreground"
-              : "bg-secondary text-secondary-foreground"
+              : "bg-transparent p-0"
           )}
         >
           {message.content}

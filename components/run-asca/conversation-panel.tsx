@@ -12,6 +12,7 @@ import {
   PromptInputTextarea,
 } from "@/components/ui/prompt-input"
 import { ScrollButton } from "@/components/ui/scroll-button"
+import { TextShimmer } from "@/components/ui/text-shimmer"
 
 /**
  * Props for the Run A.S.C.A. conversation panel.
@@ -67,12 +68,9 @@ export function ConversationPanel({
                     ))
                   )}
                   {isSubmitting ? (
-                    <div
-                      className="text-sm font-medium text-muted-foreground"
-                      role="status"
-                    >
+                    <TextShimmer duration={2} spread={10} className="text-sm">
                       A.S.C.A. is thinking...
-                    </div>
+                    </TextShimmer>
                   ) : null}
                 </div>
               </div>
