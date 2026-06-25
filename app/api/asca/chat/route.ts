@@ -1,14 +1,12 @@
 import { openai } from "@ai-sdk/openai"
-import { generateText } from "ai"
+import { convertToModelMessages, streamText } from "ai"
 
 import {
   createAscaChatErrorResponse,
-  createAscaChatResponse,
   createAscaUnavailableResponse,
   getAscaModelId,
   parseAscaChatRequest,
   readRequestJson,
-  toProviderMessages,
 } from "@/lib/asca-chat"
 import { getCurrentUserSession } from "@/lib/auth-session"
 
@@ -39,17 +37,15 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   try {
-    const result = await generateText({
+    const result = streamText({
       model: openai(modelId),
-      messages: toProviderMessages(parsed.request.messages),
+      messages: await convertToModelMessages(parsed.request.messages),
+      abortSignal: request.signal,
     })
-    const text = result.text.trim()
 
-    if (!text) {
-      return createAscaUnavailableResponse()
-    }
-
-    return createAscaChatResponse(text, modelId)
+    return result.toUIMessageStreamResponse({
+      originalMessages: parsed.request.messages,
+    })
   } catch {
     return createAscaUnavailableResponse()
   }

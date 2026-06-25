@@ -73,7 +73,11 @@ export function ChatMessage({ message }: ChatMessageProps) {
           {message.status === "error" ? (
             <span className="inline-flex items-center gap-1 text-destructive">
               <AlertCircle className="size-3" />
-              Failed
+              Incomplete
+            </span>
+          ) : message.status === "streaming" ? (
+            <span className="text-muted-foreground" role="status">
+              Streaming
             </span>
           ) : null}
         </div>
@@ -85,6 +89,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
               ? "prose-invert bg-primary text-primary-foreground"
               : "bg-transparent p-0"
           )}
+          data-testid={`message-${message.role}-${message.status}`}
         >
           {message.content}
         </MessageContent>

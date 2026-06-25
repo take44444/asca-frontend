@@ -11,7 +11,7 @@ export type ChatRole = "user" | "assistant"
 /**
  * Lifecycle state for a locally rendered chat message.
  */
-export type ChatMessageStatus = "complete" | "pending" | "error"
+export type ChatMessageStatus = "complete" | "streaming" | "error"
 
 /**
  * Temporary clipboard feedback state for an individual message.
@@ -47,16 +47,35 @@ export type PromptSubmission = {
   threadId: ThreadId
   input: string
   trimmedInput: string
-  state: "idle" | "submitting" | "succeeded" | "failed"
+  state: "idle" | "streaming" | "succeeded" | "failed"
   errorMessage: string | null
 }
 
 /**
- * Text-only message shape accepted by the chat Route Handler.
+ * Lifecycle state for one streamed A.S.C.A. assistant response.
  */
-export type AscaChatMessageInput = {
-  role: ChatRole
-  content: string
+export type StreamingAscaResponseState =
+  | "waiting-for-first-text"
+  | "streaming"
+  | "complete"
+  | "failed"
+
+/**
+ * Timing category for a stream failure relative to visible text chunks.
+ */
+export type StreamingAscaFailureTiming =
+  | "before-first-text"
+  | "after-partial-text"
+  | "none"
+
+/**
+ * Runtime accumulator for the active streamed assistant response.
+ */
+export type StreamingAscaResponse = {
+  messageId: string
+  currentText: string
+  state: StreamingAscaResponseState
+  failureTiming: StreamingAscaFailureTiming
 }
 
 /**
@@ -64,18 +83,14 @@ export type AscaChatMessageInput = {
  */
 export type AscaChatRequest = {
   threadId: ThreadId
-  messages: AscaChatMessageInput[]
+  messages: UIMessage[]
 }
 
 /**
  * Successful response payload from POST /api/asca/chat.
  */
-export type AscaChatResponse = {
-  message: {
-    role: "assistant"
-    content: string
-  }
-  model: string
+export type AscaChatStreamResponse = {
+  contentType: "text/plain; charset=utf-8"
 }
 
 /**
@@ -95,3 +110,4 @@ export type AscaChatErrorPayload = {
     message: string
   }
 }
+import type { UIMessage } from "ai"

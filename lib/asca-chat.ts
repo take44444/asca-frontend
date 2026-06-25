@@ -1,9 +1,9 @@
+import type { UIMessage } from "ai"
+
 import type {
   AscaChatErrorCode,
   AscaChatErrorPayload,
-  AscaChatMessageInput,
   AscaChatRequest,
-  AscaChatResponse,
 } from "@/components/run-asca/types"
 
 type ParseResult =
@@ -22,8 +22,16 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
 }
 
-function isValidRole(value: unknown): value is AscaChatMessageInput["role"] {
-  return value === "user" || value === "assistant"
+function isValidRole(value: unknown): value is UIMessage["role"] {
+  return value === "user" || value === "assistant" || value === "system"
+}
+
+function getMessageText(message: UIMessage): string {
+  return message.parts
+    .filter((part) => part.type === "text")
+    .map((part) => part.text)
+    .join("")
+    .trim()
 }
 
 /**
@@ -55,29 +63,32 @@ export function parseAscaChatRequest(body: unknown): ParseResult {
     return { ok: false, message: "Enter a prompt before sending." }
   }
 
-  const messages: AscaChatMessageInput[] = []
+  const messages: UIMessage[] = []
 
   for (const message of body.messages) {
     if (!isRecord(message) || !isValidRole(message.role)) {
       return { ok: false, message: "Enter a prompt before sending." }
     }
 
-    if (typeof message.content !== "string") {
+    if (typeof message.id !== "string" || !Array.isArray(message.parts)) {
       return { ok: false, message: "Enter a prompt before sending." }
     }
 
-    const content = message.content.trim()
-    if (!content) {
+    const normalizedMessage = message as unknown as UIMessage
+    const content = getMessageText(normalizedMessage)
+
+    if (!content && message.role === "user") {
       return { ok: false, message: "Enter a prompt before sending." }
     }
 
-    messages.push({
-      role: message.role,
-      content,
-    })
+    messages.push(normalizedMessage)
   }
 
-  if (!messages.some((message) => message.role === "user")) {
+  if (
+    !messages.some(
+      (message) => message.role === "user" && getMessageText(message)
+    )
+  ) {
     return { ok: false, message: "Enter a prompt before sending." }
   }
 
@@ -96,36 +107,6 @@ export function parseAscaChatRequest(body: unknown): ParseResult {
 export function getAscaModelId(): string | null {
   const model = process.env.ASCA_MODEL?.trim()
   return model ? model : null
-}
-
-/**
- * Converts client chat messages into the text-only format sent to AI SDK.
- */
-export function toProviderMessages(
-  messages: AscaChatMessageInput[]
-): AscaChatMessageInput[] {
-  return messages.map((message) => ({
-    role: message.role,
-    content: message.content,
-  }))
-}
-
-/**
- * Creates a typed JSON success response for a generated assistant message.
- */
-export function createAscaChatResponse(
-  content: string,
-  model: string
-): Response {
-  const payload: AscaChatResponse = {
-    message: {
-      role: "assistant",
-      content,
-    },
-    model,
-  }
-
-  return Response.json(payload)
 }
 
 /**
