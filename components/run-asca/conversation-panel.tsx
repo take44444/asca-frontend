@@ -1,6 +1,5 @@
 "use client"
 
-import { Send } from "lucide-react"
 import { StickToBottom } from "use-stick-to-bottom"
 
 import { ChatMessage } from "@/components/run-asca/chat-message"
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/prompt-input"
 import { ScrollButton } from "@/components/ui/scroll-button"
 import { GradientText } from "@/components/animate-ui/primitives/texts/gradient"
+import { SendIcon } from "@/components/icons/lucide-send"
 
 /**
  * Props for the Run A.S.C.A. conversation panel.
@@ -40,10 +40,12 @@ export function ConversationPanel({
   return (
     <section className="flex min-h-0 flex-1 flex-col" aria-label="Conversation">
       <header className="shrink-0 border-b border-border px-4 py-3">
-        <p className="text-xs font-medium text-muted-foreground">
+        <h1 className="text-lg font-semibold text-foreground">
           {thread.title}
+        </h1>
+        <p className="text-xs font-medium text-muted-foreground">
+          {thread.messages.length} messages
         </p>
-        <h1 className="text-xl font-semibold tracking-normal">Run A.S.C.A.</h1>
       </header>
       <div className="relative min-h-0 flex-1">
         <StickToBottom className="h-full" resize="smooth" initial="instant">
@@ -77,7 +79,7 @@ export function ConversationPanel({
           )}
         </StickToBottom>
       </div>
-      <div className="shrink-0 border-t border-border bg-background p-3">
+      <div className="shrink-0 bg-background p-3">
         <div className="mx-auto w-full max-w-4xl">
           {errorMessage ? (
             <p
@@ -115,12 +117,12 @@ export function ConversationPanel({
                 disabled={isSubmitting || prompt.trim().length === 0}
                 onClick={onSubmit}
               >
-                <Send className="size-4" />
+                <SendIcon />
               </Button>
             </PromptInputActions>
           </PromptInput>
         </div>
       </div>
-    </section>
+    </section >
   )
 }
