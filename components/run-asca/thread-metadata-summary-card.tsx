@@ -4,7 +4,7 @@ import { BrainCircuitIcon } from "@/components/icons/lucide-brain-circuit"
 import { PackageCheckIcon } from "@/components/icons/lucide-package-check"
 import { ChartSplineIcon } from "@/components/icons/lucide-chart-spline"
 import { ListTodoIcon } from "@/components/icons/lucide-list-todo"
-import type { ReactNode } from "react"
+import { useSyncExternalStore, type ReactNode } from "react"
 
 import type { ThreadMetadataSummary } from "@/components/run-asca/types"
 import {
@@ -33,6 +33,31 @@ const toneClasses: Record<ThreadMetadataSummary["tone"], string> = {
     "border-amber-200 bg-amber-50/80 text-amber-950 dark:border-amber-900/90 dark:bg-amber-950/30 dark:text-amber-100",
 }
 
+function useIsSmViewport(smBreakpointQuery: string): boolean {
+  return useSyncExternalStore(
+    (notify) => {
+      if (!window.matchMedia) {
+        return () => { }
+      }
+
+      const mediaQuery = window.matchMedia(smBreakpointQuery)
+      mediaQuery.addEventListener("change", notify)
+
+      return () => {
+        mediaQuery.removeEventListener("change", notify)
+      }
+    },
+    () => {
+      if (!window.matchMedia) {
+        return true
+      }
+
+      return window.matchMedia(smBreakpointQuery).matches
+    },
+    () => false
+  )
+}
+
 /**
  * Props for one Run A.S.C.A. thread metadata summary.
  */
@@ -49,6 +74,7 @@ export function ThreadMetadataSummaryCard({
   children,
 }: ThreadMetadataSummaryCardProps) {
   const Icon = iconBySummaryId[summary.id]
+  const shouldRenderContent = useIsSmViewport("(min-width: 768px)")
 
   return (
     <Card
@@ -73,16 +99,18 @@ export function ThreadMetadataSummaryCard({
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="min-w-0">
-        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium text-current/75">
-          {summary.supportingDetails.map((detail) => (
-            <span key={detail} className="max-w-full truncate">
-              {detail}
-            </span>
-          ))}
-        </div>
-        {children}
-      </CardContent>
+      {shouldRenderContent ? (
+        <CardContent className="min-w-0">
+          <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium text-current/75">
+            {summary.supportingDetails.map((detail) => (
+              <span key={detail} className="max-w-full truncate">
+                {detail}
+              </span>
+            ))}
+          </div>
+          {children}
+        </CardContent>
+      ) : null}
     </Card>
   )
 }

@@ -272,7 +272,7 @@ export function RunAscaChat({
         <h1 className="sr-only">Run A.S.C.A.</h1>
         <section
           aria-label="Thread metadata"
-          className="grid shrink-0 grid-cols-2 gap-2 md:grid-cols-4"
+          className="grid shrink-0 grid-cols-4 gap-2"
         >
           {demoThreadMetadataSummaries.map((summary) => (
             <ThreadMetadataSummaryCard key={summary.id} summary={summary}>

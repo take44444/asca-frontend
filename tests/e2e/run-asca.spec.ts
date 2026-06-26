@@ -221,6 +221,7 @@ test.describe("Run A.S.C.A.", () => {
     context,
   }) => {
     await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 800 })
 
     await page.goto("/run")
     await page
