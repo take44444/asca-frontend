@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export function ListTodoIcon({
   size = 24,
@@ -7,9 +7,9 @@ export function ListTodoIcon({
   className,
   ...props
 }: React.SVGProps<SVGSVGElement> & {
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
+  size?: number
+  color?: string
+  strokeWidth?: number
 }) {
   return (
     <svg
@@ -25,7 +25,8 @@ export function ListTodoIcon({
       className={className}
       {...props}
     >
-      <path d="M13 5h8m-8 7h8m-8 7h8M3 17l2 2l4-4"/><rect width="6" height="6" x="3" y="4" rx="1"/>
+      <path d="M13 5h8m-8 7h8m-8 7h8M3 17l2 2l4-4" />
+      <rect width="6" height="6" x="3" y="4" rx="1" />
     </svg>
-  );
+  )
 }

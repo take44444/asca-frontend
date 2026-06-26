@@ -31,7 +31,7 @@ export function AppHeader({ className, session }: AppHeaderProps) {
         className
       )}
     >
-      <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-3 sm:grid-cols-[1fr_auto_1fr] sm:px-6">
+      <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-3 md:grid-cols-[1fr_auto_1fr] md:px-6">
         <div className="flex min-w-0 items-center gap-2">
           <MobileHeaderNav />
           <Link
@@ -42,7 +42,7 @@ export function AppHeader({ className, session }: AppHeaderProps) {
           </Link>
         </div>
 
-        <HeaderNav className="hidden sm:flex" />
+        <HeaderNav className="hidden md:flex" />
 
         <div className="flex min-w-0 items-center justify-end gap-1.5">
           <ASCARepositoryLink />

@@ -48,7 +48,12 @@ type HeaderNavLinkProps = {
 
 function HeaderNavLink({ item, isActive, shine }: HeaderNavLinkProps) {
   return (
-    <Shine enable={shine} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} loop={true} asChild>
+    <Shine
+      enable={shine}
+      shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+      loop={true}
+      asChild
+    >
       <Link
         href={item.href}
         aria-current={isActive ? "page" : undefined}
@@ -100,7 +105,7 @@ export function MobileHeaderNav() {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <div className="relative sm:hidden">
+    <div className="relative md:hidden">
       <Button
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
@@ -230,7 +235,7 @@ export function HeaderAuthControl({ session }: HeaderAuthControlProps) {
             variant="outline"
             size="lg"
             aria-label={`Account menu for ${user.name}`}
-            className="max-w-[12rem] gap-2 px-2 sm:max-w-[16rem]"
+            className="max-w-[12rem] gap-2 px-0 md:max-w-[16rem] md:px-2"
           >
             <Avatar aria-label={user.name} size="default">
               <ShineBorder
@@ -244,7 +249,7 @@ export function HeaderAuthControl({ session }: HeaderAuthControlProps) {
                 <AvatarFallback>{fallback}</AvatarFallback>
               )}
             </Avatar>
-            <span className="hidden min-w-0 flex-col items-start text-left leading-tight sm:flex">
+            <span className="hidden min-w-0 flex-col items-start text-left leading-tight md:flex">
               <span className="max-w-28 truncate text-xs font-medium text-foreground">
                 {user.name}
               </span>

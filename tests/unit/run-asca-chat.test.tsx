@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from "@testing-library/react"
+import { act, render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   ReadableStream,
@@ -354,11 +354,142 @@ describe("RunAscaChat", () => {
       screen.getByRole("button", { name: /Demonstration Thread/ })
     ).toHaveAttribute("aria-current", "page")
     expect(
-      screen.getByRole("button", { name: "Create New Thread unavailable" })
+      screen.getByRole("button", { name: "Create New Thread" })
     ).toBeDisabled()
     expect(screen.getAllByText("Demonstration Thread")).toHaveLength(2)
     expect(
       screen.getByRole("complementary", { name: "Run A.S.C.A. threads" })
+    ).toBeVisible()
+  })
+
+  it("renders 20 demonstration thread entries with titles and message counts without fetching threads", () => {
+    render(<RunAscaChat />)
+
+    const threadRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. threads",
+    })
+    const threadButtons = within(threadRegion)
+      .getAllByRole("button")
+      .filter((button) => button.textContent !== "Create New Thread")
+
+    expect(threadButtons).toHaveLength(20)
+    expect(
+      within(threadRegion).getByRole("button", {
+        name: /Demonstration Thread\s+1 message/,
+      })
+    ).toHaveAttribute("aria-current", "page")
+    expect(
+      within(threadRegion).getByRole("button", {
+        name: /Incident response rehearsal\s+3 messages/,
+      })
+    ).toBeVisible()
+    expect(
+      within(threadRegion).getByRole("button", {
+        name: /Long-running research synthesis\s+12 messages/,
+      })
+    ).toBeVisible()
+    expect(global.fetch).not.toHaveBeenCalled()
+  })
+
+  it("keeps the create thread control visible, disabled, and unavailable for activation", () => {
+    render(<RunAscaChat />)
+
+    const createThread = screen.getByRole("button", {
+      name: "Create New Thread",
+    })
+
+    expect(createThread).toBeVisible()
+    expect(createThread).toBeDisabled()
+    expect(createThread.querySelector("svg")).not.toBeNull()
+  })
+
+  it("switches to static demonstration threads and back to the live thread", async () => {
+    const user = userEvent.setup()
+    render(<RunAscaChat />)
+
+    await user.click(
+      screen.getByRole("button", { name: /Incident response rehearsal/ })
+    )
+
+    expect(
+      screen.getByRole("heading", { name: "Incident response rehearsal" })
+    ).toBeVisible()
+    expect(
+      within(screen.getByRole("region", { name: "Conversation" })).getByText(
+        "3 messages"
+      )
+    ).toBeVisible()
+    expect(
+      screen.getByText("Confirm the escalation path and summarize owners.")
+    ).toBeVisible()
+    expect(
+      screen.getByRole("button", { name: /Incident response rehearsal/ })
+    ).toHaveAttribute("aria-current", "page")
+
+    await user.click(
+      screen.getByRole("button", { name: /Demonstration Thread/ })
+    )
+
+    expect(
+      screen.getByRole("heading", { name: "Demonstration Thread" })
+    ).toBeVisible()
+    expect(
+      screen.getByText("Ready for a focused A.S.C.A. demonstration thread.")
+    ).toBeVisible()
+  })
+
+  it("submits prompts with the currently selected thread id", async () => {
+    const user = userEvent.setup()
+    render(<RunAscaChat />)
+
+    await user.click(
+      screen.getByRole("button", { name: /Incident response rehearsal/ })
+    )
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Use this thread")
+    await user.click(screen.getByRole("button", { name: "Send prompt" }))
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled()
+    })
+
+    const [, init] = jest.mocked(global.fetch).mock.calls[0]
+    expect(init?.body).toContain('"threadId":"incident-response-rehearsal"')
+  })
+
+  it("keeps the thread list header fixed while entries scroll independently", () => {
+    render(<RunAscaChat />)
+
+    const threadRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. threads",
+    })
+    const card = within(threadRegion).getByTestId("thread-list-card")
+    const content = card.querySelector("[data-testid='thread-list-scroll']")
+
+    expect(threadRegion).not.toHaveClass("md:border-r", "bg-muted/30")
+    expect(card).toHaveClass("bg-card", "shadow-lg")
+    expect(content).not.toBeNull()
+    expect(content).toHaveClass("min-h-0", "flex-1", "overflow-y-auto")
+    expect(
+      screen.getByRole("button", { name: "Create New Thread" })
+    ).toBeVisible()
+  })
+
+  it("contains long titles and supports zero and multi-digit message counts", () => {
+    render(<RunAscaChat />)
+
+    const threadRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. threads",
+    })
+
+    expect(
+      within(threadRegion).getByRole("button", {
+        name: /Quarterly planning notes with a deliberately long title that stays contained\s+0 messages/,
+      })
+    ).toBeVisible()
+    expect(
+      within(threadRegion).getByRole("button", {
+        name: /Long-running research synthesis\s+12 messages/,
+      })
     ).toBeVisible()
   })
 
@@ -528,7 +659,7 @@ describe("RunAscaChat", () => {
       screen.getByRole("button", { name: "Copy A.S.C.A. message" })
     ).toBeVisible()
     expect(
-      screen.getByRole("button", { name: "Create New Thread unavailable" })
+      screen.getByRole("button", { name: "Create New Thread" })
     ).toBeDisabled()
 
     await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Loading state")
