@@ -30,16 +30,16 @@ export function ThreadList({
     >
       <Card
         size="sm"
-        className="min-h-0 flex-1 rounded-lg border border-border bg-card py-2 shadow-lg"
+        className="min-h-0 flex-1 rounded-lg border border-border bg-card p-2 shadow-lg gap-2"
         data-testid="thread-list-card"
       >
-        <CardHeader className="flex shrink-0 flex-col rounded-t-lg p-3">
-          <div className="flex items-center justify-between gap-3">
+        <CardHeader className="flex shrink-0 flex-col rounded-t-lg p-2 border-b border-border">
+          <div className="w-full flex items-center justify-between">
             <Button
               type="button"
               variant="outline"
-              size="sm"
-              className="w-full justify-start rounded-lg bg-card"
+              size="xl"
+              className="w-full justify-center rounded-lg bg-card"
               disabled
             >
               <MessageSquarePlusIcon className="size-4" aria-hidden="true" />
@@ -53,14 +53,16 @@ export function ThreadList({
         >
           <div className="flex flex-col gap-2">
             {threads.map((thread) => (
-              <button
-                key={thread.id}
+              <Button
                 type="button"
+                variant="outline"
+                size="xl"
+                key={thread.id}
                 className={cn(
-                  "grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border bg-card px-3 py-3 text-left shadow-xs transition-colors",
+                  "grid w-full grid-cols-[minmax(0,1fr)_auto] text-left rounded-lg",
                   thread.id === selectedThreadId
-                    ? "border-primary/35 text-foreground ring-2 ring-primary/10"
-                    : "border-border/80 text-muted-foreground hover:border-primary/25 hover:text-foreground"
+                    ? "border-primary/60 text-foreground ring-2 ring-primary/10"
+                    : "text-muted-foreground"
                 )}
                 aria-current={
                   thread.id === selectedThreadId ? "page" : undefined
@@ -74,7 +76,7 @@ export function ThreadList({
                   {thread.messages.length}{" "}
                   {thread.messages.length === 1 ? "message" : "messages"}
                 </span>
-              </button>
+              </Button>
             ))}
           </div>
         </CardContent>
