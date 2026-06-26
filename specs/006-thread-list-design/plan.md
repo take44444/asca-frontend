@@ -33,7 +33,7 @@ Redesign the existing Run A.S.C.A. left-side thread list into a bounded card-bas
 *GATE: Passes before Phase 0 research. Re-checked after Phase 1 design: passes.*
 
 - **TDD**: Tests are planned before implementation for 20 demo threads, disabled create action, thread selection, selected state, independent thread-list scrolling, and preserved conversation behavior.
-- **Quality Gates**: Implementation must pass `npm run lint`, `npm run typecheck`, `npm run test`, `npm run test:coverage`, `npm run test:e2e`, and `npm run build`; changed behavior must maintain at least 80% coverage.
+- **Quality Gates**: Implementation must pass `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test`, `npm run test:coverage`, `npm run test:e2e`, and `npm run build`; changed behavior must maintain at least 80% coverage.
 - **Type Safety**: Static thread fixtures, updated thread identifiers, and component props must be explicitly typed. No new `any` is permitted. Exported reusable types/functions require docstrings.
 - **Next.js Guidance**: Installed-version docs consulted: `node_modules/next/dist/docs/01-app/01-getting-started/02-project-structure.md`, `node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md`, and `node_modules/next/dist/docs/03-architecture/accessibility.md`.
 - **Frontend Boundary**: No new backend API dependency. Existing `/api/asca/chat` route remains the only backend interaction and continues to receive the selected thread id for chat submissions.

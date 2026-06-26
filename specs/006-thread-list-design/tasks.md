@@ -31,7 +31,7 @@
 **CRITICAL**: No user story implementation should begin until this phase is complete.
 
 - [ ] T004 [P] Expand ThreadId typing and exported documentation for 20 static demonstration ids in components/run-asca/types.ts
-- [ ] T005 [P] Create typed static demonstration thread fixtures with exactly 20 entries in components/run-asca/thread-fixtures.ts
+- [ ] T005 [P] Extend typed static demonstration thread fixtures with exactly 20 entries in components/run-asca/thread-metadata-fixtures.ts
 - [ ] T006 Integrate the fixture builder into app/run/run-asca-chat.tsx so the live demo thread uses current chat messages and the other 19 threads use static messages
 - [ ] T007 Verify `npm run typecheck` fails or passes only because of foundational type changes, and record any required fixes against components/run-asca/types.ts
 
@@ -111,8 +111,8 @@
 
 - [ ] T026 [P] Add edge-case unit coverage for long thread titles, zero-message counts, and multi-digit message counts in tests/unit/run-asca-chat.test.tsx
 - [ ] T027 [P] Add or update responsive non-overlap Playwright checks for thread title, message count, create-thread control, and conversation content in tests/e2e/run-asca.spec.ts
-- [ ] T028 Run `npm run lint` and fix any reported issues in components/run-asca/thread-list.tsx, app/run/run-asca-chat.tsx, and components/run-asca/types.ts
-- [ ] T029 Run `npm run typecheck` and fix any reported issues in components/run-asca/thread-fixtures.ts, components/run-asca/types.ts, and app/run/run-asca-chat.tsx
+- [ ] T028 Run `npm run format` and `npm run lint`, then fix any reported issues in components/run-asca/thread-list.tsx, components/run-asca/thread-metadata-fixtures.ts, app/run/run-asca-chat.tsx, and components/run-asca/types.ts
+- [ ] T029 Run `npm run typecheck` and fix any reported issues in components/run-asca/thread-metadata-fixtures.ts, components/run-asca/types.ts, and app/run/run-asca-chat.tsx
 - [ ] T030 Run `npm run test` and fix any reported regressions in tests/unit/run-asca-chat.test.tsx
 - [ ] T031 Run `npm run test:coverage` and ensure changed behavior maintains at least 80% coverage for tests/unit/run-asca-chat.test.tsx
 - [ ] T032 Run `npm run test:e2e` and fix any reported regressions in tests/e2e/run-asca.spec.ts
