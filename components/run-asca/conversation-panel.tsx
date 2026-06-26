@@ -39,7 +39,7 @@ export function ConversationPanel({
 }: ConversationPanelProps) {
   return (
     <section
-      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-xs"
+      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-lg border border-border bg-background shadow-xs"
       aria-label="Conversation"
     >
       <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 bg-muted/50 px-4 py-3">
