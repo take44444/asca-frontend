@@ -104,7 +104,7 @@
 
 ### Tests for User Story 4 (MANDATORY - write before implementation)
 
-- [ ] T023 [P] [US4] Add unit tests or class assertions for compact metadata presentation preserving symbols and primary counts in tests/unit/run-asca-chat.test.tsx
+- [ ] T023 [P] [US4] Add unit tests that render the compact metadata presentation and assert each summary keeps its accessible category label, symbol text alternative, and primary count visible in tests/unit/run-asca-chat.test.tsx
 - [ ] T024 [P] [US4] Add Playwright responsive checks at 390x844 and 1280x800 for no overlapping metadata, conversation panel, message viewport, and prompt entry in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 4
@@ -121,7 +121,7 @@
 
 **Purpose**: Validate regression coverage, quality gates, and manual quickstart scenarios.
 
-- [ ] T028 [P] Run lint and type checking with `npm run lint` and `npm run typecheck` for app/run/run-asca-chat.tsx, components/run-asca/conversation-panel.tsx, components/run-asca/thread-metadata-summary-card.tsx, components/run-asca/token-usage-trend.tsx, and components/run-asca/types.ts
+- [ ] T028 [P] Run formatting, lint, and type checking with `npm run format`, `npm run lint`, and `npm run typecheck` for app/run/run-asca-chat.tsx, components/run-asca/conversation-panel.tsx, components/run-asca/thread-metadata-summary-card.tsx, components/run-asca/token-usage-trend.tsx, and components/run-asca/types.ts
 - [ ] T029 [P] Run unit tests and coverage with `npm run test` and `npm run test:coverage` for tests/unit/run-asca-chat.test.tsx
 - [ ] T030 [P] Run Playwright tests with `npm run test:e2e` for tests/e2e/run-asca.spec.ts
 - [ ] T031 Run production build with `npm run build` for the Next.js App Router application

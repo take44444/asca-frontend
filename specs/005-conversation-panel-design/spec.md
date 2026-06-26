@@ -106,9 +106,8 @@ As a user on a smaller or larger screen, I want the conversation panel and metad
 - **FR-016**: On smaller screens, the four metadata summaries MUST adapt to a compact presentation that keeps category symbols and primary counts visible.
 - **FR-017**: The conversation panel and metadata summaries MUST remain readable and usable across supported screen sizes without overlapping content.
 - **FR-018**: The feature MUST use mocked or static metadata values for tasks, artifacts, knowledge, and token usage.
-- **FR-019**: The feature MUST NOT fetch live task, artifact, knowledge, or token data as part of this design-focused scope.
-- **FR-020**: No new backend interaction is required for this feature because metadata is mocked or static and existing chat behavior is preserved.
-- **FR-021**: User-facing loading, error, empty, and success states for chat behavior MUST remain at least as visible and usable as they are before this redesign.
+- **FR-019**: The feature MUST NOT add any new backend interaction or fetch live task, artifact, knowledge, or token data because metadata is mocked or static and existing chat behavior is preserved.
+- **FR-020**: User-facing loading, error, empty, and success states for chat behavior MUST remain at least as visible and usable as they are before this redesign.
 
 ### Key Entities
 

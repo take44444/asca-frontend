@@ -66,7 +66,10 @@ components/
 ├── run-asca/
 │   ├── chat-message.tsx
 │   ├── conversation-panel.tsx
+│   ├── thread-metadata-fixtures.ts
+│   ├── thread-metadata-summary-card.tsx
 │   ├── thread-list.tsx
+│   ├── token-usage-trend.tsx
 │   └── types.ts
 └── ui/
     ├── chart.tsx
