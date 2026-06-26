@@ -29,7 +29,7 @@ type PromptInputContextType = {
 const PromptInputContext = createContext<PromptInputContextType>({
   isLoading: false,
   value: "",
-  setValue: () => {},
+  setValue: () => { },
   maxHeight: 240,
   onSubmit: undefined,
   disabled: false,
@@ -93,7 +93,7 @@ function PromptInput({
           onClick={handleClick}
           className={cn(
             "cursor-text rounded-3xl border border-input bg-background p-2 shadow-xs",
-            disabled && "cursor-not-allowed opacity-60",
+            disabled && "cursor-not-allowed",
             className
           )}
           {...props}

@@ -24,13 +24,13 @@ const iconBySummaryId: Record<ThreadMetadataSummary["id"], React.ElementType> = 
 }
 
 const toneClasses: Record<ThreadMetadataSummary["tone"], string> = {
-  sky: "border-sky-200 bg-sky-50/80 text-sky-950 dark:border-sky-900/60 dark:bg-sky-950/20 dark:text-sky-100",
+  sky: "border-sky-200 bg-sky-50/80 text-sky-950 dark:border-sky-900/90 dark:bg-sky-950/30 dark:text-sky-100",
   emerald:
-    "border-emerald-200 bg-emerald-50/80 text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/20 dark:text-emerald-100",
+    "border-emerald-200 bg-emerald-50/80 text-emerald-950 dark:border-emerald-900/90 dark:bg-emerald-950/30 dark:text-emerald-100",
   violet:
-    "border-violet-200 bg-violet-50/80 text-violet-950 dark:border-violet-900/60 dark:bg-violet-950/20 dark:text-violet-100",
+    "border-violet-200 bg-violet-50/80 text-violet-950 dark:border-violet-900/90 dark:bg-violet-950/30 dark:text-violet-100",
   amber:
-    "border-amber-200 bg-amber-50/80 text-amber-950 dark:border-amber-900/60 dark:bg-amber-950/20 dark:text-amber-100",
+    "border-amber-200 bg-amber-50/80 text-amber-950 dark:border-amber-900/90 dark:bg-amber-950/30 dark:text-amber-100",
 }
 
 /**
@@ -60,17 +60,17 @@ export function ThreadMetadataSummaryCard({
         toneClasses[summary.tone]
       )}
     >
-      <CardHeader className="min-w-0 gap-1 rounded-t-lg">
-        <div className="flex min-w-0 items-center gap-6">
+      <CardHeader className="flex min-w-0 items-center gap-4 rounded-t-lg">
+        <div className="p-2 rounded-md bg-primary/10 flex items-center justify-center">
           <Icon className="size-8" aria-hidden="true" />
-          <div className="min-w-0">
-            <CardTitle className="truncate text-xs font-semibold tracking-normal">
-              {summary.label}
-            </CardTitle>
-            <CardDescription className="text-2xl leading-none font-semibold text-current tabular-nums">
-              {summary.primaryValue}
-            </CardDescription>
-          </div>
+        </div>
+        <div className="min-w-0">
+          <CardTitle className="truncate text-xs font-semibold tracking-normal">
+            {summary.label}
+          </CardTitle>
+          <CardDescription className="text-2xl leading-none font-semibold text-current tabular-nums">
+            {summary.primaryValue}
+          </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="min-w-0">

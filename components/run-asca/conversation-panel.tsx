@@ -39,10 +39,10 @@ export function ConversationPanel({
 }: ConversationPanelProps) {
   return (
     <section
-      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm"
+      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-xs"
       aria-label="Conversation"
     >
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/20 px-4 py-3">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 bg-muted/50 px-4 py-3">
         <div className="min-w-0">
           <h1 className="truncate text-lg font-semibold text-foreground">
             {thread.title}
@@ -103,35 +103,38 @@ export function ConversationPanel({
           <GradientText
             neon
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="mb-2 text-sm font-medium"
+            className="mb-2 text-sm font-bold"
             role="status"
             text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
           />
-          <PromptInput
-            value={prompt}
-            onValueChange={onPromptChange}
-            onSubmit={onSubmit}
-            isLoading={isSubmitting}
-            disabled={isSubmitting}
-            className="rounded-lg"
-          >
-            <PromptInputTextarea
-              aria-label="Prompt A.S.C.A."
-              placeholder="Message A.S.C.A."
-              maxLength={4000}
-            />
-            <PromptInputActions className="justify-end">
-              <Button
-                type="button"
-                size="icon-sm"
-                aria-label="Send prompt"
-                disabled={isSubmitting || prompt.trim().length === 0}
-                onClick={onSubmit}
-              >
-                <SendIcon />
-              </Button>
-            </PromptInputActions>
-          </PromptInput>
+          <div className="relative group">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-400 group-hover:duration-400"></div>
+            <PromptInput
+              value={prompt}
+              onValueChange={onPromptChange}
+              onSubmit={onSubmit}
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
+              className="relative rounded-lg"
+            >
+              <PromptInputTextarea
+                aria-label="Prompt A.S.C.A."
+                placeholder="Message A.S.C.A."
+                maxLength={4000}
+              />
+              <PromptInputActions className="justify-end">
+                <Button
+                  type="button"
+                  size="icon-sm"
+                  aria-label="Send prompt"
+                  disabled={isSubmitting || prompt.trim().length === 0}
+                  onClick={onSubmit}
+                >
+                  <SendIcon />
+                </Button>
+              </PromptInputActions>
+            </PromptInput>
+          </div>
         </div>
       </form>
     </section>
