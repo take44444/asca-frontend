@@ -1,9 +1,29 @@
 import type { UIMessage } from "ai"
 
 /**
- * Stable identifier for the only supported demonstration thread.
+ * Stable identifier for one of the supported demonstration threads.
  */
-export type ThreadId = "demo"
+export type ThreadId =
+  | "demo"
+  | "incident-response-rehearsal"
+  | "release-readiness-review"
+  | "knowledge-base-grooming"
+  | "customer-onboarding-draft"
+  | "long-running-research-synthesis"
+  | "quarterly-planning-notes"
+  | "architecture-decision-log"
+  | "agent-evaluation-notes"
+  | "support-ticket-clustering"
+  | "sales-discovery-summary"
+  | "security-review-follow-up"
+  | "documentation-gap-analysis"
+  | "experiment-results-review"
+  | "partner-integration-plan"
+  | "budget-scenario-modeling"
+  | "hiring-scorecard-review"
+  | "design-critique-capture"
+  | "retrospective-action-items"
+  | "thread-list-accessibility-audit"
 
 /**
  * Sender role accepted by the Run A.S.C.A. chat surface and route contract.
@@ -39,6 +59,15 @@ export type Thread = {
   id: ThreadId
   title: string
   isSelected: boolean
+  messages: ChatMessage[]
+}
+
+/**
+ * Static non-live demonstration thread data projected into the thread list.
+ */
+export type StaticDemonstrationThread = {
+  id: Exclude<ThreadId, "demo">
+  title: string
   messages: ChatMessage[]
 }
 

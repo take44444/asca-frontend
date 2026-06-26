@@ -39,7 +39,7 @@ export function ConversationPanel({
 }: ConversationPanelProps) {
   return (
     <section
-      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-lg border border-border bg-background shadow-xs"
+      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-xs"
       aria-label="Conversation"
     >
       <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 bg-muted/50 px-4 py-3">
@@ -48,7 +48,8 @@ export function ConversationPanel({
             {thread.title}
           </h1>
           <p className="text-xs font-medium text-muted-foreground">
-            {thread.messages.length} messages
+            {thread.messages.length}{" "}
+            {thread.messages.length === 1 ? "message" : "messages"}
           </p>
         </div>
       </header>
@@ -107,8 +108,8 @@ export function ConversationPanel({
             role="status"
             text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
           />
-          <div className="relative group">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-400 group-hover:duration-400"></div>
+          <div className="group relative">
+            <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-pink-500 to-purple-500 opacity-30 blur transition duration-400 group-hover:opacity-50 group-hover:duration-400"></div>
             <PromptInput
               value={prompt}
               onValueChange={onPromptChange}

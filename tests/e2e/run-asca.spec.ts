@@ -353,6 +353,139 @@ test.describe("Run A.S.C.A.", () => {
     ).toHaveAttribute("aria-current", "page")
   })
 
+  test("shows the redesigned thread list with 20 accessible entries and a disabled create control", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 800 })
+
+    await page.goto("/run")
+
+    const threadRegion = page.getByRole("complementary", {
+      name: "Run A.S.C.A. threads",
+    })
+    await expect(threadRegion).toBeVisible()
+    await expect(
+      page.getByRole("button", { name: "Create New Thread" })
+    ).toBeDisabled()
+    await expect(threadRegion.getByRole("button")).toHaveCount(21)
+    await expect(
+      page.getByRole("button", { name: /Demonstration Thread\s+1 message/ })
+    ).toHaveAttribute("aria-current", "page")
+    await expect(
+      page.getByRole("button", {
+        name: /Incident response rehearsal\s+3 messages/,
+      })
+    ).toBeVisible()
+  })
+
+  test("switches through static threads and updates the conversation content", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 800 })
+
+    await page.goto("/run")
+
+    for (const thread of [
+      {
+        title: "Incident response rehearsal",
+        message: "Confirm the escalation path and summarize owners.",
+      },
+      {
+        title: "Release readiness review",
+        message: "List blockers by severity before the release window.",
+      },
+      {
+        title: "Knowledge base grooming",
+        message: "Group stale articles by owner and last reviewed date.",
+      },
+      {
+        title: "Customer onboarding draft",
+        message: "Turn the kickoff notes into a first-week checklist.",
+      },
+      {
+        title: "Long-running research synthesis",
+        message: "Research note 12: final recommendation and tradeoffs.",
+      },
+    ]) {
+      await page.getByRole("button", { name: new RegExp(thread.title) }).click()
+      await expect(
+        page.getByRole("heading", { name: thread.title })
+      ).toBeVisible()
+      await expect(page.getByText(thread.message)).toBeVisible()
+      await expect(
+        page.getByRole("button", { name: new RegExp(thread.title) })
+      ).toHaveAttribute("aria-current", "page")
+    }
+  })
+
+  test("scrolls the long thread list independently while the conversation remains visible", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 560 })
+
+    await page.goto("/run")
+
+    const scrollArea = page.getByTestId("thread-list-scroll")
+    const canScroll = await scrollArea.evaluate(
+      (node) => node.scrollHeight > node.clientHeight
+    )
+    expect(canScroll).toBe(true)
+
+    await scrollArea.evaluate((node) => {
+      node.scrollTop = node.scrollHeight
+      node.dispatchEvent(new Event("scroll", { bubbles: true }))
+    })
+
+    await expect(
+      page.getByRole("button", { name: /Thread list accessibility audit/ })
+    ).toBeVisible()
+    await expect(
+      page.getByRole("region", { name: "Conversation" })
+    ).toBeVisible()
+    await expect(page.getByLabel("Prompt A.S.C.A.")).toBeVisible()
+    await expect(page).toHaveURL(/\/run$/)
+  })
+
+  test("keeps thread title, count, create control, and conversation content non-overlapping", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+
+    for (const size of [
+      { width: 390, height: 844 },
+      { width: 1280, height: 800 },
+    ]) {
+      await page.setViewportSize(size)
+      await page.goto("/run")
+
+      await expect(page.getByLabel("Run A.S.C.A. threads")).toBeVisible()
+      await expect(
+        page.getByRole("button", { name: "Create New Thread" })
+      ).toBeVisible()
+      await expect(
+        page.getByRole("button", { name: /Demonstration Thread/ })
+      ).toBeVisible()
+      await expect(
+        page.getByRole("region", { name: "Conversation" })
+      ).toBeVisible()
+
+      await expectNoOverlap(page, [
+        "[aria-label='Run A.S.C.A. threads'] [data-slot='card-header']",
+        "[aria-label='Run A.S.C.A. threads'] [data-testid='thread-list-scroll']",
+        "[aria-label='Conversation'] header",
+        "[data-testid='message-viewport']",
+        "[aria-label='Conversation'] form",
+      ])
+    }
+  })
+
   test("scrolls messages independently while the prompt stays anchored", async ({
     page,
     context,

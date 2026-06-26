@@ -7,6 +7,8 @@ import { useMemo, useState } from "react"
 
 import { ConversationPanel } from "@/components/run-asca/conversation-panel"
 import {
+  buildDemonstrationThreads,
+  DEMO_THREAD_ID,
   demoThreadMetadataSummaries,
   demoTokenUsageSummary,
 } from "@/components/run-asca/thread-metadata-fixtures"
@@ -21,8 +23,6 @@ import type {
 } from "@/components/run-asca/types"
 import { Button } from "@/components/ui/button"
 
-const DEMO_THREAD_ID: ThreadId = "demo"
-const DEMO_THREAD_TITLE = "Demonstration Thread"
 const ROUTE_FAILURE_MESSAGE = "A.S.C.A. could not return a response. Try again."
 const STREAM_FAILURE_MESSAGE =
   "A.S.C.A. could not complete the response. Try again."
@@ -172,7 +172,6 @@ export function RunAscaChat({
     () =>
       new DefaultChatTransport({
         api: "/api/asca/chat",
-        body: { threadId: selectedThreadId },
         fetch: async (input, init) => {
           let response: Response
 
@@ -194,7 +193,7 @@ export function RunAscaChat({
           return response
         },
       }),
-    [router, selectedThreadId]
+    [router]
   )
   const {
     messages: uiMessages,
@@ -214,17 +213,11 @@ export function RunAscaChat({
   )
 
   const threads: Thread[] = useMemo(
-    () => [
-      {
-        id: DEMO_THREAD_ID,
-        title: DEMO_THREAD_TITLE,
-        isSelected: selectedThreadId === DEMO_THREAD_ID,
-        messages,
-      },
-    ],
+    () => buildDemonstrationThreads(messages, selectedThreadId),
     [messages, selectedThreadId]
   )
-  const selectedThread = threads[0]
+  const selectedThread =
+    threads.find((thread) => thread.id === selectedThreadId) ?? threads[0]
   const chatErrorMessage = useMemo(() => {
     if (status === "submitted" || status === "streaming") {
       return null
@@ -256,7 +249,10 @@ export function RunAscaChat({
     setInputErrorMessage(null)
     clearError()
 
-    void sendMessage({ text: trimmedPrompt }).catch(() => {
+    void sendMessage(
+      { text: trimmedPrompt },
+      { body: { threadId: selectedThreadId } }
+    ).catch(() => {
       // useChat exposes the failure through status/error; chatErrorMessage maps it.
     })
   }

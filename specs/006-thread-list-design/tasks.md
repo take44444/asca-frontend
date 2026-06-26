@@ -18,9 +18,9 @@
 
 **Purpose**: Confirm implementation constraints and local entry points before changing behavior.
 
-- [ ] T001 [P] Review installed Client Component guidance in node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md before editing app/run/run-asca-chat.tsx
-- [ ] T002 [P] Review the thread list UI contract in specs/006-thread-list-design/contracts/ui-contract.md before editing components/run-asca/thread-list.tsx
-- [ ] T003 [P] Review existing Run A.S.C.A. coverage in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts
+- [x] T001 [P] Review installed Client Component guidance in node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md before editing app/run/run-asca-chat.tsx
+- [x] T002 [P] Review the thread list UI contract in specs/006-thread-list-design/contracts/ui-contract.md before editing components/run-asca/thread-list.tsx
+- [x] T003 [P] Review existing Run A.S.C.A. coverage in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts
 
 ---
 
@@ -30,10 +30,10 @@
 
 **CRITICAL**: No user story implementation should begin until this phase is complete.
 
-- [ ] T004 [P] Expand ThreadId typing and exported documentation for 20 static demonstration ids in components/run-asca/types.ts
-- [ ] T005 [P] Extend typed static demonstration thread fixtures with exactly 20 entries in components/run-asca/thread-metadata-fixtures.ts
-- [ ] T006 Integrate the fixture builder into app/run/run-asca-chat.tsx so the live demo thread uses current chat messages and the other 19 threads use static messages
-- [ ] T007 Verify `npm run typecheck` fails or passes only because of foundational type changes, and record any required fixes against components/run-asca/types.ts
+- [x] T004 [P] Expand ThreadId typing and exported documentation for 20 static demonstration ids in components/run-asca/types.ts
+- [x] T005 [P] Extend typed static demonstration thread fixtures with exactly 20 entries in components/run-asca/thread-metadata-fixtures.ts
+- [x] T006 Integrate the fixture builder into app/run/run-asca-chat.tsx so the live demo thread uses current chat messages and the other 19 threads use static messages
+- [x] T007 Verify `npm run typecheck` fails or passes only because of foundational type changes, and record any required fixes against components/run-asca/types.ts
 
 **Checkpoint**: The app can construct 20 typed threads without introducing backend fetching or changing the existing chat route contract.
 
@@ -47,16 +47,16 @@
 
 ### Tests for User Story 1 (write first, ensure they fail)
 
-- [ ] T008 [P] [US1] Add unit assertions for exactly 20 rendered thread buttons, visible titles, visible message counts, and no thread-list fetch calls in tests/unit/run-asca-chat.test.tsx
-- [ ] T009 [P] [US1] Add Playwright assertions for the left-side thread list, disabled `Create New Thread` control, and 20 accessible thread entries in tests/e2e/run-asca.spec.ts
+- [x] T008 [P] [US1] Add unit assertions for exactly 20 rendered thread buttons, visible titles, visible message counts, and no thread-list fetch calls in tests/unit/run-asca-chat.test.tsx
+- [x] T009 [P] [US1] Add Playwright assertions for the left-side thread list, disabled `Create New Thread` control, and 20 accessible thread entries in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Refactor components/run-asca/thread-list.tsx to render the outer thread list with Card, CardHeader, and CardContent from components/ui/card.tsx
-- [ ] T011 [US1] Update the create-thread header button in components/run-asca/thread-list.tsx to use Button from components/ui/button.tsx and MessageSquarePlusIcon from components/icons/lucide-message-square-plus.tsx with visible text `Create New Thread`
-- [ ] T012 [US1] Render all 20 thread entries with title and derived message count in components/run-asca/thread-list.tsx
-- [ ] T013 [US1] Preserve the complementary region label `Run A.S.C.A. threads` and selected-state accessibility in components/run-asca/thread-list.tsx
-- [ ] T014 [US1] Run the targeted US1 tests in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts and confirm User Story 1 passes independently
+- [x] T010 [US1] Refactor components/run-asca/thread-list.tsx to render the outer thread list with Card, CardHeader, and CardContent from components/ui/card.tsx
+- [x] T011 [US1] Update the create-thread header button in components/run-asca/thread-list.tsx to use Button from components/ui/button.tsx and MessageSquarePlusIcon from components/icons/lucide-message-square-plus.tsx with visible text `Create New Thread`
+- [x] T012 [US1] Render all 20 thread entries with title and derived message count in components/run-asca/thread-list.tsx
+- [x] T013 [US1] Preserve the complementary region label `Run A.S.C.A. threads` and selected-state accessibility in components/run-asca/thread-list.tsx
+- [x] T014 [US1] Run the targeted US1 tests in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts and confirm User Story 1 passes independently
 
 **Checkpoint**: User Story 1 is complete and independently demonstrable as the MVP.
 
@@ -70,15 +70,15 @@
 
 ### Tests for User Story 2 (write first, ensure they fail)
 
-- [ ] T015 [P] [US2] Add unit coverage for selecting non-live static threads and returning to the live demonstration thread in tests/unit/run-asca-chat.test.tsx
-- [ ] T016 [P] [US2] Add Playwright coverage for switching through at least five thread entries and verifying right-side content changes in tests/e2e/run-asca.spec.ts
+- [x] T015 [P] [US2] Add unit coverage for selecting non-live static threads and returning to the live demonstration thread in tests/unit/run-asca-chat.test.tsx
+- [x] T016 [P] [US2] Add Playwright coverage for switching through at least five thread entries and verifying right-side content changes in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T017 [US2] Update selected-thread derivation in app/run/run-asca-chat.tsx so ConversationPanel receives the thread matching selectedThreadId
-- [ ] T018 [US2] Ensure components/run-asca/thread-list.tsx visually distinguishes the selected thread without changing the disabled create-thread button
-- [ ] T019 [US2] Ensure prompt submission in app/run/run-asca-chat.tsx preserves existing chat behavior and uses the current selectedThreadId in the existing `/api/asca/chat` request body
-- [ ] T020 [US2] Run the targeted US2 tests in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts and confirm User Story 2 passes independently
+- [x] T017 [US2] Update selected-thread derivation in app/run/run-asca-chat.tsx so ConversationPanel receives the thread matching selectedThreadId
+- [x] T018 [US2] Ensure components/run-asca/thread-list.tsx visually distinguishes the selected thread without changing the disabled create-thread button
+- [x] T019 [US2] Ensure prompt submission in app/run/run-asca-chat.tsx preserves existing chat behavior and uses the current selectedThreadId in the existing `/api/asca/chat` request body
+- [x] T020 [US2] Run the targeted US2 tests in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts and confirm User Story 2 passes independently
 
 **Checkpoint**: User Stories 1 and 2 both work independently.
 
@@ -92,14 +92,14 @@
 
 ### Tests for User Story 3 (write first, ensure they fail)
 
-- [ ] T021 [P] [US3] Add unit assertions for the scrollable thread-list content container class and fixed header behavior in tests/unit/run-asca-chat.test.tsx
-- [ ] T022 [P] [US3] Add Playwright coverage for independent thread-list scrolling and reaching the twentieth thread while the conversation remains visible in tests/e2e/run-asca.spec.ts
+- [x] T021 [P] [US3] Add unit assertions for the scrollable thread-list content container class and fixed header behavior in tests/unit/run-asca-chat.test.tsx
+- [x] T022 [P] [US3] Add Playwright coverage for independent thread-list scrolling and reaching the twentieth thread while the conversation remains visible in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T023 [US3] Apply min-height, overflow, and containment classes to the card content area in components/run-asca/thread-list.tsx so entries scroll independently
-- [ ] T024 [US3] Adjust workspace sizing or responsive layout classes in app/run/run-asca-chat.tsx only if needed to keep thread list scrolling independent from the conversation panel
-- [ ] T025 [US3] Run the targeted US3 tests in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts and confirm User Story 3 passes independently
+- [x] T023 [US3] Apply min-height, overflow, and containment classes to the card content area in components/run-asca/thread-list.tsx so entries scroll independently
+- [x] T024 [US3] Adjust workspace sizing or responsive layout classes in app/run/run-asca-chat.tsx only if needed to keep thread list scrolling independent from the conversation panel
+- [x] T025 [US3] Run the targeted US3 tests in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts and confirm User Story 3 passes independently
 
 **Checkpoint**: All user stories are independently functional.
 
@@ -109,15 +109,15 @@
 
 **Purpose**: Validate edge cases, coverage, and full project quality gates.
 
-- [ ] T026 [P] Add edge-case unit coverage for long thread titles, zero-message counts, and multi-digit message counts in tests/unit/run-asca-chat.test.tsx
-- [ ] T027 [P] Add or update responsive non-overlap Playwright checks for thread title, message count, create-thread control, and conversation content in tests/e2e/run-asca.spec.ts
-- [ ] T028 Run `npm run format` and `npm run lint`, then fix any reported issues in components/run-asca/thread-list.tsx, components/run-asca/thread-metadata-fixtures.ts, app/run/run-asca-chat.tsx, and components/run-asca/types.ts
-- [ ] T029 Run `npm run typecheck` and fix any reported issues in components/run-asca/thread-metadata-fixtures.ts, components/run-asca/types.ts, and app/run/run-asca-chat.tsx
-- [ ] T030 Run `npm run test` and fix any reported regressions in tests/unit/run-asca-chat.test.tsx
-- [ ] T031 Run `npm run test:coverage` and ensure changed behavior maintains at least 80% coverage for tests/unit/run-asca-chat.test.tsx
-- [ ] T032 Run `npm run test:e2e` and fix any reported regressions in tests/e2e/run-asca.spec.ts
-- [ ] T033 Run `npm run build` and fix any production build issues in app/run/run-asca-chat.tsx and components/run-asca/thread-list.tsx
-- [ ] T034 Validate the manual scenarios in specs/006-thread-list-design/quickstart.md against the implemented Run A.S.C.A. page
+- [x] T026 [P] Add edge-case unit coverage for long thread titles, zero-message counts, and multi-digit message counts in tests/unit/run-asca-chat.test.tsx
+- [x] T027 [P] Add or update responsive non-overlap Playwright checks for thread title, message count, create-thread control, and conversation content in tests/e2e/run-asca.spec.ts
+- [x] T028 Run `npm run format` and `npm run lint`, then fix any reported issues in components/run-asca/thread-list.tsx, components/run-asca/thread-metadata-fixtures.ts, app/run/run-asca-chat.tsx, and components/run-asca/types.ts
+- [x] T029 Run `npm run typecheck` and fix any reported issues in components/run-asca/thread-metadata-fixtures.ts, components/run-asca/types.ts, and app/run/run-asca-chat.tsx
+- [x] T030 Run `npm run test` and fix any reported regressions in tests/unit/run-asca-chat.test.tsx
+- [x] T031 Run `npm run test:coverage` and ensure changed behavior maintains at least 80% coverage for tests/unit/run-asca-chat.test.tsx
+- [x] T032 Run `npm run test:e2e` and fix any reported regressions in tests/e2e/run-asca.spec.ts
+- [x] T033 Run `npm run build` and fix any production build issues in app/run/run-asca-chat.tsx and components/run-asca/thread-list.tsx
+- [x] T034 Validate the manual scenarios in specs/006-thread-list-design/quickstart.md against the implemented Run A.S.C.A. page
 
 ---
 
