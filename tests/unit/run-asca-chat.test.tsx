@@ -9,11 +9,17 @@ import { TextDecoder, TextEncoder } from "node:util"
 import { MessagePort } from "node:worker_threads"
 
 import { RunAscaChat } from "@/app/run/run-asca-chat"
+import {
+  demoThreadMetadataSummaries,
+  demoTokenUsageSummary,
+} from "@/components/run-asca/thread-metadata-fixtures"
 import type { ChatMessage } from "@/components/run-asca/types"
 import {
   createControlledUIMessageStream,
   createMockAscaUIStreamResponse,
+  getConversationElements,
   mockClipboardWriteText,
+  renderRunAscaChat,
 } from "@/tests/unit/run-asca-test-helpers"
 
 globalThis.TextDecoder = TextDecoder as typeof globalThis.TextDecoder
@@ -166,7 +172,9 @@ describe("RunAscaChat", () => {
     await user.click(screen.getByRole("button", { name: "Send prompt" }))
 
     expect(screen.getByText("Hello A.S.C.A.")).toBeInTheDocument()
-    expect(screen.getByText("A.S.C.A. is thinking...")).toBeInTheDocument()
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "A.S.C.A. is thinking..."
+    )
 
     await act(async () => {
       stream.enqueue("A.S.C.A.")
@@ -272,6 +280,53 @@ describe("RunAscaChat", () => {
     ).toBeVisible()
   })
 
+  it("falls back to generic route feedback when an error response is not JSON", async () => {
+    const user = userEvent.setup()
+    jest.mocked(global.fetch).mockResolvedValueOnce(
+      new Response("not json", {
+        status: 500,
+        headers: { "Content-Type": "text/plain" },
+      })
+    )
+
+    render(<RunAscaChat />)
+
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Bad payload")
+    await user.click(screen.getByRole("button", { name: "Send prompt" }))
+
+    expect(await screen.findByText("Bad payload")).toBeVisible()
+    expect(
+      await screen.findByText(
+        "A.S.C.A. could not return a response. Try again."
+      )
+    ).toBeVisible()
+  })
+
+  it("redirects to login when the chat route returns unauthorized", async () => {
+    const user = userEvent.setup()
+    jest.mocked(global.fetch).mockResolvedValueOnce(
+      createResponse(
+        {
+          error: {
+            code: "unauthorized",
+            message: "Sign in to run A.S.C.A.",
+          },
+        },
+        { status: 401 }
+      )
+    )
+
+    render(<RunAscaChat />)
+
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Needs auth")
+    await user.click(screen.getByRole("button", { name: "Send prompt" }))
+
+    await waitFor(() => {
+      expect(mockRouterPush).toHaveBeenCalledWith("/login")
+    })
+    expect(await screen.findByText("Sign in to run A.S.C.A.")).toBeVisible()
+  })
+
   it("shows fetch failure feedback before any assistant text", async () => {
     const user = userEvent.setup()
     jest
@@ -302,7 +357,91 @@ describe("RunAscaChat", () => {
       screen.getByRole("button", { name: "Create New Thread unavailable" })
     ).toBeDisabled()
     expect(screen.getAllByText("Demonstration Thread")).toHaveLength(2)
-    expect(screen.getByRole("heading", { name: "Run A.S.C.A." })).toBeVisible()
+    expect(
+      screen.getByRole("complementary", { name: "Run A.S.C.A. threads" })
+    ).toBeVisible()
+  })
+
+  it("renders a bounded conversation panel with header, exact count, viewport, empty state, and anchored prompt", () => {
+    renderRunAscaChat([])
+
+    const conversation = getConversationElements()
+
+    expect(conversation.region).toHaveClass("rounded-xl", "border")
+    expect(
+      screen.getByRole("heading", { name: "Demonstration Thread" })
+    ).toBeVisible()
+    expect(conversation.region).toHaveTextContent("0 messages")
+    expect(
+      screen.getByText("Start the demonstration thread with a text prompt.")
+    ).toBeVisible()
+    expect(conversation.viewport).toHaveClass("overflow-y-auto")
+    expect(conversation.prompt).toBeVisible()
+    expect(conversation.sendButton).toBeDisabled()
+  })
+
+  it("renders exactly four static metadata summaries without fetching metadata", () => {
+    renderRunAscaChat()
+
+    const summaries = screen.getAllByTestId("thread-metadata-summary")
+
+    expect(summaries).toHaveLength(4)
+    expect(global.fetch).not.toHaveBeenCalled()
+    expect(
+      screen.getByRole("region", { name: "Thread metadata" })
+    ).toBeVisible()
+    expect(screen.getByText("8 completed")).toBeVisible()
+    expect(screen.getByText("3 pending")).toBeVisible()
+    expect(screen.getByText("4 research")).toBeVisible()
+    expect(screen.getByText("2 documents")).toBeVisible()
+    expect(screen.getByText("1 images")).toBeVisible()
+    expect(screen.getByText("14 acquired items")).toBeVisible()
+  })
+
+  it("renders seven chronological token points, labels both series, includes zero values, and keeps derived totals consistent", () => {
+    renderRunAscaChat()
+
+    const expectedTotal =
+      demoTokenUsageSummary.totalInputTokens +
+      demoTokenUsageSummary.totalOutputTokens
+
+    expect(screen.getByText(expectedTotal.toLocaleString())).toBeVisible()
+    expect(screen.getByText("Input tokens")).toBeVisible()
+    expect(screen.getByText("Output tokens")).toBeVisible()
+    expect(
+      screen.getAllByRole("button", { name: /token usage/i })
+    ).toHaveLength(7)
+    expect(
+      screen.getByRole("button", {
+        name: "Jun 21 token usage: 0 input tokens, 0 output tokens",
+      })
+    ).toBeVisible()
+    expect(
+      demoTokenUsageSummary.points.map((point) => point.dateLabel)
+    ).toEqual([
+      "Jun 20",
+      "Jun 21",
+      "Jun 22",
+      "Jun 23",
+      "Jun 24",
+      "Jun 25",
+      "Jun 26",
+    ])
+  })
+
+  it("keeps compact metadata labels, symbols, and primary counts available", () => {
+    renderRunAscaChat()
+
+    for (const summary of demoThreadMetadataSummaries) {
+      const card = screen.getByLabelText(`${summary.label} summary`)
+
+      expect(card).toBeVisible()
+      expect(card).toHaveTextContent(summary.label)
+      expect(card).toHaveTextContent(summary.primaryValue)
+      expect(card.querySelector("[aria-hidden='true']")).toHaveTextContent(
+        summary.label.slice(0, 1)
+      )
+    }
   })
 
   it("supports selecting the demonstration thread without losing the conversation", async () => {

@@ -38,3 +38,9 @@ npm run build
 - The data rules in `data-model.md` are represented by typed frontend fixtures and component props.
 - Existing Run A.S.C.A. chat interaction tests continue to pass.
 - New tests cover metadata summaries, token trend interaction, responsive layout, and no-overlap visual behavior.
+
+## Validation Record
+
+- 2026-06-26: `npm run lint`, `npm run typecheck`, `npm run test`, `npm run test:coverage`, `npm run test:e2e`, and `npm run build` passed.
+- Manual scenarios are covered by the expanded unit and Playwright checks for bounded conversation layout, static summaries, token focus values, responsive non-overlap, long-message scrolling, streaming, errors, and copy behavior.
+- Unresolved deviations: none.

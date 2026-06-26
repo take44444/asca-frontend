@@ -1,3 +1,5 @@
+import type { UIMessage } from "ai"
+
 /**
  * Stable identifier for the only supported demonstration thread.
  */
@@ -110,4 +112,70 @@ export type AscaChatErrorPayload = {
     message: string
   }
 }
-import type { UIMessage } from "ai"
+
+/**
+ * Compact metadata categories rendered above the active conversation.
+ */
+export type ThreadMetadataSummaryId =
+  | "tasks"
+  | "artifacts"
+  | "knowledge"
+  | "tokens"
+
+/**
+ * Visual tone used to distinguish one metadata summary category.
+ */
+export type ThreadMetadataTone = "sky" | "emerald" | "violet" | "amber"
+
+/**
+ * One compact contextual summary for the active Run A.S.C.A. thread.
+ */
+export type ThreadMetadataSummary = {
+  id: ThreadMetadataSummaryId
+  label: string
+  primaryValue: string
+  supportingDetails: string[]
+  tone: ThreadMetadataTone
+}
+
+/**
+ * Static task counts associated with the demonstration thread.
+ */
+export type TaskSummary = {
+  completedCount: number
+  pendingCount: number
+}
+
+/**
+ * Static artifact counts grouped by artifact category.
+ */
+export type ArtifactSummary = {
+  researchCount: number
+  documentCount: number
+  imageCount: number
+}
+
+/**
+ * Static count of knowledge items acquired in the demonstration thread.
+ */
+export type KnowledgeSummary = {
+  itemCount: number
+}
+
+/**
+ * One chronological daily point in the token usage trend.
+ */
+export type TokenUsagePoint = {
+  dateLabel: string
+  inputTokens: number
+  outputTokens: number
+}
+
+/**
+ * Static token usage summary for the last seven days of the demonstration thread.
+ */
+export type TokenUsageSummary = {
+  totalInputTokens: number
+  totalOutputTokens: number
+  points: TokenUsagePoint[]
+}

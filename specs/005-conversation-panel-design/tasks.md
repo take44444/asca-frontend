@@ -12,10 +12,10 @@
 
 **Purpose**: Confirm version-specific guidance and existing Run A.S.C.A. boundaries before changing code.
 
-- [ ] T001 Review installed Next.js 16 App Router, accessibility, and supported browser guidance in node_modules/next/dist/docs/01-app/index.md, node_modules/next/dist/docs/03-architecture/accessibility.md, and node_modules/next/dist/docs/03-architecture/supported-browsers.md
-- [ ] T002 [P] Audit existing chat ownership, route transport, and selected thread rendering in app/run/run-asca-chat.tsx
-- [ ] T003 [P] Audit existing conversation semantics, scroll viewport, prompt input, and status/error controls in components/run-asca/conversation-panel.tsx
-- [ ] T004 [P] Audit existing Run A.S.C.A. unit and Playwright regression coverage in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts
+- [x] T001 Review installed Next.js 16 App Router, accessibility, and supported browser guidance in node_modules/next/dist/docs/01-app/index.md, node_modules/next/dist/docs/03-architecture/accessibility.md, and node_modules/next/dist/docs/03-architecture/supported-browsers.md
+- [x] T002 [P] Audit existing chat ownership, route transport, and selected thread rendering in app/run/run-asca-chat.tsx
+- [x] T003 [P] Audit existing conversation semantics, scroll viewport, prompt input, and status/error controls in components/run-asca/conversation-panel.tsx
+- [x] T004 [P] Audit existing Run A.S.C.A. unit and Playwright regression coverage in tests/unit/run-asca-chat.test.tsx and tests/e2e/run-asca.spec.ts
 
 ---
 
@@ -25,9 +25,9 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T005 Add exported docstringed types for ThreadMetadataSummary, TaskSummary, ArtifactSummary, KnowledgeSummary, TokenUsageSummary, and TokenUsagePoint in components/run-asca/types.ts
-- [ ] T006 Create static typed thread metadata fixture with non-negative counts, seven chronological token points, and derived token totals in components/run-asca/thread-metadata-fixtures.ts
-- [ ] T007 [P] Add reusable Run A.S.C.A. test setup helpers for rendering with custom messages and querying conversation landmarks in tests/unit/run-asca-test-helpers.ts
+- [x] T005 Add exported docstringed types for ThreadMetadataSummary, TaskSummary, ArtifactSummary, KnowledgeSummary, TokenUsageSummary, and TokenUsagePoint in components/run-asca/types.ts
+- [x] T006 Create static typed thread metadata fixture with non-negative counts, seven chronological token points, and derived token totals in components/run-asca/thread-metadata-fixtures.ts
+- [x] T007 [P] Add reusable Run A.S.C.A. test setup helpers for rendering with custom messages and querying conversation landmarks in tests/unit/run-asca-test-helpers.ts
 
 **Checkpoint**: Shared metadata model and fixtures are ready for all stories.
 
@@ -41,14 +41,14 @@
 
 ### Tests for User Story 1 (MANDATORY - write before implementation)
 
-- [ ] T008 [P] [US1] Add unit tests for conversation panel header, exact message count, bounded panel classes, empty state, anchored prompt, and `data-testid="message-viewport"` in tests/unit/run-asca-chat.test.tsx
-- [ ] T009 [P] [US1] Add Playwright coverage for the bounded conversation panel, independently scrollable message viewport, anchored prompt, and preserved prompt submit flow in tests/e2e/run-asca.spec.ts
+- [x] T008 [P] [US1] Add unit tests for conversation panel header, exact message count, bounded panel classes, empty state, anchored prompt, and `data-testid="message-viewport"` in tests/unit/run-asca-chat.test.tsx
+- [x] T009 [P] [US1] Add Playwright coverage for the bounded conversation panel, independently scrollable message viewport, anchored prompt, and preserved prompt submit flow in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Refactor ConversationPanel into a bounded header/content/prompt shell while preserving aria-labels, status/error text, copy controls, scroll button, and prompt behavior in components/run-asca/conversation-panel.tsx
-- [ ] T011 [US1] Adjust Run A.S.C.A. workspace sizing so the conversation panel fills the authenticated page without body scrolling in app/run/run-asca-chat.tsx
-- [ ] T012 [US1] Verify long-message seeding still scrolls only inside `data-testid="message-viewport"` and update any affected development-only control positioning in app/run/run-asca-chat.tsx
+- [x] T010 [US1] Refactor ConversationPanel into a bounded header/content/prompt shell while preserving aria-labels, status/error text, copy controls, scroll button, and prompt behavior in components/run-asca/conversation-panel.tsx
+- [x] T011 [US1] Adjust Run A.S.C.A. workspace sizing so the conversation panel fills the authenticated page without body scrolling in app/run/run-asca-chat.tsx
+- [x] T012 [US1] Verify long-message seeding still scrolls only inside `data-testid="message-viewport"` and update any affected development-only control positioning in app/run/run-asca-chat.tsx
 
 **Checkpoint**: User Story 1 is fully functional and testable independently.
 
@@ -62,14 +62,14 @@
 
 ### Tests for User Story 2 (MANDATORY - write before implementation)
 
-- [ ] T013 [P] [US2] Add unit tests for rendering exactly four metadata summaries, task completed/pending counts, artifact research/document/image counts, knowledge item count, and no metadata fetch calls in tests/unit/run-asca-chat.test.tsx
-- [ ] T014 [P] [US2] Add Playwright coverage for visible metadata summaries and desktop one-row presentation at 1280px width in tests/e2e/run-asca.spec.ts
+- [x] T013 [P] [US2] Add unit tests for rendering exactly four metadata summaries, task completed/pending counts, artifact research/document/image counts, knowledge item count, and no metadata fetch calls in tests/unit/run-asca-chat.test.tsx
+- [x] T014 [P] [US2] Add Playwright coverage for visible metadata summaries and desktop one-row presentation at 1280px width in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T015 [P] [US2] Create ThreadMetadataSummaryCard component with icon, label, primary value, supporting details, and tone styles in components/run-asca/thread-metadata-summary-card.tsx
-- [ ] T016 [US2] Render the four static metadata summaries above ConversationPanel using the typed fixture in app/run/run-asca-chat.tsx
-- [ ] T017 [US2] Add responsive metadata grid spacing and cohesive category color treatment without nested cards in app/run/run-asca-chat.tsx and components/run-asca/thread-metadata-summary-card.tsx
+- [x] T015 [P] [US2] Create ThreadMetadataSummaryCard component with icon, label, primary value, supporting details, and tone styles in components/run-asca/thread-metadata-summary-card.tsx
+- [x] T016 [US2] Render the four static metadata summaries above ConversationPanel using the typed fixture in app/run/run-asca-chat.tsx
+- [x] T017 [US2] Add responsive metadata grid spacing and cohesive category color treatment without nested cards in app/run/run-asca-chat.tsx and components/run-asca/thread-metadata-summary-card.tsx
 
 **Checkpoint**: User Stories 1 and 2 work independently with static metadata visible.
 
@@ -83,14 +83,14 @@
 
 ### Tests for User Story 3 (MANDATORY - write before implementation)
 
-- [ ] T018 [P] [US3] Add unit tests for seven chronological token points, distinguishable input/output labels, zero-value rendering, and derived total consistency in tests/unit/run-asca-chat.test.tsx
-- [ ] T019 [P] [US3] Add Playwright coverage for token chart hover or keyboard focus revealing exact input and output counts in tests/e2e/run-asca.spec.ts
+- [x] T018 [P] [US3] Add unit tests for seven chronological token points, distinguishable input/output labels, zero-value rendering, and derived total consistency in tests/unit/run-asca-chat.test.tsx
+- [x] T019 [P] [US3] Add Playwright coverage for token chart hover or keyboard focus revealing exact input and output counts in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 3
 
-- [ ] T020 [P] [US3] Create TokenUsageTrend component using components/ui/chart.tsx and Recharts line chart primitives in components/run-asca/token-usage-trend.tsx
-- [ ] T021 [US3] Integrate TokenUsageTrend into the total tokens summary while preserving compact summary text in components/run-asca/thread-metadata-summary-card.tsx
-- [ ] T022 [US3] Add accessible labels, tooltip content, focusable token points, and distinct input/output color variables in components/run-asca/token-usage-trend.tsx
+- [x] T020 [P] [US3] Create TokenUsageTrend component using components/ui/chart.tsx and Recharts line chart primitives in components/run-asca/token-usage-trend.tsx
+- [x] T021 [US3] Integrate TokenUsageTrend into the total tokens summary while preserving compact summary text in components/run-asca/thread-metadata-summary-card.tsx
+- [x] T022 [US3] Add accessible labels, tooltip content, focusable token points, and distinct input/output color variables in components/run-asca/token-usage-trend.tsx
 
 **Checkpoint**: User Story 3 is independently functional and the token interaction contract is satisfied.
 
@@ -104,14 +104,14 @@
 
 ### Tests for User Story 4 (MANDATORY - write before implementation)
 
-- [ ] T023 [P] [US4] Add unit tests that render the compact metadata presentation and assert each summary keeps its accessible category label, symbol text alternative, and primary count visible in tests/unit/run-asca-chat.test.tsx
-- [ ] T024 [P] [US4] Add Playwright responsive checks at 390x844 and 1280x800 for no overlapping metadata, conversation panel, message viewport, and prompt entry in tests/e2e/run-asca.spec.ts
+- [x] T023 [P] [US4] Add unit tests that render the compact metadata presentation and assert each summary keeps its accessible category label, symbol text alternative, and primary count visible in tests/unit/run-asca-chat.test.tsx
+- [x] T024 [P] [US4] Add Playwright responsive checks at 390x844 and 1280x800 for no overlapping metadata, conversation panel, message viewport, and prompt entry in tests/e2e/run-asca.spec.ts
 
 ### Implementation for User Story 4
 
-- [ ] T025 [US4] Tune responsive grid tracks, fixed-format panel dimensions, and mobile spacing for the workspace and metadata area in app/run/run-asca-chat.tsx
-- [ ] T026 [US4] Tune compact summary typography, icon sizing, and supporting detail visibility so long labels do not overflow in components/run-asca/thread-metadata-summary-card.tsx
-- [ ] T027 [US4] Tune conversation panel minimum heights and prompt/message spacing to avoid overlap during viewport changes in components/run-asca/conversation-panel.tsx
+- [x] T025 [US4] Tune responsive grid tracks, fixed-format panel dimensions, and mobile spacing for the workspace and metadata area in app/run/run-asca-chat.tsx
+- [x] T026 [US4] Tune compact summary typography, icon sizing, and supporting detail visibility so long labels do not overflow in components/run-asca/thread-metadata-summary-card.tsx
+- [x] T027 [US4] Tune conversation panel minimum heights and prompt/message spacing to avoid overlap during viewport changes in components/run-asca/conversation-panel.tsx
 
 **Checkpoint**: All user stories are independently functional across supported viewport sizes.
 
@@ -121,11 +121,11 @@
 
 **Purpose**: Validate regression coverage, quality gates, and manual quickstart scenarios.
 
-- [ ] T028 [P] Run formatting, lint, and type checking with `npm run format`, `npm run lint`, and `npm run typecheck` for app/run/run-asca-chat.tsx, components/run-asca/conversation-panel.tsx, components/run-asca/thread-metadata-summary-card.tsx, components/run-asca/token-usage-trend.tsx, and components/run-asca/types.ts
-- [ ] T029 [P] Run unit tests and coverage with `npm run test` and `npm run test:coverage` for tests/unit/run-asca-chat.test.tsx
-- [ ] T030 [P] Run Playwright tests with `npm run test:e2e` for tests/e2e/run-asca.spec.ts
-- [ ] T031 Run production build with `npm run build` for the Next.js App Router application
-- [ ] T032 Execute manual validation scenarios from specs/005-conversation-panel-design/quickstart.md and record any unresolved deviations in specs/005-conversation-panel-design/quickstart.md
+- [x] T028 [P] Run formatting, lint, and type checking with `npm run format`, `npm run lint`, and `npm run typecheck` for app/run/run-asca-chat.tsx, components/run-asca/conversation-panel.tsx, components/run-asca/thread-metadata-summary-card.tsx, components/run-asca/token-usage-trend.tsx, and components/run-asca/types.ts
+- [x] T029 [P] Run unit tests and coverage with `npm run test` and `npm run test:coverage` for tests/unit/run-asca-chat.test.tsx
+- [x] T030 [P] Run Playwright tests with `npm run test:e2e` for tests/e2e/run-asca.spec.ts
+- [x] T031 Run production build with `npm run build` for the Next.js App Router application
+- [x] T032 Execute manual validation scenarios from specs/005-conversation-panel-design/quickstart.md and record any unresolved deviations in specs/005-conversation-panel-design/quickstart.md
 
 ---
 
