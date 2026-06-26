@@ -87,7 +87,7 @@ export function ThreadMetadataSummaryCard({
       )}
     >
       <CardHeader className="flex min-w-0 items-center gap-4 rounded-t-lg">
-        <div className="p-2 rounded-md bg-primary/10 flex items-center justify-center">
+        <div className="flex items-center justify-center rounded-md bg-primary/10 p-2">
           <Icon className="size-8" aria-hidden="true" />
         </div>
         <div className="min-w-0">

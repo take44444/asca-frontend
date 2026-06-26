@@ -25,35 +25,42 @@ export function ThreadList({
 }: ThreadListProps) {
   return (
     <aside
-      className="run-asca-thread-list flex min-h-0 flex-col border-b border-border bg-muted/30 md:w-80 md:border-r md:border-b-0"
+      className="run-asca-thread-list flex min-h-0 flex-col bg-background pt-3 px-3 sm:py-4 sm:pl-3 sm:pr-0 md:w-[22rem]"
       aria-label="Run A.S.C.A. threads"
     >
       <Card
         size="sm"
-        className="min-h-0 rounded-lg bg-transparent py-0 shadow-none ring-0"
+        className="min-h-0 flex-1 rounded-lg border border-border bg-card py-2 shadow-lg"
+        data-testid="thread-list-card"
       >
-        <CardHeader className="flex shrink-0 flex-col gap-3 rounded-t-lg border-b border-border p-3">
+        <CardHeader className="flex shrink-0 flex-col rounded-t-lg p-3">
           <div className="flex items-center justify-between gap-3">
-            <Button type="button" variant="outline" size="sm" disabled>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="w-full justify-start rounded-lg bg-card"
+              disabled
+            >
               <MessageSquarePlusIcon className="size-4" aria-hidden="true" />
               <span>Create New Thread</span>
             </Button>
           </div>
         </CardHeader>
         <CardContent
-          className="min-h-0 flex-1 overflow-y-auto p-2"
+          className="min-h-0 flex-1 overflow-y-auto bg-muted/15 p-2"
           data-testid="thread-list-scroll"
         >
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-2">
             {threads.map((thread) => (
               <button
                 key={thread.id}
                 type="button"
                 className={cn(
-                  "grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border px-3 py-3 text-left transition-colors",
+                  "grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border bg-card px-3 py-3 text-left shadow-xs transition-colors",
                   thread.id === selectedThreadId
-                    ? "border-primary/30 bg-background text-foreground shadow-xs"
-                    : "border-transparent text-muted-foreground hover:bg-background/70 hover:text-foreground"
+                    ? "border-primary/35 text-foreground ring-2 ring-primary/10"
+                    : "border-border/80 text-muted-foreground hover:border-primary/25 hover:text-foreground"
                 )}
                 aria-current={
                   thread.id === selectedThreadId ? "page" : undefined

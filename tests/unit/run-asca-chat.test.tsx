@@ -459,11 +459,14 @@ describe("RunAscaChat", () => {
   it("keeps the thread list header fixed while entries scroll independently", () => {
     render(<RunAscaChat />)
 
-    const card = screen.getByRole("complementary", {
+    const threadRegion = screen.getByRole("complementary", {
       name: "Run A.S.C.A. threads",
     })
+    const card = within(threadRegion).getByTestId("thread-list-card")
     const content = card.querySelector("[data-testid='thread-list-scroll']")
 
+    expect(threadRegion).not.toHaveClass("md:border-r", "bg-muted/30")
+    expect(card).toHaveClass("bg-card", "shadow-lg")
     expect(content).not.toBeNull()
     expect(content).toHaveClass("min-h-0", "flex-1", "overflow-y-auto")
     expect(

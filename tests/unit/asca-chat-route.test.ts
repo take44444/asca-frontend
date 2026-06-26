@@ -176,9 +176,7 @@ describe("POST /api/asca/chat", () => {
     )
 
     expect(response.status).toBe(200)
-    expect(response.headers.get("content-type")).toContain(
-      "text/event-stream"
-    )
+    expect(response.headers.get("content-type")).toContain("text/event-stream")
     expect(response.headers.get("x-vercel-ai-ui-message-stream")).toBe("v1")
   })
 

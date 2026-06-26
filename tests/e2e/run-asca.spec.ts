@@ -365,7 +365,12 @@ test.describe("Run A.S.C.A.", () => {
     const threadRegion = page.getByRole("complementary", {
       name: "Run A.S.C.A. threads",
     })
+    const threadCard = threadRegion.getByTestId("thread-list-card")
     await expect(threadRegion).toBeVisible()
+    await expect(threadRegion).not.toHaveClass(/md:border-r/)
+    await expect(threadCard).toBeVisible()
+    await expect(threadCard).toHaveClass(/bg-card/)
+    await expect(threadCard).toHaveClass(/shadow-lg/)
     await expect(
       page.getByRole("button", { name: "Create New Thread" })
     ).toBeDisabled()

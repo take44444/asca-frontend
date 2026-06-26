@@ -48,7 +48,12 @@ type HeaderNavLinkProps = {
 
 function HeaderNavLink({ item, isActive, shine }: HeaderNavLinkProps) {
   return (
-    <Shine enable={shine} shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]} loop={true} asChild>
+    <Shine
+      enable={shine}
+      shineColor={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+      loop={true}
+      asChild
+    >
       <Link
         href={item.href}
         aria-current={isActive ? "page" : undefined}
