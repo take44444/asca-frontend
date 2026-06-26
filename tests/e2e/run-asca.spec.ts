@@ -224,16 +224,16 @@ test.describe("Run A.S.C.A.", () => {
     await page.setViewportSize({ width: 1280, height: 800 })
 
     await page.goto("/run")
-    await page
-      .getByRole("button", {
-        name: "Jun 21 token usage: 0 input tokens, 0 output tokens",
-      })
-      .focus()
+    const tokenChart = page.getByRole("application")
+    await tokenChart.focus()
+    await expect(tokenChart).toBeFocused()
+    await page.keyboard.press("ArrowRight")
 
-    const tooltip = page.getByRole("tooltip")
+    const tooltip = page.locator(".recharts-tooltip-wrapper")
+    await expect(tooltip).toBeVisible()
     await expect(tooltip).toContainText("Jun 21")
-    await expect(tooltip).toContainText("Input tokens: 0")
-    await expect(tooltip).toContainText("Output tokens: 0")
+    await expect(tooltip).toContainText(/Input tokens\s*0/)
+    await expect(tooltip).toContainText(/Output tokens\s*0/)
   })
 
   test("keeps metadata, conversation, viewport, and prompt non-overlapping responsively", async ({
