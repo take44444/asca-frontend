@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 
 import { ConversationPanel } from "@/components/run-asca/conversation-panel"
+import {
+  demoThreadMetadataSummaries,
+  demoTokenUsageSummary,
+} from "@/components/run-asca/thread-metadata-fixtures"
+import { ThreadMetadataSummaryCard } from "@/components/run-asca/thread-metadata-summary-card"
 import { ThreadList } from "@/components/run-asca/thread-list"
+import { TokenUsageTrend } from "@/components/run-asca/token-usage-trend"
 import type {
   AscaChatErrorPayload,
   ChatMessage,
@@ -262,25 +268,40 @@ export function RunAscaChat({
         selectedThreadId={selectedThreadId}
         onSelectThread={setSelectedThreadId}
       />
-      <ConversationPanel
-        thread={selectedThread}
-        prompt={prompt}
-        isSubmitting={isSubmitting}
-        errorMessage={errorMessage}
-        onPromptChange={(value) => {
-          setPrompt(value)
-          if (inputErrorMessage) {
-            setInputErrorMessage(null)
-          }
-        }}
-        onSubmit={handleSubmit}
-      />
+      <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-3 sm:p-4">
+        <h1 className="sr-only">Run A.S.C.A.</h1>
+        <section
+          aria-label="Thread metadata"
+          className="grid shrink-0 grid-cols-2 gap-2 md:grid-cols-4"
+        >
+          {demoThreadMetadataSummaries.map((summary) => (
+            <ThreadMetadataSummaryCard key={summary.id} summary={summary}>
+              {summary.id === "tokens" ? (
+                <TokenUsageTrend points={demoTokenUsageSummary.points} />
+              ) : null}
+            </ThreadMetadataSummaryCard>
+          ))}
+        </section>
+        <ConversationPanel
+          thread={selectedThread}
+          prompt={prompt}
+          isSubmitting={isSubmitting}
+          errorMessage={errorMessage}
+          onPromptChange={(value) => {
+            setPrompt(value)
+            if (inputErrorMessage) {
+              setInputErrorMessage(null)
+            }
+          }}
+          onSubmit={handleSubmit}
+        />
+      </main>
       {process.env.NODE_ENV !== "production" ? (
         <Button
           type="button"
           variant="outline"
           size="sm"
-          className="absolute top-3 right-3"
+          className="absolute right-3 bottom-3 z-10"
           onClick={() =>
             setMessages(
               createLongConversationMessages().map(chatMessageToUIMessage)

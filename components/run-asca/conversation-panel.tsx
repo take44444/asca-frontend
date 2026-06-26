@@ -38,30 +38,35 @@ export function ConversationPanel({
   onSubmit,
 }: ConversationPanelProps) {
   return (
-    <section className="flex min-h-0 flex-1 flex-col" aria-label="Conversation">
-      <header className="shrink-0 border-b border-border px-4 py-3">
-        <h1 className="text-lg font-semibold text-foreground">
-          {thread.title}
-        </h1>
-        <p className="text-xs font-medium text-muted-foreground">
-          {thread.messages.length} messages
-        </p>
+    <section
+      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-sm"
+      aria-label="Conversation"
+    >
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border bg-muted/20 px-4 py-3">
+        <div className="min-w-0">
+          <h1 className="truncate text-lg font-semibold text-foreground">
+            {thread.title}
+          </h1>
+          <p className="text-xs font-medium text-muted-foreground">
+            {thread.messages.length} messages
+          </p>
+        </div>
       </header>
-      <div className="relative min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1 bg-background">
         <StickToBottom className="h-full" resize="smooth" initial="instant">
           {(context) => (
             <>
               <div
                 ref={context.scrollRef}
-                className="h-full overflow-y-auto"
+                className="h-full overflow-y-auto overscroll-contain"
                 data-testid="message-viewport"
               >
                 <div
                   ref={context.contentRef}
-                  className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-6"
+                  className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-6 sm:px-6"
                 >
                   {thread.messages.length === 0 ? (
-                    <div className="rounded-lg border border-dashed border-border p-6 text-sm text-muted-foreground">
+                    <div className="rounded-lg border border-dashed border-border bg-muted/20 p-6 text-sm text-muted-foreground">
                       Start the demonstration thread with a text prompt.
                     </div>
                   ) : (
@@ -72,14 +77,20 @@ export function ConversationPanel({
                 </div>
               </div>
               <ScrollButton
-                className="absolute right-5 bottom-5"
+                className="absolute right-5 bottom-5 shadow-md"
                 aria-label="Return to latest message"
               />
             </>
           )}
         </StickToBottom>
       </div>
-      <div className="shrink-0 bg-background p-3">
+      <form
+        className="shrink-0 bg-background p-3 sm:p-4"
+        onSubmit={(event) => {
+          event.preventDefault()
+          onSubmit()
+        }}
+      >
         <div className="mx-auto w-full max-w-4xl">
           {errorMessage ? (
             <p
@@ -91,8 +102,8 @@ export function ConversationPanel({
           ) : null}
           <GradientText
             neon
-            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-            className="text-sm mb-2 font-medium"
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            className="mb-2 text-sm font-medium"
             role="status"
             text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
           />
@@ -122,7 +133,7 @@ export function ConversationPanel({
             </PromptInputActions>
           </PromptInput>
         </div>
-      </div>
-    </section >
+      </form>
+    </section>
   )
 }

@@ -3,6 +3,11 @@ import {
   createUIMessageStreamResponse,
   type UIMessageStreamWriter,
 } from "ai"
+import { render, screen } from "@testing-library/react"
+import { createElement } from "react"
+
+import { RunAscaChat } from "@/app/run/run-asca-chat"
+import type { ChatMessage } from "@/components/run-asca/types"
 
 /**
  * Builds a successful mocked A.S.C.A. UI message stream response.
@@ -92,4 +97,23 @@ export function mockClipboardWriteText(
   })
 
   return writeText
+}
+
+/**
+ * Renders Run A.S.C.A. with optional custom messages for focused layout tests.
+ */
+export function renderRunAscaChat(initialMessages?: ChatMessage[]) {
+  return render(createElement(RunAscaChat, { initialMessages }))
+}
+
+/**
+ * Returns the stable landmarks and controls for the active conversation.
+ */
+export function getConversationElements() {
+  return {
+    region: screen.getByRole("region", { name: "Conversation" }),
+    prompt: screen.getByLabelText("Prompt A.S.C.A."),
+    sendButton: screen.getByRole("button", { name: "Send prompt" }),
+    viewport: screen.getByTestId("message-viewport"),
+  }
 }
