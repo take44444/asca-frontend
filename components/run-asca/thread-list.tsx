@@ -30,7 +30,7 @@ export function ThreadList({
     >
       <Card
         size="sm"
-        className="min-h-0 flex-1 rounded-lg border border-border bg-card p-2 shadow-lg gap-2"
+        className="min-h-0 flex-1 rounded-lg border border-border bg-card p-2 shadow-lg gap-2 ring-7"
         data-testid="thread-list-card"
       >
         <CardHeader className="flex shrink-0 flex-col rounded-t-lg p-2 border-b border-border">
