@@ -85,7 +85,7 @@ export function ConversationPanel({
         </StickToBottom>
       </div>
       <form
-        className="shrink-0 border-t border-border bg-background p-3 sm:p-4"
+        className="shrink-0 bg-background p-3 sm:p-4"
         onSubmit={(event) => {
           event.preventDefault()
           onSubmit()

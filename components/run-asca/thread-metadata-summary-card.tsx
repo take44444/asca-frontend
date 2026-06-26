@@ -1,16 +1,26 @@
 "use client"
 
-import { Boxes, Brain, CheckSquare, Sigma, type LucideIcon } from "lucide-react"
+import { BrainCircuitIcon } from "@/components/icons/lucide-brain-circuit"
+import { PackageCheckIcon } from "@/components/icons/lucide-package-check"
+import { ChartSplineIcon } from "@/components/icons/lucide-chart-spline"
+import { ListTodoIcon } from "@/components/icons/lucide-list-todo"
 import type { ReactNode } from "react"
 
 import type { ThreadMetadataSummary } from "@/components/run-asca/types"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
-const iconBySummaryId: Record<ThreadMetadataSummary["id"], LucideIcon> = {
-  tasks: CheckSquare,
-  artifacts: Boxes,
-  knowledge: Brain,
-  tokens: Sigma,
+const iconBySummaryId: Record<ThreadMetadataSummary["id"], React.ElementType> = {
+  tasks: ListTodoIcon,
+  artifacts: PackageCheckIcon,
+  knowledge: BrainCircuitIcon,
+  tokens: ChartSplineIcon,
 }
 
 const toneClasses: Record<ThreadMetadataSummary["tone"], string> = {
@@ -41,42 +51,38 @@ export function ThreadMetadataSummaryCard({
   const Icon = iconBySummaryId[summary.id]
 
   return (
-    <article
+    <Card
+      size="sm"
       aria-label={`${summary.label} summary`}
       data-testid="thread-metadata-summary"
       className={cn(
-        "min-w-0 rounded-lg border p-3 shadow-xs",
-        "grid content-start gap-2 overflow-hidden",
+        "min-w-0 gap-2 rounded-lg border py-3 shadow-xs ring-0 [--card-spacing:--spacing(3)]",
         toneClasses[summary.tone]
       )}
     >
-      <div className="flex min-w-0 items-start justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-2">
-          <span
-            aria-hidden="true"
-            className="flex size-8 shrink-0 items-center justify-center rounded-md bg-background/80 text-sm font-semibold shadow-xs"
-          >
-            {summary.label.slice(0, 1)}
-          </span>
+      <CardHeader className="min-w-0 gap-1 rounded-t-lg">
+        <div className="flex min-w-0 items-center gap-6">
+          <Icon className="size-8" aria-hidden="true" />
           <div className="min-w-0">
-            <h2 className="truncate text-xs font-semibold tracking-normal">
+            <CardTitle className="truncate text-xs font-semibold tracking-normal">
               {summary.label}
-            </h2>
-            <p className="text-2xl leading-none font-semibold tabular-nums">
+            </CardTitle>
+            <CardDescription className="text-2xl leading-none font-semibold text-current tabular-nums">
               {summary.primaryValue}
-            </p>
+            </CardDescription>
           </div>
         </div>
-        <Icon className="size-4 shrink-0 opacity-70" aria-hidden="true" />
-      </div>
-      <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium text-current/75">
-        {summary.supportingDetails.map((detail) => (
-          <span key={detail} className="max-w-full truncate">
-            {detail}
-          </span>
-        ))}
-      </div>
-      {children}
-    </article>
+      </CardHeader>
+      <CardContent className="min-w-0">
+        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium text-current/75">
+          {summary.supportingDetails.map((detail) => (
+            <span key={detail} className="max-w-full truncate">
+              {detail}
+            </span>
+          ))}
+        </div>
+        {children}
+      </CardContent>
+    </Card>
   )
 }
