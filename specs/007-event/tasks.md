@@ -23,7 +23,7 @@
 
 ---
 
-## Phase 2: Foundational (Blocking Prerequisites)
+## Phase 2: Test Foundation (Blocking Prerequisites)
 
 **Purpose**: Confirm the existing test harness and authenticated browser setup that every story uses for Red-Green-Refactor.
 
@@ -119,8 +119,8 @@
 ### Phase Dependencies
 
 - **Setup (Phase 1)**: No dependencies; T001 and T002 can run in parallel.
-- **Foundational (Phase 2)**: Depends on Setup and blocks story work because every fixture, test, and component uses the event contracts.
-- **User Story 1 (Phase 3)**: Depends on Foundational and establishes the event fixture map, presentational card, and selected-thread integration.
+- **Test Foundation (Phase 2)**: Depends on Setup and blocks story work so the shared unit and authenticated browser test entry points are understood before failing story tests are written.
+- **User Story 1 (Phase 3)**: Depends on the Test Foundation and establishes the event contracts, fixture map, presentational card, and selected-thread integration.
 - **User Story 2 (Phase 4)**: Depends on User Story 1's event items, then adds an independently testable source-recognition layer.
 - **User Story 3 (Phase 5)**: Depends on User Story 1's card and workspace integration; it can run in parallel with User Story 2 after User Story 1 completes.
 - **Polish (Phase 6)**: Depends on all stories selected for delivery; full quality gates require all three stories.
@@ -128,7 +128,7 @@
 ### User Story Dependency Graph
 
 ```text
-Setup -> Foundation -> US1 (MVP) -> US2
+Setup -> Test Foundation -> US1 (MVP) -> US2
                               \-> US3
 US2 + US3 -> Polish
 ```
@@ -187,7 +187,7 @@ Task T020: Implement workspace responsive composition in app/run/run-asca-chat.t
 
 ### MVP First (User Story 1 Only)
 
-1. Complete Setup and the typed Foundation.
+1. Complete Setup and the Test Foundation.
 2. Write and observe failing User Story 1 tests.
 3. Implement local fixtures, the core Events card, and selected-thread integration.
 4. Stop at T010 and validate User Story 1 independently.
@@ -202,7 +202,7 @@ Task T020: Implement workspace responsive composition in app/run/run-asca-chat.t
 
 ### Parallel Team Strategy
 
-1. Complete Setup, Foundation, and User Story 1 in dependency order.
+1. Complete Setup, the Test Foundation, and User Story 1 in dependency order.
 2. After User Story 1, implement User Story 2 source mapping and User Story 3 responsive scrolling in parallel, coordinating edits to `components/run-asca/event-view.tsx`.
 3. Merge both story increments before running the cross-cutting quality gates.
 
