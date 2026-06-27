@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardFooter,
   CardTitle,
-  CardDescription,
+  CardAction,
 } from "@/components/ui/card"
 import {
   PromptInput,
@@ -51,16 +51,14 @@ export function ConversationPanel({
       className="min-h-[28rem] flex-1 gap-0 rounded-lg border border-border bg-background p-0 px-2 shadow-xs"
       aria-label="Conversation"
     >
-      <CardHeader className="flex shrink-0 flex-wrap items-center gap-2 rounded-t-lg border-b border-border px-4 py-3">
-        <div className="min-w-0">
-          <CardTitle className="truncate text-lg font-semibold text-foreground">
-            {thread.title}
-          </CardTitle>
-          <CardDescription className="leading-none font-medium tabular-nums">
-            {thread.messages.length}{" "}
-            {thread.messages.length === 1 ? "message" : "messages"}
-          </CardDescription>
-        </div>
+      <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 py-[var(--card-spacing)]">
+        <CardTitle className="truncate text-lg font-semibold text-foreground">
+          {thread.title}
+        </CardTitle>
+        <CardAction className="row-span-0 row-start-0 self-center leading-none text-xs tabular-nums">
+          {thread.messages.length}{" "}
+          {thread.messages.length === 1 ? "message" : "messages"}
+        </CardAction>
       </CardHeader>
       <CardContent className="relative min-h-0 flex-1 p-0">
         <StickToBottom className="h-full" resize="smooth" initial="instant">

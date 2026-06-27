@@ -21,6 +21,7 @@ type EventSource = {
   name: string
   Icon: ComponentType<{
     className?: string
+    color?: string
     "aria-hidden"?: boolean | "true" | "false"
   }>
 }
@@ -43,10 +44,10 @@ export function EventView({ events }: EventViewProps) {
     <Card
       aria-label="Events for current thread"
       size="sm"
-      className="h-[28rem] min-h-0 shrink-0 gap-0 rounded-lg border border-border bg-background p-0 shadow-xs xl:h-auto xl:flex-1"
+      className="h-[28rem] min-h-0 shrink-0 gap-0 rounded-lg border border-border bg-background p-0 px-2 shadow-xs h-auto flex-1"
       role="complementary"
     >
-      <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 py-3">
+      <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 py-[var(--card-spacing)]">
         <CardTitle>
           <h2 className="text-lg font-semibold text-foreground">Events</h2>
         </CardTitle>
@@ -73,7 +74,7 @@ export function EventView({ events }: EventViewProps) {
                   aria-label={source.name}
                   className="mt-0.5 size-8 rounded-lg bg-background p-1.5 ring-1 ring-border"
                 >
-                  <SourceIcon aria-hidden="true" className="size-5" />
+                  <SourceIcon color="transparent" aria-hidden="true" className="size-5" />
                 </ItemMedia>
                 <ItemContent className="min-w-0 gap-1.5">
                   <div className="flex min-w-0 flex-wrap items-center gap-1.5">

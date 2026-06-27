@@ -145,7 +145,7 @@ test.describe("Run A.S.C.A.", () => {
     await expect(events).toContainText("Incident response rehearsal event 1")
   })
 
-  test("places and scrolls events independently across responsive layouts", async ({
+  test("places and scrolls events independently in the two-column workspace", async ({
     page,
     context,
   }) => {
@@ -173,9 +173,10 @@ test.describe("Run A.S.C.A.", () => {
     expect((await heading.boundingBox())!.y).toBe(headingTop)
 
     await page.setViewportSize({ width: 1100, height: 800 })
-    const stackedConversationBox = await conversation.boundingBox()
-    const stackedEventsBox = await events.boundingBox()
-    expect(stackedEventsBox!.y).toBeGreaterThan(stackedConversationBox!.y)
+    const resizedConversationBox = await conversation.boundingBox()
+    const resizedEventsBox = await events.boundingBox()
+    expect(resizedEventsBox!.x).toBeGreaterThan(resizedConversationBox!.x)
+    expect(resizedEventsBox!.y).toBe(resizedConversationBox!.y)
     await expectNoOverlap(page, [
       "[aria-label='Conversation']",
       "[aria-label='Events for current thread']",
@@ -301,14 +302,14 @@ test.describe("Run A.S.C.A.", () => {
     await expect(tooltip).toContainText(/Output tokens\s*0/)
   })
 
-  test("keeps metadata, conversation, viewport, and prompt non-overlapping responsively", async ({
+  test("keeps metadata, conversation, viewport, and prompt non-overlapping at supported workspace widths", async ({
     page,
     context,
   }) => {
     await setAuthenticatedSession(context)
 
     for (const size of [
-      { width: 390, height: 844 },
+      { width: 1100, height: 800 },
       { width: 1280, height: 800 },
     ]) {
       await page.setViewportSize(size)
