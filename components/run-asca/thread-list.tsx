@@ -25,7 +25,7 @@ export function ThreadList({
 }: ThreadListProps) {
   return (
     <aside
-      className="run-asca-thread-list flex min-h-0 flex-col bg-background px-3 pt-3 sm:py-4 sm:pr-0 sm:pl-3 md:w-[22rem]"
+      className="run-asca-thread-list flex min-h-0 flex-col px-3 pt-3 sm:py-4 sm:pr-0 sm:pl-3 md:w-[22rem]"
       aria-label="Run A.S.C.A. threads"
     >
       <Card

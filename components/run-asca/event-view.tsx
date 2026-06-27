@@ -44,7 +44,7 @@ export function EventView({ events }: EventViewProps) {
     <Card
       aria-label="Events for current thread"
       size="sm"
-      className="h-[28rem] min-h-0 shrink-0 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs h-auto flex-1"
+      className="h-[28rem] min-h-0 shrink-0 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs h-auto flex-1 ring-0"
       role="complementary"
     >
       <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 pb-[var(--card-spacing)] pt-3">
@@ -56,7 +56,7 @@ export function EventView({ events }: EventViewProps) {
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2"
         data-testid="event-viewport"
       >
-        <ItemGroup>
+        <ItemGroup className="gap-3 has-data-[size=sm]:gap-1.5 has-data-[size=xs]:gap-1">
           {events.map((event) => {
             const source = eventSources[event.app]
             const SourceIcon = source.Icon
@@ -67,12 +67,12 @@ export function EventView({ events }: EventViewProps) {
                 role="listitem"
                 size="sm"
                 variant="muted"
-                className="flex-nowrap items-start overflow-hidden"
+                className="flex-nowrap items-start overflow-hidden rounded-xl"
               >
                 <ItemMedia
                   role="img"
                   aria-label={source.name}
-                  className="mt-0.5 size-8 rounded-lg bg-background p-1.5 ring-1 ring-border"
+                  className="mt-0.5 size-8 rounded-lg bg-background p-1.5 ring-2 ring-border"
                 >
                   <SourceIcon color="transparent" aria-hidden="true" className="size-5" />
                 </ItemMedia>

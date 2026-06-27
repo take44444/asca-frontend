@@ -48,7 +48,7 @@ export function ConversationPanel({
   return (
     <Card
       size="sm"
-      className="min-h-[28rem] flex-1 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs"
+      className="min-h-[28rem] flex-1 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs ring-0"
       aria-label="Conversation"
     >
       <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 pb-[var(--card-spacing)] pt-3">

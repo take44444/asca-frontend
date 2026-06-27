@@ -261,7 +261,7 @@ export function RunAscaChat({
   }
 
   return (
-    <div className="run-asca-workspace relative bg-background">
+    <div className="run-asca-workspace relative bg-muted/20">
       <ThreadList
         threads={threads}
         selectedThreadId={selectedThreadId}

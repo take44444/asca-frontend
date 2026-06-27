@@ -17,12 +17,12 @@ import {
 import { cn } from "@/lib/utils"
 
 const iconBySummaryId: Record<ThreadMetadataSummary["id"], React.ElementType> =
-  {
-    tasks: ListTodoIcon,
-    artifacts: PackageCheckIcon,
-    knowledge: BrainCircuitIcon,
-    tokens: ChartSplineIcon,
-  }
+{
+  tasks: ListTodoIcon,
+  artifacts: PackageCheckIcon,
+  knowledge: BrainCircuitIcon,
+  tokens: ChartSplineIcon,
+}
 
 const toneClasses: Record<ThreadMetadataSummary["tone"], string> = {
   sky: "border-sky-200 bg-sky-50/80 text-sky-950 dark:border-sky-900/90 dark:bg-sky-950/30 dark:text-sky-100",
@@ -38,7 +38,7 @@ function useIsSmViewport(smBreakpointQuery: string): boolean {
   return useSyncExternalStore(
     (notify) => {
       if (!window.matchMedia) {
-        return () => {}
+        return () => { }
       }
 
       const mediaQuery = window.matchMedia(smBreakpointQuery)
