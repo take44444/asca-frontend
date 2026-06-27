@@ -44,10 +44,10 @@ export function EventView({ events }: EventViewProps) {
     <Card
       aria-label="Events for current thread"
       size="sm"
-      className="h-[28rem] min-h-0 shrink-0 gap-0 rounded-lg border border-border bg-background p-0 px-2 shadow-xs h-auto flex-1"
+      className="h-[28rem] min-h-0 shrink-0 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs h-auto flex-1"
       role="complementary"
     >
-      <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 py-[var(--card-spacing)]">
+      <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 pb-[var(--card-spacing)] pt-3">
         <CardTitle>
           <h2 className="text-lg font-semibold text-foreground">Events</h2>
         </CardTitle>
