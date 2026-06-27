@@ -9,11 +9,12 @@ import { TextDecoder, TextEncoder } from "node:util"
 import { MessagePort } from "node:worker_threads"
 
 import { RunAscaChat } from "@/app/run/run-asca-chat"
+import { eventsByThread } from "@/components/run-asca/event-fixtures"
 import {
   demoThreadMetadataSummaries,
   demoTokenUsageSummary,
 } from "@/components/run-asca/thread-metadata-fixtures"
-import type { ChatMessage } from "@/components/run-asca/types"
+import type { ChatMessage, ThreadId } from "@/components/run-asca/types"
 import {
   createControlledUIMessageStream,
   createMockAscaUIStreamResponse,
@@ -67,11 +68,11 @@ jest.mock("use-stick-to-bottom", () => {
     ...props
   }: {
     children:
-    | React.ReactNode
-    | ((context: {
-      scrollRef: React.RefCallback<HTMLElement>
-      contentRef: React.RefCallback<HTMLElement>
-    }) => React.ReactNode)
+      | React.ReactNode
+      | ((context: {
+          scrollRef: React.RefCallback<HTMLElement>
+          contentRef: React.RefCallback<HTMLElement>
+        }) => React.ReactNode)
     className?: string
   }) {
     const context = {
@@ -109,7 +110,7 @@ function createDeferredResponse(): {
   promise: Promise<Response>
   resolve: (response: Response) => void
 } {
-  let resolvePromise: (response: Response) => void = () => { }
+  let resolvePromise: (response: Response) => void = () => {}
   const promise = new Promise<Response>((resolve) => {
     resolvePromise = resolve
   })
@@ -147,6 +148,92 @@ describe("RunAscaChat", () => {
       .mockResolvedValue(
         createMockAscaUIStreamResponse("A.S.C.A. test response.")
       )
+  })
+
+  it("renders thread-specific, non-interactive event content without fetching", async () => {
+    const user = userEvent.setup()
+    render(<RunAscaChat />)
+
+    const events = screen.getByRole("complementary", {
+      name: "Events for current thread",
+    })
+    expect(
+      within(events).getByRole("heading", { name: "Events" })
+    ).toBeVisible()
+    expect(within(events).getAllByRole("listitem")).toHaveLength(20)
+    expect(within(events).queryAllByRole("button")).toHaveLength(0)
+    expect(within(events).queryAllByRole("link")).toHaveLength(0)
+    expect(
+      within(events).getAllByText("in: #asca-demo").length
+    ).toBeGreaterThan(0)
+    expect(within(events).getAllByText("Jun 27, 2026").length).toBeGreaterThan(
+      0
+    )
+    expect(global.fetch).not.toHaveBeenCalled()
+
+    await user.click(
+      screen.getByRole("button", { name: /Incident response rehearsal/ })
+    )
+
+    expect(within(events).getAllByRole("listitem")).toHaveLength(3)
+    expect(
+      within(events).getByText(/Incident response rehearsal event 1/)
+    ).toBeVisible()
+    expect(global.fetch).not.toHaveBeenCalled()
+  })
+
+  it("keeps complete, valid event fixtures for every thread", () => {
+    const entries = Object.entries(eventsByThread) as [
+      ThreadId,
+      (typeof eventsByThread)[ThreadId],
+    ][]
+    const allEvents = entries.flatMap(([, events]) => events)
+
+    expect(entries).toHaveLength(20)
+    expect(eventsByThread.demo).toHaveLength(20)
+    for (const [threadId, events] of entries) {
+      expect(events).toHaveLength(threadId === "demo" ? 20 : 3)
+      expect(events.every((event) => event.threadId === threadId)).toBe(true)
+    }
+    expect(new Set(allEvents.map((event) => event.id)).size).toBe(
+      allEvents.length
+    )
+    expect(new Set(allEvents.map((event) => event.app))).toEqual(
+      new Set(["slack", "microsoft-teams", "discord", "x", "github"])
+    )
+    expect(
+      allEvents.every((event) => !Number.isNaN(Date.parse(event.occurredAt)))
+    ).toBe(true)
+  })
+
+  it("exposes all event sources and a bounded, overflow-safe event viewport", () => {
+    render(<RunAscaChat />)
+
+    const events = screen.getByRole("complementary", {
+      name: "Events for current thread",
+    })
+    for (const source of [
+      "Slack",
+      "Microsoft Teams",
+      "Discord",
+      "X",
+      "GitHub",
+    ]) {
+      expect(within(events).getAllByLabelText(source).length).toBeGreaterThan(0)
+    }
+
+    const viewport = within(events).getByTestId("event-viewport")
+    expect(viewport).toHaveClass("min-h-0", "flex-1", "overflow-y-auto")
+    expect(events).toHaveClass("min-h-0")
+    expect(
+      within(events).getByRole("heading", { name: "Events" })
+    ).toBeVisible()
+    expect(viewport).toHaveTextContent(
+      "A deliberately long event sender name that remains contained"
+    )
+    expect(viewport).toHaveTextContent(
+      "#a-deliberately-long-external-thread-name-that-remains-contained"
+    )
   })
 
   it("rejects whitespace prompts without calling the route", async () => {

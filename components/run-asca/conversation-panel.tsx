@@ -5,7 +5,14 @@ import { StickToBottom } from "use-stick-to-bottom"
 import { ChatMessage } from "@/components/run-asca/chat-message"
 import type { Thread } from "@/components/run-asca/types"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardFooter, CardTitle, CardDescription } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card"
 import {
   PromptInput,
   PromptInputActions,
@@ -41,15 +48,15 @@ export function ConversationPanel({
   return (
     <Card
       size="sm"
-      className="min-h-[28rem] flex-1 p-0 rounded-lg border border-border bg-background shadow-xs gap-0 px-2"
+      className="min-h-[28rem] flex-1 gap-0 rounded-lg border border-border bg-background p-0 px-2 shadow-xs"
       aria-label="Conversation"
     >
-      <CardHeader className="flex shrink-0 flex-wrap items-center rounded-t-lg border-b border-border gap-2 px-4 py-3">
+      <CardHeader className="flex shrink-0 flex-wrap items-center gap-2 rounded-t-lg border-b border-border px-4 py-3">
         <div className="min-w-0">
           <CardTitle className="truncate text-lg font-semibold text-foreground">
             {thread.title}
           </CardTitle>
-          <CardDescription className="font-medium tabular-nums leading-none">
+          <CardDescription className="leading-none font-medium tabular-nums">
             {thread.messages.length}{" "}
             {thread.messages.length === 1 ? "message" : "messages"}
           </CardDescription>
@@ -87,19 +94,16 @@ export function ConversationPanel({
           )}
         </StickToBottom>
       </CardContent>
-      <CardFooter className="flex-col mx-auto w-full max-w-4xl items-start shrink-0 pb-4 pt-2">
+      <CardFooter className="mx-auto w-full max-w-4xl shrink-0 flex-col items-start pt-2 pb-4">
         {errorMessage ? (
-          <p
-            className="mb-2 text-sm font-medium text-destructive"
-            role="alert"
-          >
+          <p className="mb-2 text-sm font-medium text-destructive" role="alert">
             {errorMessage}
           </p>
         ) : null}
         <GradientText
           neon
           transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="mb-2 text-sm font-bold min-h-[1.3rem]"
+          className="mb-2 min-h-[1.3rem] text-sm font-bold"
           role="status"
           text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
         />

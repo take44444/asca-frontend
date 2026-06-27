@@ -90,10 +90,11 @@ export const demoThreadMetadataSummaries: ThreadMetadataSummary[] = [
   {
     id: "artifacts",
     label: "Artifacts",
-    primaryValue: `${demoArtifactSummary.researchCount +
+    primaryValue: `${
+      demoArtifactSummary.researchCount +
       demoArtifactSummary.documentCount +
       demoArtifactSummary.imageCount
-      }`,
+    }`,
     supportingDetails: [
       `${demoArtifactSummary.researchCount} research`,
       `${demoArtifactSummary.documentCount} documents`,
@@ -156,9 +157,10 @@ function createFixtureMessages(
 const longRunningResearchMessages = Array.from(
   { length: 12 },
   (_, index) =>
-    `Research note ${index + 1}: ${index === 11
-      ? "final recommendation and tradeoffs."
-      : "capture evidence, risks, and source confidence."
+    `Research note ${index + 1}: ${
+      index === 11
+        ? "final recommendation and tradeoffs."
+        : "capture evidence, risks, and source confidence."
     }`
 )
 

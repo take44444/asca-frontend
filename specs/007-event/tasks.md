@@ -18,8 +18,8 @@
 
 **Purpose**: Confirm the installed framework guidance and existing local component contracts before changing code.
 
-- [ ] T001 Review the installed client composition and accessibility guidance in `node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md` and `node_modules/next/dist/docs/03-architecture/accessibility.md`
-- [ ] T002 [P] Review the reusable APIs in `components/ui/card.tsx`, `components/ui/item.tsx`, `components/ui/badge.tsx`, `components/icons/logos-slack-icon.tsx`, `components/icons/logos-microsoft-teams.tsx`, `components/icons/logos-discord-icon.tsx`, `components/icons/logos-x.tsx`, and `components/icons/logos-github-icon.tsx`
+- [x] T001 Review the installed client composition and accessibility guidance in `node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md` and `node_modules/next/dist/docs/03-architecture/accessibility.md`
+- [x] T002 [P] Review the reusable APIs in `components/ui/card.tsx`, `components/ui/item.tsx`, `components/ui/badge.tsx`, `components/icons/logos-slack-icon.tsx`, `components/icons/logos-microsoft-teams.tsx`, `components/icons/logos-discord-icon.tsx`, `components/icons/logos-x.tsx`, and `components/icons/logos-github-icon.tsx`
 
 ---
 
@@ -29,7 +29,7 @@
 
 **⚠️ CRITICAL**: Complete this phase before writing story-specific tests so each failing state is attributable to missing Event View behavior rather than harness setup.
 
-- [ ] T003 Review the existing render helpers and authenticated browser setup to identify the reusable test entry points in `tests/unit/run-asca-test-helpers.ts`, `tests/unit/run-asca-chat.test.tsx`, `tests/e2e/auth-test-helpers.ts`, and `tests/e2e/run-asca.spec.ts`
+- [x] T003 Review the existing render helpers and authenticated browser setup to identify the reusable test entry points in `tests/unit/run-asca-test-helpers.ts`, `tests/unit/run-asca-chat.test.tsx`, `tests/e2e/auth-test-helpers.ts`, and `tests/e2e/run-asca.spec.ts`
 
 **Checkpoint**: Unit and browser test entry points are understood; no production code has changed before the first failing story tests.
 
@@ -43,16 +43,16 @@
 
 ### Tests for User Story 1 (write first and observe failure) ⚠️
 
-- [ ] T004 [P] [US1] Add failing unit tests for the Events region, required fields, optional `in:` badges, non-interactive items, locale-formatted dates, no event fetch, thread switching, and fixture integrity including unique IDs, owner-key matches, 20 `demo` records, three records for every other `ThreadId`, all five sources, and valid ISO timestamps in `tests/unit/run-asca-chat.test.tsx`
-- [ ] T005 [P] [US1] Add failing authenticated Playwright coverage for the 20-event default view and three-event non-default thread switch in `tests/e2e/run-asca.spec.ts`
-- [ ] T006 [US1] Run the User Story 1 tests from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that the new assertions fail for the missing event view, and make no production change in this task
+- [X] T004 [P] [US1] Add failing unit tests for the Events region, required fields, optional `in:` badges, non-interactive items, locale-formatted dates, no event fetch, thread switching, and fixture integrity including unique IDs, owner-key matches, 20 `demo` records, three records for every other `ThreadId`, all five sources, and valid ISO timestamps in `tests/unit/run-asca-chat.test.tsx`
+- [X] T005 [P] [US1] Add failing authenticated Playwright coverage for the 20-event default view and three-event non-default thread switch in `tests/e2e/run-asca.spec.ts`
+- [X] T006 [US1] Run the User Story 1 tests from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that the new assertions fail for the missing event view, and make no production change in this task
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Add documented `EventApp`, `ThreadEvent`, `EventsByThread`, and `EventViewProps` contracts without `any` in `components/run-asca/types.ts`, then create the deterministic fixture map with 20 varied `demo` records and three records for every other `ThreadId` in `components/run-asca/event-fixtures.ts`
-- [ ] T008 [US1] Implement the semantic complementary Events card and non-interactive list items using Card, Item, and Badge primitives, including sender, conditional `in: {thread}`, content, and `Intl.DateTimeFormat` output in `components/run-asca/event-view.tsx`
-- [ ] T009 [US1] Derive the selected thread's event array from `selectedThreadId` and compose `EventView` into the existing workspace without changing `/api/asca/chat` behavior in `app/run/run-asca-chat.tsx`
-- [ ] T010 [US1] Run the focused User Story 1 unit and Playwright cases in `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts` until the core event-content and thread-switching increment passes
+- [X] T007 [US1] Add documented `EventApp`, `ThreadEvent`, `EventsByThread`, and `EventViewProps` contracts without `any` in `components/run-asca/types.ts`, then create the deterministic fixture map with 20 varied `demo` records and three records for every other `ThreadId` in `components/run-asca/event-fixtures.ts`
+- [X] T008 [US1] Implement the semantic complementary Events card and non-interactive list items using Card, Item, and Badge primitives, including sender, conditional `in: {thread}`, content, and `Intl.DateTimeFormat` output in `components/run-asca/event-view.tsx`
+- [X] T009 [US1] Derive the selected thread's event array from `selectedThreadId` and compose `EventView` into the existing workspace without changing `/api/asca/chat` behavior in `app/run/run-asca-chat.tsx`
+- [X] T010 [US1] Run the focused User Story 1 unit and Playwright cases in `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts` until the core event-content and thread-switching increment passes
 
 **Checkpoint**: User Story 1 is independently demonstrable as the MVP, including thread association and optional-label behavior.
 
@@ -66,14 +66,14 @@
 
 ### Tests for User Story 2 (write first and observe failure) ⚠️
 
-- [ ] T011 [P] [US2] Add failing unit cases that cover all five `EventApp` values, assert accessible Slack, Microsoft Teams, Discord, X, and GitHub names, and verify the icon remains associated with its event in `tests/unit/run-asca-chat.test.tsx`
-- [ ] T012 [P] [US2] Add a failing Playwright assertion that the default event set exposes all five application sources in `tests/e2e/run-asca.spec.ts`
-- [ ] T013 [US2] Run the User Story 2 tests from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that source-recognition assertions fail, and make no production change in this task
+- [X] T011 [P] [US2] Add failing unit cases that cover all five `EventApp` values, assert accessible Slack, Microsoft Teams, Discord, X, and GitHub names, and verify the icon remains associated with its event in `tests/unit/run-asca-chat.test.tsx`
+- [X] T012 [P] [US2] Add a failing Playwright assertion that the default event set exposes all five application sources in `tests/e2e/run-asca.spec.ts`
+- [X] T013 [US2] Run the User Story 2 tests from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that source-recognition assertions fail, and make no production change in this task
 
 ### Implementation for User Story 2
 
-- [ ] T014 [US2] Add an exhaustive typed `EventApp`-to-logo-and-accessible-name mapping using the existing five logo components and render it on the left of each item in `components/run-asca/event-view.tsx`
-- [ ] T015 [US2] Run the focused User Story 2 unit and Playwright cases in `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts` until all five source mappings pass without weakening User Story 1 coverage
+- [X] T014 [US2] Add an exhaustive typed `EventApp`-to-logo-and-accessible-name mapping using the existing five logo components and render it on the left of each item in `components/run-asca/event-view.tsx`
+- [X] T015 [US2] Run the focused User Story 2 unit and Playwright cases in `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts` until all five source mappings pass without weakening User Story 1 coverage
 
 **Checkpoint**: All supported applications are distinguishable visually and by assistive technology.
 
@@ -87,15 +87,15 @@
 
 ### Tests for User Story 3 (write first and observe failure) ⚠️
 
-- [ ] T016 [P] [US3] Add failing unit assertions for a separately identifiable event viewport, persistent Events heading, bounded overflow classes, and long sender/thread/content containment in `tests/unit/run-asca-chat.test.tsx`
-- [ ] T017 [P] [US3] Add failing Playwright coverage for the 1280px two-column placement, below-`xl` stacking order, independent event scrolling to the final item, persistent heading, stationary conversation, and non-overlap in `tests/e2e/run-asca.spec.ts`
-- [ ] T018 [US3] Run the User Story 3 tests from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that responsive placement and independent-scroll assertions fail, and make no production change in this task
+- [X] T016 [P] [US3] Add failing unit assertions for a separately identifiable event viewport, persistent Events heading, bounded overflow classes, and long sender/thread/content containment in `tests/unit/run-asca-chat.test.tsx`
+- [X] T017 [P] [US3] Add failing Playwright coverage for the 1280px two-column placement, below-`xl` stacking order, independent event scrolling to the final item, persistent heading, stationary conversation, and non-overlap in `tests/e2e/run-asca.spec.ts`
+- [X] T018 [US3] Run the User Story 3 tests from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that responsive placement and independent-scroll assertions fail, and make no production change in this task
 
 ### Implementation for User Story 3
 
-- [ ] T019 [P] [US3] Add a bounded flex layout, stable heading, independently scrollable event content viewport, and overflow-safe sender, badge, description, and date styling in `components/run-asca/event-view.tsx`
-- [ ] T020 [P] [US3] Change the post-metadata content area to stack Conversation then Events below `xl` and use a minmax conversation column plus a 22rem Events column at `xl` in `app/run/run-asca-chat.tsx`
-- [ ] T021 [US3] Run the focused User Story 3 unit and Playwright cases in `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts` until scroll, placement, containment, and prior-story regressions pass
+- [X] T019 [P] [US3] Add a bounded flex layout, stable heading, independently scrollable event content viewport, and overflow-safe sender, badge, description, and date styling in `components/run-asca/event-view.tsx`
+- [X] T020 [P] [US3] Change the post-metadata content area to stack Conversation then Events below `xl` and use a minmax conversation column plus a 22rem Events column at `xl` in `app/run/run-asca-chat.tsx`
+- [X] T021 [US3] Run the focused User Story 3 unit and Playwright cases in `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts` until scroll, placement, containment, and prior-story regressions pass
 
 **Checkpoint**: All three user stories are functional at supported responsive widths and short viewport heights.
 
@@ -105,12 +105,12 @@
 
 **Purpose**: Validate fixture integrity, accessibility, coverage, and all repository quality gates across the completed feature.
 
-- [ ] T022 [P] Audit the rendered semantics, accessible source names, keyboard non-interaction, long-text readability, and visual associations against `specs/007-event/contracts/ui-contract.md` in `components/run-asca/event-view.tsx`
-- [ ] T023 [P] Review exported event contracts and components for required docstrings, explicit stable types, and absence of `any` in `components/run-asca/types.ts`, `components/run-asca/event-fixtures.ts`, and `components/run-asca/event-view.tsx`
-- [ ] T024 Run the `npm run format`, `npm run lint`, and `npm run typecheck` gates defined in `package.json`, resolving failures only in Event View files and their tests
-- [ ] T025 Run the `npm run test` and `npm run test:coverage` gates defined in `package.json` and `jest.config.ts`, and verify Event View behavior in `tests/unit/run-asca-chat.test.tsx` remains at or above 80% coverage
-- [ ] T026 Run `npm run test:e2e` and resolve Event View regressions in `tests/e2e/run-asca.spec.ts` without changing existing authentication, metadata, thread, or chat behavior
-- [ ] T027 Run `npm run build` and manually execute every validation scenario documented in `specs/007-event/quickstart.md`
+- [X] T022 [P] Audit the rendered semantics, accessible source names, keyboard non-interaction, long-text readability, and visual associations against `specs/007-event/contracts/ui-contract.md` in `components/run-asca/event-view.tsx`
+- [X] T023 [P] Review exported event contracts and components for required docstrings, explicit stable types, and absence of `any` in `components/run-asca/types.ts`, `components/run-asca/event-fixtures.ts`, and `components/run-asca/event-view.tsx`
+- [X] T024 Run the `npm run format`, `npm run lint`, and `npm run typecheck` gates defined in `package.json`, resolving failures only in Event View files and their tests
+- [X] T025 Run the `npm run test` and `npm run test:coverage` gates defined in `package.json` and `jest.config.ts`, and verify Event View behavior in `tests/unit/run-asca-chat.test.tsx` remains at or above 80% coverage
+- [X] T026 Run `npm run test:e2e` and resolve Event View regressions in `tests/e2e/run-asca.spec.ts` without changing existing authentication, metadata, thread, or chat behavior
+- [X] T027 Run `npm run build` and manually execute every validation scenario documented in `specs/007-event/quickstart.md`
 
 ---
 

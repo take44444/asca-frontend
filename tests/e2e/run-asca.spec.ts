@@ -117,6 +117,71 @@ async function expectNoOverlap(page: Page, selectors: string[]): Promise<void> {
 }
 
 test.describe("Run A.S.C.A.", () => {
+  test("shows thread-specific events and all five accessible sources", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.goto("/run")
+
+    const events = page.getByRole("complementary", {
+      name: "Events for current thread",
+    })
+    await expect(events.getByRole("listitem")).toHaveCount(20)
+    for (const source of [
+      "Slack",
+      "Microsoft Teams",
+      "Discord",
+      "X",
+      "GitHub",
+    ]) {
+      await expect(events.getByLabel(source).first()).toBeVisible()
+    }
+
+    await page
+      .getByRole("button", { name: /Incident response rehearsal/ })
+      .click()
+    await expect(events.getByRole("listitem")).toHaveCount(3)
+    await expect(events).toContainText("Incident response rehearsal event 1")
+  })
+
+  test("places and scrolls events independently across responsive layouts", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 640 })
+    await page.goto("/run")
+
+    const conversation = page.getByLabel("Conversation")
+    const events = page.getByRole("complementary", {
+      name: "Events for current thread",
+    })
+    const viewport = page.getByTestId("event-viewport")
+    const heading = events.getByRole("heading", { name: "Events" })
+    const conversationBox = await conversation.boundingBox()
+    const eventsBox = await events.boundingBox()
+    expect(eventsBox!.x).toBeGreaterThan(conversationBox!.x)
+
+    const conversationTop = conversationBox!.y
+    const headingTop = (await heading.boundingBox())!.y
+    await viewport.evaluate((element) => {
+      element.scrollTop = element.scrollHeight
+    })
+    await expect(events.getByRole("listitem").last()).toBeVisible()
+    expect((await conversation.boundingBox())!.y).toBe(conversationTop)
+    expect((await heading.boundingBox())!.y).toBe(headingTop)
+
+    await page.setViewportSize({ width: 1100, height: 800 })
+    const stackedConversationBox = await conversation.boundingBox()
+    const stackedEventsBox = await events.boundingBox()
+    expect(stackedEventsBox!.y).toBeGreaterThan(stackedConversationBox!.y)
+    await expectNoOverlap(page, [
+      "[aria-label='Conversation']",
+      "[aria-label='Events for current thread']",
+    ])
+  })
+
   test("redirects signed-out users to login", async ({ page, context }) => {
     await clearAuthenticatedSession(context)
 
