@@ -67,11 +67,11 @@ jest.mock("use-stick-to-bottom", () => {
     ...props
   }: {
     children:
-      | React.ReactNode
-      | ((context: {
-          scrollRef: React.RefCallback<HTMLElement>
-          contentRef: React.RefCallback<HTMLElement>
-        }) => React.ReactNode)
+    | React.ReactNode
+    | ((context: {
+      scrollRef: React.RefCallback<HTMLElement>
+      contentRef: React.RefCallback<HTMLElement>
+    }) => React.ReactNode)
     className?: string
   }) {
     const context = {
@@ -109,7 +109,7 @@ function createDeferredResponse(): {
   promise: Promise<Response>
   resolve: (response: Response) => void
 } {
-  let resolvePromise: (response: Response) => void = () => {}
+  let resolvePromise: (response: Response) => void = () => { }
   const promise = new Promise<Response>((resolve) => {
     resolvePromise = resolve
   })
