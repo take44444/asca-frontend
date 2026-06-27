@@ -111,7 +111,7 @@ export function renderRunAscaChat(initialMessages?: ChatMessage[]) {
  */
 export function getConversationElements() {
   return {
-    region: screen.getByRole("region", { name: "Conversation" }),
+    region: screen.getByLabelText("Conversation"),
     prompt: screen.getByLabelText("Prompt A.S.C.A."),
     sendButton: screen.getByRole("button", { name: "Send prompt" }),
     viewport: screen.getByTestId("message-viewport"),

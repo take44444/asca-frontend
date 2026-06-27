@@ -411,14 +411,12 @@ describe("RunAscaChat", () => {
       screen.getByRole("button", { name: /Incident response rehearsal/ })
     )
 
+    const conversation = screen.getByLabelText("Conversation")
+
     expect(
-      screen.getByRole("heading", { name: "Incident response rehearsal" })
+      within(conversation).getByText("Incident response rehearsal")
     ).toBeVisible()
-    expect(
-      within(screen.getByRole("region", { name: "Conversation" })).getByText(
-        "3 messages"
-      )
-    ).toBeVisible()
+    expect(within(conversation).getByText("3 messages")).toBeVisible()
     expect(
       screen.getByText("Confirm the escalation path and summarize owners.")
     ).toBeVisible()
@@ -430,9 +428,7 @@ describe("RunAscaChat", () => {
       screen.getByRole("button", { name: /Demonstration Thread/ })
     )
 
-    expect(
-      screen.getByRole("heading", { name: "Demonstration Thread" })
-    ).toBeVisible()
+    expect(within(conversation).getByText("Demonstration Thread")).toBeVisible()
     expect(
       screen.getByText("Ready for a focused A.S.C.A. demonstration thread.")
     ).toBeVisible()
@@ -498,9 +494,9 @@ describe("RunAscaChat", () => {
 
     const conversation = getConversationElements()
 
-    expect(conversation.region).toHaveClass("rounded-xl", "border")
+    expect(conversation.region).toHaveClass("rounded-lg", "border")
     expect(
-      screen.getByRole("heading", { name: "Demonstration Thread" })
+      within(conversation.region).getByText("Demonstration Thread")
     ).toBeVisible()
     expect(conversation.region).toHaveTextContent("0 messages")
     expect(

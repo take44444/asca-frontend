@@ -5,6 +5,7 @@ import { StickToBottom } from "use-stick-to-bottom"
 import { ChatMessage } from "@/components/run-asca/chat-message"
 import type { Thread } from "@/components/run-asca/types"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardFooter, CardTitle, CardDescription } from "@/components/ui/card"
 import {
   PromptInput,
   PromptInputActions,
@@ -38,22 +39,23 @@ export function ConversationPanel({
   onSubmit,
 }: ConversationPanelProps) {
   return (
-    <section
-      className="flex min-h-[28rem] flex-1 flex-col overflow-hidden rounded-xl border border-border bg-background shadow-xs"
+    <Card
+      size="sm"
+      className="min-h-[28rem] flex-1 p-0 rounded-lg border border-border bg-background shadow-xs gap-0 px-2"
       aria-label="Conversation"
     >
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-2 bg-muted/50 px-4 py-3">
+      <CardHeader className="flex shrink-0 flex-wrap items-center rounded-t-lg border-b border-border gap-2 px-4 py-3">
         <div className="min-w-0">
-          <h1 className="truncate text-lg font-semibold text-foreground">
+          <CardTitle className="truncate text-lg font-semibold text-foreground">
             {thread.title}
-          </h1>
-          <p className="text-xs font-medium text-muted-foreground">
+          </CardTitle>
+          <CardDescription className="font-medium tabular-nums leading-none">
             {thread.messages.length}{" "}
             {thread.messages.length === 1 ? "message" : "messages"}
-          </p>
+          </CardDescription>
         </div>
-      </header>
-      <div className="relative min-h-0 flex-1 bg-background">
+      </CardHeader>
+      <CardContent className="relative min-h-0 flex-1 p-0">
         <StickToBottom className="h-full" resize="smooth" initial="instant">
           {(context) => (
             <>
@@ -84,30 +86,30 @@ export function ConversationPanel({
             </>
           )}
         </StickToBottom>
-      </div>
-      <form
-        className="shrink-0 bg-background p-3 sm:p-4"
-        onSubmit={(event) => {
-          event.preventDefault()
-          onSubmit()
-        }}
-      >
-        <div className="mx-auto w-full max-w-4xl">
-          {errorMessage ? (
-            <p
-              className="mb-2 text-sm font-medium text-destructive"
-              role="alert"
-            >
-              {errorMessage}
-            </p>
-          ) : null}
-          <GradientText
-            neon
-            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-            className="mb-2 text-sm font-bold"
-            role="status"
-            text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
-          />
+      </CardContent>
+      <CardFooter className="flex-col mx-auto w-full max-w-4xl items-start shrink-0 pb-4 pt-2">
+        {errorMessage ? (
+          <p
+            className="mb-2 text-sm font-medium text-destructive"
+            role="alert"
+          >
+            {errorMessage}
+          </p>
+        ) : null}
+        <GradientText
+          neon
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="mb-2 text-sm font-bold min-h-[1.3rem]"
+          role="status"
+          text={isSubmitting ? "A.S.C.A. is thinking..." : ""}
+        />
+        <form
+          className="w-full"
+          onSubmit={(event) => {
+            event.preventDefault()
+            onSubmit()
+          }}
+        >
           <div className="group relative">
             <div className="absolute -inset-0.5 rounded-lg bg-gradient-to-r from-pink-500 to-purple-500 opacity-30 blur transition duration-400 group-hover:opacity-50 group-hover:duration-400"></div>
             <PromptInput
@@ -136,8 +138,8 @@ export function ConversationPanel({
               </PromptInputActions>
             </PromptInput>
           </div>
-        </div>
-      </form>
-    </section>
+        </form>
+      </CardFooter>
+    </Card>
   )
 }

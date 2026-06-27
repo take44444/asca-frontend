@@ -164,7 +164,7 @@ test.describe("Run A.S.C.A.", () => {
 
     await page.goto("/run")
 
-    const conversation = page.getByRole("region", { name: "Conversation" })
+    const conversation = page.getByLabel("Conversation")
     await expect(conversation).toContainText("Demonstration Thread")
     await expect(conversation).toContainText("1 message")
     await expect(page.getByTestId("message-viewport")).toBeVisible()
@@ -253,15 +253,13 @@ test.describe("Run A.S.C.A.", () => {
       await expect(page.getByLabel("Artifacts summary")).toBeVisible()
       await expect(page.getByLabel("Knowledge summary")).toBeVisible()
       await expect(page.getByLabel("Total Tokens summary")).toBeVisible()
-      await expect(
-        page.getByRole("region", { name: "Conversation" })
-      ).toBeVisible()
+      await expect(page.getByLabel("Conversation")).toBeVisible()
       await expect(page.getByTestId("message-viewport")).toBeVisible()
       await expect(page.getByLabel("Prompt A.S.C.A.")).toBeVisible()
 
       await expectNoOverlap(page, [
         "[aria-label='Thread metadata']",
-        "[aria-label='Conversation'] header",
+        "[aria-label='Conversation'] [data-slot='card-header']",
         "[data-testid='message-viewport']",
         "[aria-label='Conversation'] form",
       ])
@@ -341,7 +339,7 @@ test.describe("Run A.S.C.A.", () => {
     await expect(page.locator("body")).toHaveCSS("overflow", "hidden")
 
     const threadList = page.getByLabel("Run A.S.C.A. threads")
-    const conversation = page.getByRole("region", { name: "Conversation" })
+    const conversation = page.getByLabel("Conversation")
     const threadBox = await threadList.boundingBox()
     const conversationBox = await conversation.boundingBox()
 
@@ -418,7 +416,9 @@ test.describe("Run A.S.C.A.", () => {
     ]) {
       await page.getByRole("button", { name: new RegExp(thread.title) }).click()
       await expect(
-        page.getByRole("heading", { name: thread.title })
+        page
+          .getByLabel("Conversation")
+          .locator("[data-slot='card-title']", { hasText: thread.title })
       ).toBeVisible()
       await expect(page.getByText(thread.message)).toBeVisible()
       await expect(
@@ -450,9 +450,7 @@ test.describe("Run A.S.C.A.", () => {
     await expect(
       page.getByRole("button", { name: /Thread list accessibility audit/ })
     ).toBeVisible()
-    await expect(
-      page.getByRole("region", { name: "Conversation" })
-    ).toBeVisible()
+    await expect(page.getByLabel("Conversation")).toBeVisible()
     await expect(page.getByLabel("Prompt A.S.C.A.")).toBeVisible()
     await expect(page).toHaveURL(/\/run$/)
   })
@@ -477,14 +475,12 @@ test.describe("Run A.S.C.A.", () => {
       await expect(
         page.getByRole("button", { name: /Demonstration Thread/ })
       ).toBeVisible()
-      await expect(
-        page.getByRole("region", { name: "Conversation" })
-      ).toBeVisible()
+      await expect(page.getByLabel("Conversation")).toBeVisible()
 
       await expectNoOverlap(page, [
         "[aria-label='Run A.S.C.A. threads'] [data-slot='card-header']",
         "[aria-label='Run A.S.C.A. threads'] [data-testid='thread-list-scroll']",
-        "[aria-label='Conversation'] header",
+        "[aria-label='Conversation'] [data-slot='card-header']",
         "[data-testid='message-viewport']",
         "[aria-label='Conversation'] form",
       ])
