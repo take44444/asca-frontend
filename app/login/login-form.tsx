@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { GoogleFillIcon } from "@/components/icons/akar-icons-google-fill"
+import { GoogleIconIcon } from "@/components/icons/logos-google-icon"
 import { Button } from "@/components/ui/button"
 import { type AuthActionState, signInWithGoogle } from "@/lib/auth-actions"
 
@@ -18,7 +18,7 @@ type LoginFormProps = {
 
 const INITIAL_STATE: SignInActionState = {
   status: "idle",
-  message: null,
+  message: "Please sign in with Google to continue.",
 }
 
 export function LoginForm({
@@ -43,7 +43,7 @@ export function LoginForm({
         aria-describedby="login-status"
         className="w-full"
       >
-        <GoogleFillIcon
+        <GoogleIconIcon
           data-testid="google-mark"
           aria-hidden="true"
           className="size-4"

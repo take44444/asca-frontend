@@ -25,16 +25,16 @@ export function ThreadList({
 }: ThreadListProps) {
   return (
     <aside
-      className="run-asca-thread-list flex min-h-0 flex-col bg-background pt-3 px-3 sm:py-4 sm:pl-3 sm:pr-0 md:w-[22rem]"
+      className="run-asca-thread-list flex min-h-0 flex-col bg-background px-3 pt-3 sm:py-4 sm:pr-0 sm:pl-3 md:w-[22rem]"
       aria-label="Run A.S.C.A. threads"
     >
       <Card
         size="sm"
-        className="min-h-0 flex-1 rounded-lg border border-border bg-card p-2 shadow-lg gap-2 ring-7"
+        className="min-h-0 flex-1 gap-2 rounded-lg border border-border bg-card p-2 shadow-lg ring-7"
         data-testid="thread-list-card"
       >
-        <CardHeader className="flex shrink-0 flex-col rounded-t-lg p-2 border-b border-border">
-          <div className="w-full flex items-center justify-between">
+        <CardHeader className="flex shrink-0 flex-col rounded-t-lg border-b border-border p-2">
+          <div className="flex w-full items-center justify-between">
             <Button
               type="button"
               variant="outline"
@@ -59,7 +59,7 @@ export function ThreadList({
                 size="xl"
                 key={thread.id}
                 className={cn(
-                  "grid w-full grid-cols-[minmax(0,1fr)_auto] text-left rounded-lg",
+                  "grid w-full grid-cols-[minmax(0,1fr)_auto] rounded-lg text-left",
                   thread.id === selectedThreadId
                     ? "border-primary/60 text-foreground ring-2 ring-primary/10"
                     : "text-muted-foreground"

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 
 import { ConversationPanel } from "@/components/run-asca/conversation-panel"
+import { eventsByThread } from "@/components/run-asca/event-fixtures"
+import { EventView } from "@/components/run-asca/event-view"
 import {
   buildDemonstrationThreads,
   DEMO_THREAD_ID,
@@ -218,6 +220,7 @@ export function RunAscaChat({
   )
   const selectedThread =
     threads.find((thread) => thread.id === selectedThreadId) ?? threads[0]
+  const selectedEvents = eventsByThread[selectedThreadId]
   const chatErrorMessage = useMemo(() => {
     if (status === "submitted" || status === "streaming") {
       return null
@@ -278,19 +281,22 @@ export function RunAscaChat({
             </ThreadMetadataSummaryCard>
           ))}
         </section>
-        <ConversationPanel
-          thread={selectedThread}
-          prompt={prompt}
-          isSubmitting={isSubmitting}
-          errorMessage={errorMessage}
-          onPromptChange={(value) => {
-            setPrompt(value)
-            if (inputErrorMessage) {
-              setInputErrorMessage(null)
-            }
-          }}
-          onSubmit={handleSubmit}
-        />
+        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto grid grid-cols-[minmax(0,1fr)_30rem] overflow-hidden">
+          <ConversationPanel
+            thread={selectedThread}
+            prompt={prompt}
+            isSubmitting={isSubmitting}
+            errorMessage={errorMessage}
+            onPromptChange={(value) => {
+              setPrompt(value)
+              if (inputErrorMessage) {
+                setInputErrorMessage(null)
+              }
+            }}
+            onSubmit={handleSubmit}
+          />
+          <EventView events={selectedEvents} />
+        </div>
       </main>
       {process.env.NODE_ENV !== "production" ? (
         <Button

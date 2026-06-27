@@ -25,6 +25,28 @@ export type ThreadId =
   | "retrospective-action-items"
   | "thread-list-accessibility-audit"
 
+/** External application that produced a thread event. */
+export type EventApp = "slack" | "microsoft-teams" | "discord" | "x" | "github"
+
+/** One read-only external event associated with a demonstration thread. */
+export type ThreadEvent = {
+  id: string
+  threadId: ThreadId
+  app: EventApp
+  sender: string
+  externalThread?: string
+  content: string
+  occurredAt: string
+}
+
+/** Complete local event fixture collection keyed by demonstration thread. */
+export type EventsByThread = Record<ThreadId, ThreadEvent[]>
+
+/** Props for the selected thread's event presentation. */
+export type EventViewProps = {
+  events: ThreadEvent[]
+}
+
 /**
  * Sender role accepted by the Run A.S.C.A. chat surface and route contract.
  */
