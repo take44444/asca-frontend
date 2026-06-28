@@ -1,6 +1,6 @@
 # A.S.C.A. Frontend Constitution
 
-A.S.C.A. - A Slightly Clever Agent - is an autonomous research assistant designed to assist users in various tasks.
+A.S.C.A. - A Slightly Clever Agent - is an autonomous job assistant designed to assist users in various tasks.
 
 This project is a frontend implementation of the A.S.C.A. agent. The frontend is responsible for providing a user-friendly interface for users to interact with the A.S.C.A. agent.
 
