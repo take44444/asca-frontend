@@ -82,13 +82,13 @@ export function AgentMetadataSummaryCard({
       aria-label={`${summary.label} summary`}
       data-testid="agent-metadata-summary"
       className={cn(
-        "min-w-0 gap-1 rounded-lg border px-4 pt-3 pb-1 shadow-xs ring-0 [--card-spacing:--spacing(3)]",
+        "min-w-0 gap-1 rounded-lg border px-3 pt-2 pb-1 shadow-xs ring-0 [--card-spacing:--spacing(3)]",
         toneClasses[summary.tone]
       )}
     >
       <CardHeader className="flex min-w-0 items-center gap-4 rounded-t-lg px-0">
         <div className="flex items-center justify-center rounded-md bg-primary/10 p-1">
-          <Icon className="size-6" aria-hidden="true" />
+          <Icon className="size-7" aria-hidden="true" />
         </div>
         <div className="min-w-0">
           <CardTitle className="truncate text-xs font-semibold tracking-normal">

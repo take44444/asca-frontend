@@ -200,13 +200,16 @@ test.describe("Run A.S.C.A.", () => {
   }) => {
     await setAuthenticatedSession(context)
     await installStreamingFetchMock(page, [
-      { chunks: ["A.S.C.A.", " e2e response."], delayMs: 300 },
+      { chunks: ["A.S.C.A.", " e2e response."], delayMs: 1_000 },
     ])
 
     await page.goto("/run")
     await page.getByLabel("Prompt A.S.C.A.").fill("Explain this workspace.")
     await page.getByRole("button", { name: "Send prompt" }).click()
 
+    await expect(page.getByTestId("message-viewport")).toContainText(
+      "Streaming"
+    )
     await expect(page.getByText("Explain this workspace.")).toBeVisible()
     await expect(
       page
@@ -214,9 +217,6 @@ test.describe("Run A.S.C.A.", () => {
         .getByText("Demonstration Agent", { exact: true })
         .first()
     ).toBeVisible()
-    await expect(page.getByTestId("message-viewport")).toContainText(
-      "Streaming"
-    )
     await expect(page.getByText("A.S.C.A. e2e response.")).toBeVisible()
     await expect(page.getByText("Streaming")).toHaveCount(0)
     await expect(page.getByLabel("Prompt A.S.C.A.")).toBeEnabled()

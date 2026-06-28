@@ -56,7 +56,7 @@ export function EventView({ events }: EventViewProps) {
         className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2"
         data-testid="event-viewport"
       >
-        <ItemGroup className="gap-3 has-data-[size=sm]:gap-1.5 has-data-[size=xs]:gap-1">
+        <ItemGroup className="gap-1.5 has-data-[size=sm]:gap-1.5">
           {events.map((event) => {
             const source = eventSources[event.app]
             const SourceIcon = source.Icon

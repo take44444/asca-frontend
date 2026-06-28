@@ -4,7 +4,7 @@ import { MessageSquarePlusIcon } from "@/components/icons/lucide-message-square-
 import type { Agent, AgentId } from "@/components/run-asca/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Item, ItemContent, ItemTitle } from "@/components/ui/item"
+import { Item, ItemContent, ItemGroup, ItemTitle } from "@/components/ui/item"
 import { cn } from "@/lib/utils"
 
 /**
@@ -49,10 +49,10 @@ export function AgentList({
           </div>
         </CardHeader>
         <CardContent
-          className="min-h-0 flex-1 overflow-y-auto bg-muted/15 p-2"
+          className="min-h-0 flex-1 overflow-y-auto p-2"
           data-testid="agent-list-scroll"
         >
-          <div className="flex flex-col gap-2">
+          <ItemGroup className="gap-1 has-data-[size=sm]:gap-1">
             {agents.map((agent) => (
               <Item
                 render={<button type="button" />}
@@ -75,7 +75,7 @@ export function AgentList({
                 </ItemContent>
               </Item>
             ))}
-          </div>
+          </ItemGroup>
         </CardContent>
       </Card>
     </aside>
