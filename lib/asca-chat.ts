@@ -16,7 +16,7 @@ type ParseResult =
       message: string
     }
 
-const SUPPORTED_THREAD_ID = "demo"
+const SUPPORTED_AGENT_ID = "demo"
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null
@@ -55,8 +55,8 @@ export function parseAscaChatRequest(body: unknown): ParseResult {
     return { ok: false, message: "Enter a prompt before sending." }
   }
 
-  if (body.threadId !== SUPPORTED_THREAD_ID) {
-    return { ok: false, message: "Select the demonstration thread." }
+  if (body.agentId !== SUPPORTED_AGENT_ID) {
+    return { ok: false, message: "Select the demonstration agent." }
   }
 
   if (!Array.isArray(body.messages) || body.messages.length === 0) {
@@ -95,7 +95,7 @@ export function parseAscaChatRequest(body: unknown): ParseResult {
   return {
     ok: true,
     request: {
-      threadId: SUPPORTED_THREAD_ID,
+      agentId: SUPPORTED_AGENT_ID,
       messages,
     },
   }

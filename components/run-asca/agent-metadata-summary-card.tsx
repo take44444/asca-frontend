@@ -6,7 +6,7 @@ import { ChartSplineIcon } from "@/components/icons/lucide-chart-spline"
 import { ListTodoIcon } from "@/components/icons/lucide-list-todo"
 import { useSyncExternalStore, type ReactNode } from "react"
 
-import type { ThreadMetadataSummary } from "@/components/run-asca/types"
+import type { AgentMetadataSummary } from "@/components/run-asca/types"
 import {
   Card,
   CardContent,
@@ -16,15 +16,14 @@ import {
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
-const iconBySummaryId: Record<ThreadMetadataSummary["id"], React.ElementType> =
-{
+const iconBySummaryId: Record<AgentMetadataSummary["id"], React.ElementType> = {
   tasks: ListTodoIcon,
   artifacts: PackageCheckIcon,
   knowledge: BrainCircuitIcon,
   tokens: ChartSplineIcon,
 }
 
-const toneClasses: Record<ThreadMetadataSummary["tone"], string> = {
+const toneClasses: Record<AgentMetadataSummary["tone"], string> = {
   sky: "border-sky-200 bg-sky-50/80 text-sky-950 dark:border-sky-900/90 dark:bg-sky-950/30 dark:text-sky-100",
   emerald:
     "border-emerald-200 bg-emerald-50/80 text-emerald-950 dark:border-emerald-900/90 dark:bg-emerald-950/30 dark:text-emerald-100",
@@ -60,20 +59,20 @@ function useIsSmViewport(smBreakpointQuery: string): boolean {
 }
 
 /**
- * Props for one Run A.S.C.A. thread metadata summary.
+ * Props for one Run A.S.C.A. agent metadata summary.
  */
-export type ThreadMetadataSummaryCardProps = {
-  summary: ThreadMetadataSummary
+export type AgentMetadataSummaryCardProps = {
+  summary: AgentMetadataSummary
   children?: ReactNode
 }
 
 /**
  * Renders one compact metadata summary with category symbol, count, and details.
  */
-export function ThreadMetadataSummaryCard({
+export function AgentMetadataSummaryCard({
   summary,
   children,
-}: ThreadMetadataSummaryCardProps) {
+}: AgentMetadataSummaryCardProps) {
   const Icon = iconBySummaryId[summary.id]
   const shouldRenderContent = useIsSmViewport("(min-width: 768px)")
 
@@ -81,27 +80,27 @@ export function ThreadMetadataSummaryCard({
     <Card
       size="sm"
       aria-label={`${summary.label} summary`}
-      data-testid="thread-metadata-summary"
+      data-testid="agent-metadata-summary"
       className={cn(
-        "min-w-0 gap-2 rounded-lg border py-3 shadow-xs ring-0 [--card-spacing:--spacing(3)]",
+        "min-w-0 gap-1 rounded-lg border px-4 pt-3 pb-1 shadow-xs ring-0 [--card-spacing:--spacing(3)]",
         toneClasses[summary.tone]
       )}
     >
-      <CardHeader className="flex min-w-0 items-center gap-4 rounded-t-lg">
-        <div className="flex items-center justify-center rounded-md bg-primary/10 p-2">
-          <Icon className="size-8" aria-hidden="true" />
+      <CardHeader className="flex min-w-0 items-center gap-4 rounded-t-lg px-0">
+        <div className="flex items-center justify-center rounded-md bg-primary/10 p-1">
+          <Icon className="size-6" aria-hidden="true" />
         </div>
         <div className="min-w-0">
           <CardTitle className="truncate text-xs font-semibold tracking-normal">
             {summary.label}
           </CardTitle>
-          <CardDescription className="text-2xl leading-none font-semibold text-current tabular-nums">
+          <CardDescription className="text-xl leading-none font-semibold text-current tabular-nums">
             {summary.primaryValue}
           </CardDescription>
         </div>
       </CardHeader>
       {shouldRenderContent ? (
-        <CardContent className="min-w-0">
+        <CardContent className="min-w-0 px-0">
           <div className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium text-current/75">
             {summary.supportingDetails.map((detail) => (
               <span key={detail} className="max-w-full truncate">

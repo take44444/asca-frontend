@@ -9,12 +9,12 @@ import { TextDecoder, TextEncoder } from "node:util"
 import { MessagePort } from "node:worker_threads"
 
 import { RunAscaChat } from "@/app/run/run-asca-chat"
-import { eventsByThread } from "@/components/run-asca/event-fixtures"
+import { eventsByAgent } from "@/components/run-asca/event-fixtures"
 import {
-  demoThreadMetadataSummaries,
+  demoAgentMetadataSummaries,
   demoTokenUsageSummary,
-} from "@/components/run-asca/thread-metadata-fixtures"
-import type { ChatMessage, ThreadId } from "@/components/run-asca/types"
+} from "@/components/run-asca/agent-metadata-fixtures"
+import type { ChatMessage, AgentId } from "@/components/run-asca/types"
 import {
   createControlledUIMessageStream,
   createMockAscaUIStreamResponse,
@@ -150,12 +150,12 @@ describe("RunAscaChat", () => {
       )
   })
 
-  it("renders thread-specific, non-interactive event content without fetching", async () => {
+  it("renders agent-specific, non-interactive event content without fetching", async () => {
     const user = userEvent.setup()
     render(<RunAscaChat />)
 
     const events = screen.getByRole("complementary", {
-      name: "Events for current thread",
+      name: "Events for current agent",
     })
     expect(
       within(events).getByRole("heading", { name: "Events" })
@@ -182,18 +182,18 @@ describe("RunAscaChat", () => {
     expect(global.fetch).not.toHaveBeenCalled()
   })
 
-  it("keeps complete, valid event fixtures for every thread", () => {
-    const entries = Object.entries(eventsByThread) as [
-      ThreadId,
-      (typeof eventsByThread)[ThreadId],
+  it("keeps complete, valid event fixtures for every agent", () => {
+    const entries = Object.entries(eventsByAgent) as [
+      AgentId,
+      (typeof eventsByAgent)[AgentId],
     ][]
     const allEvents = entries.flatMap(([, events]) => events)
 
     expect(entries).toHaveLength(20)
-    expect(eventsByThread.demo).toHaveLength(20)
-    for (const [threadId, events] of entries) {
-      expect(events).toHaveLength(threadId === "demo" ? 20 : 3)
-      expect(events.every((event) => event.threadId === threadId)).toBe(true)
+    expect(eventsByAgent.demo).toHaveLength(20)
+    for (const [agentId, events] of entries) {
+      expect(events).toHaveLength(agentId === "demo" ? 20 : 3)
+      expect(events.every((event) => event.agentId === agentId)).toBe(true)
     }
     expect(new Set(allEvents.map((event) => event.id)).size).toBe(
       allEvents.length
@@ -210,7 +210,7 @@ describe("RunAscaChat", () => {
     render(<RunAscaChat />)
 
     const events = screen.getByRole("complementary", {
-      name: "Events for current thread",
+      name: "Events for current agent",
     })
     for (const source of [
       "Slack",
@@ -434,63 +434,135 @@ describe("RunAscaChat", () => {
     expect(screen.queryByText("Incomplete")).not.toBeInTheDocument()
   })
 
-  it("renders the selected demonstration thread and unavailable create action", () => {
+  it("renders the selected demonstration agent and unavailable create action", () => {
     render(<RunAscaChat />)
 
+    const agentRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
+    })
+
     expect(
-      screen.getByRole("button", { name: /Demonstration Thread/ })
+      within(agentRegion).getByRole("button", { name: "Demonstration Agent" })
     ).toHaveAttribute("aria-current", "page")
     expect(
-      screen.getByRole("button", { name: "Create New Thread" })
+      screen.getByRole("button", { name: "Create New Agent" })
     ).toBeDisabled()
-    expect(screen.getAllByText("Demonstration Thread")).toHaveLength(2)
+    expect(screen.getAllByText("Demonstration Agent")).toHaveLength(3)
+    expect(agentRegion).toBeVisible()
+  })
+
+  it("presents the selected agent through the renamed list, details, and conversation", async () => {
+    const user = userEvent.setup()
+    render(<RunAscaChat />)
+
+    const agentRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
+    })
+    const demonstrationAgent = within(agentRegion).getByRole("button", {
+      name: "Demonstration Agent",
+    })
+
+    expect(demonstrationAgent).toHaveAttribute("aria-current", "page")
+    expect(demonstrationAgent).toHaveAttribute("data-slot", "item")
     expect(
-      screen.getByRole("complementary", { name: "Run A.S.C.A. threads" })
+      demonstrationAgent.querySelector("[data-slot='item-content']")
+    ).not.toBeNull()
+    expect(
+      demonstrationAgent.querySelector("[data-slot='item-title']")
+    ).toHaveTextContent("Demonstration Agent")
+    expect(demonstrationAgent).not.toHaveTextContent(/messages?/)
+    expect(
+      within(agentRegion).getByRole("button", { name: "Create New Agent" })
+    ).toBeDisabled()
+
+    const agentCard = screen.getByRole("region", {
+      name: "Agent details",
+    })
+    expect(
+      within(agentCard).getByRole("heading", { name: "Demonstration Agent" })
+    ).toBeVisible()
+    expect(within(agentCard).getByTestId("agent-role-viewport")).toHaveClass(
+      "overflow-y-auto"
+    )
+    const configureAgent = within(agentCard).getByRole("button", {
+      name: "Configure Agent",
+    })
+    expect(configureAgent).toHaveAttribute("aria-disabled", "true")
+    await user.hover(configureAgent)
+    expect(await screen.findByText("Configure Agent")).toBeVisible()
+
+    const metadata = screen.getByRole("region", { name: "Agent metadata" })
+    expect(
+      agentCard.compareDocumentPosition(metadata) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy()
+
+    const conversation = screen.getByLabelText("Conversation")
+    expect(conversation.querySelector("[data-slot='card-header']")).toBeNull()
+    expect(within(conversation).getByText("Demonstration Agent")).toBeVisible()
+    expect(
+      within(conversation).getByRole("button", {
+        name: "Copy Demonstration Agent message",
+      })
+    ).toBeVisible()
+
+    await user.click(
+      within(agentRegion).getByRole("button", {
+        name: "Incident response rehearsal",
+      })
+    )
+    expect(
+      within(agentCard).getByRole("heading", {
+        name: "Incident response rehearsal",
+      })
+    ).toBeVisible()
+    expect(
+      within(conversation).getByText("Incident response rehearsal")
     ).toBeVisible()
   })
 
-  it("renders 20 demonstration thread entries with titles and message counts without fetching threads", () => {
+  it("renders 20 demonstration agent items with names and no message counts", () => {
     render(<RunAscaChat />)
 
-    const threadRegion = screen.getByRole("complementary", {
-      name: "Run A.S.C.A. threads",
+    const agentRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
     })
-    const threadButtons = within(threadRegion)
+    const agentButtons = within(agentRegion)
       .getAllByRole("button")
-      .filter((button) => button.textContent !== "Create New Thread")
+      .filter((button) => button.textContent !== "Create New Agent")
 
-    expect(threadButtons).toHaveLength(20)
+    expect(agentButtons).toHaveLength(20)
     expect(
-      within(threadRegion).getByRole("button", {
-        name: /Demonstration Thread\s+1 message/,
+      within(agentRegion).getByRole("button", {
+        name: "Demonstration Agent",
       })
     ).toHaveAttribute("aria-current", "page")
     expect(
-      within(threadRegion).getByRole("button", {
-        name: /Incident response rehearsal\s+3 messages/,
+      within(agentRegion).getByRole("button", {
+        name: "Incident response rehearsal",
       })
     ).toBeVisible()
     expect(
-      within(threadRegion).getByRole("button", {
-        name: /Long-running research synthesis\s+12 messages/,
+      within(agentRegion).getByRole("button", {
+        name: "Long-running research synthesis",
       })
     ).toBeVisible()
     expect(global.fetch).not.toHaveBeenCalled()
   })
 
-  it("keeps the create thread control visible, disabled, and unavailable for activation", () => {
+  it("keeps the create agent control visible, disabled, and unavailable for activation", () => {
     render(<RunAscaChat />)
 
-    const createThread = screen.getByRole("button", {
-      name: "Create New Thread",
+    const createAgent = screen.getByRole("button", {
+      name: "Create New Agent",
     })
 
-    expect(createThread).toBeVisible()
-    expect(createThread).toBeDisabled()
-    expect(createThread.querySelector("svg")).not.toBeNull()
+    expect(createAgent).toBeVisible()
+    expect(createAgent).toBeDisabled()
+    expect(createAgent.querySelector("svg")).not.toBeNull()
   })
 
-  it("switches to static demonstration threads and back to the live thread", async () => {
+  it("switches to static demonstration agents and back to the live agent", async () => {
     const user = userEvent.setup()
     render(<RunAscaChat />)
 
@@ -498,37 +570,44 @@ describe("RunAscaChat", () => {
       screen.getByRole("button", { name: /Incident response rehearsal/ })
     )
 
-    const conversation = screen.getByLabelText("Conversation")
+    const agentCard = screen.getByRole("region", { name: "Agent details" })
 
     expect(
-      within(conversation).getByText("Incident response rehearsal")
+      within(agentCard).getByRole("heading", {
+        name: "Incident response rehearsal",
+      })
     ).toBeVisible()
-    expect(within(conversation).getByText("3 messages")).toBeVisible()
     expect(
       screen.getByText("Confirm the escalation path and summarize owners.")
     ).toBeVisible()
     expect(
-      screen.getByRole("button", { name: /Incident response rehearsal/ })
+      screen
+        .getByRole("complementary", { name: "Run A.S.C.A. agents" })
+        .querySelector("[aria-current='page']")
     ).toHaveAttribute("aria-current", "page")
 
     await user.click(
-      screen.getByRole("button", { name: /Demonstration Thread/ })
+      within(
+        screen.getByRole("complementary", { name: "Run A.S.C.A. agents" })
+      ).getByRole("button", { name: "Demonstration Agent" })
     )
 
-    expect(within(conversation).getByText("Demonstration Thread")).toBeVisible()
     expect(
-      screen.getByText("Ready for a focused A.S.C.A. demonstration thread.")
+      within(agentCard).getByRole("heading", { name: "Demonstration Agent" })
+    ).toBeVisible()
+    expect(
+      screen.getByText("Ready for a focused A.S.C.A. demonstration agent.")
     ).toBeVisible()
   })
 
-  it("submits prompts with the currently selected thread id", async () => {
+  it("submits prompts with the currently selected agent id", async () => {
     const user = userEvent.setup()
     render(<RunAscaChat />)
 
     await user.click(
       screen.getByRole("button", { name: /Incident response rehearsal/ })
     )
-    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Use this thread")
+    await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Use this agent")
     await user.click(screen.getByRole("button", { name: "Send prompt" }))
 
     await waitFor(() => {
@@ -536,58 +615,57 @@ describe("RunAscaChat", () => {
     })
 
     const [, init] = jest.mocked(global.fetch).mock.calls[0]
-    expect(init?.body).toContain('"threadId":"incident-response-rehearsal"')
+    expect(init?.body).toContain('"agentId":"incident-response-rehearsal"')
   })
 
-  it("keeps the thread list header fixed while entries scroll independently", () => {
+  it("keeps the agent list header fixed while entries scroll independently", () => {
     render(<RunAscaChat />)
 
-    const threadRegion = screen.getByRole("complementary", {
-      name: "Run A.S.C.A. threads",
+    const agentRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
     })
-    const card = within(threadRegion).getByTestId("thread-list-card")
-    const content = card.querySelector("[data-testid='thread-list-scroll']")
+    const card = within(agentRegion).getByTestId("agent-list-card")
+    const content = card.querySelector("[data-testid='agent-list-scroll']")
 
-    expect(threadRegion).not.toHaveClass("md:border-r", "bg-muted/30")
+    expect(agentRegion).not.toHaveClass("md:border-r", "bg-muted/30")
     expect(card).toHaveClass("bg-card", "shadow-lg")
     expect(content).not.toBeNull()
     expect(content).toHaveClass("min-h-0", "flex-1", "overflow-y-auto")
     expect(
-      screen.getByRole("button", { name: "Create New Thread" })
+      screen.getByRole("button", { name: "Create New Agent" })
     ).toBeVisible()
   })
 
-  it("contains long titles and supports zero and multi-digit message counts", () => {
+  it("contains long agent names without exposing message counts", () => {
     render(<RunAscaChat />)
 
-    const threadRegion = screen.getByRole("complementary", {
-      name: "Run A.S.C.A. threads",
+    const agentRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
     })
 
     expect(
-      within(threadRegion).getByRole("button", {
-        name: /Quarterly planning notes with a deliberately long title that stays contained\s+0 messages/,
+      within(agentRegion).getByRole("button", {
+        name: "Quarterly planning notes with a deliberately long title that stays contained",
       })
     ).toBeVisible()
     expect(
-      within(threadRegion).getByRole("button", {
-        name: /Long-running research synthesis\s+12 messages/,
+      within(agentRegion).getByRole("button", {
+        name: "Long-running research synthesis",
       })
     ).toBeVisible()
   })
 
-  it("renders a bounded conversation panel with header, exact count, viewport, empty state, and anchored prompt", () => {
+  it("renders a bounded headerless conversation with an empty state and anchored prompt", () => {
     renderRunAscaChat([])
 
     const conversation = getConversationElements()
 
     expect(conversation.region).toHaveClass("rounded-lg", "border")
     expect(
-      within(conversation.region).getByText("Demonstration Thread")
-    ).toBeVisible()
-    expect(conversation.region).toHaveTextContent("0 messages")
+      conversation.region.querySelector("[data-slot='card-header']")
+    ).toBeNull()
     expect(
-      screen.getByText("Start the demonstration thread with a text prompt.")
+      screen.getByText("Start the demonstration agent with a text prompt.")
     ).toBeVisible()
     expect(conversation.viewport).toHaveClass("overflow-y-auto")
     expect(conversation.prompt).toBeVisible()
@@ -597,13 +675,11 @@ describe("RunAscaChat", () => {
   it("renders exactly four static metadata summaries without fetching metadata", async () => {
     renderRunAscaChat()
 
-    const summaries = screen.getAllByTestId("thread-metadata-summary")
+    const summaries = screen.getAllByTestId("agent-metadata-summary")
 
     expect(summaries).toHaveLength(4)
     expect(global.fetch).not.toHaveBeenCalled()
-    expect(
-      screen.getByRole("region", { name: "Thread metadata" })
-    ).toBeVisible()
+    expect(screen.getByRole("region", { name: "Agent metadata" })).toBeVisible()
     expect(await screen.findByText("8 completed")).toBeVisible()
     expect(screen.getByText("3 pending")).toBeVisible()
     expect(screen.getByText("4 research")).toBeVisible()
@@ -644,7 +720,7 @@ describe("RunAscaChat", () => {
   it("keeps compact metadata labels, symbols, and primary counts available", () => {
     renderRunAscaChat()
 
-    for (const summary of demoThreadMetadataSummaries) {
+    for (const summary of demoAgentMetadataSummaries) {
       const card = screen.getByLabelText(`${summary.label} summary`)
 
       expect(card).toBeVisible()
@@ -654,16 +730,20 @@ describe("RunAscaChat", () => {
     }
   })
 
-  it("supports selecting the demonstration thread without losing the conversation", async () => {
+  it("supports selecting the demonstration agent without losing the conversation", async () => {
     const user = userEvent.setup()
     render(<RunAscaChat />)
 
+    const agentRegion = screen.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
+    })
+
     await user.click(
-      screen.getByRole("button", { name: /Demonstration Thread/ })
+      within(agentRegion).getByRole("button", { name: "Demonstration Agent" })
     )
 
     expect(
-      screen.getByText("Ready for a focused A.S.C.A. demonstration thread.")
+      screen.getByText("Ready for a focused A.S.C.A. demonstration agent.")
     ).toBeVisible()
   })
 
@@ -712,7 +792,9 @@ describe("RunAscaChat", () => {
     )
 
     await user.click(
-      screen.getByRole("button", { name: "Copy A.S.C.A. message" })
+      screen.getByRole("button", {
+        name: "Copy Demonstration Agent message",
+      })
     )
 
     expect(writeText).toHaveBeenCalledWith("**Original** markdown")
@@ -725,7 +807,9 @@ describe("RunAscaChat", () => {
     render(<RunAscaChat />)
 
     await user.click(
-      screen.getByRole("button", { name: "Copy A.S.C.A. message" })
+      screen.getByRole("button", {
+        name: "Copy Demonstration Agent message",
+      })
     )
 
     expect(await screen.findByText("Copy failed")).toBeVisible()
@@ -739,10 +823,12 @@ describe("RunAscaChat", () => {
 
     expect(screen.getByLabelText("Prompt A.S.C.A.")).toBeVisible()
     expect(
-      screen.getByRole("button", { name: "Copy A.S.C.A. message" })
+      screen.getByRole("button", {
+        name: "Copy Demonstration Agent message",
+      })
     ).toBeVisible()
     expect(
-      screen.getByRole("button", { name: "Create New Thread" })
+      screen.getByRole("button", { name: "Create New Agent" })
     ).toBeDisabled()
 
     await user.type(screen.getByLabelText("Prompt A.S.C.A."), "Loading state")

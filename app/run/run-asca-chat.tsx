@@ -5,23 +5,24 @@ import { DefaultChatTransport, type UIMessage } from "ai"
 import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 
+import { AgentCard } from "@/components/run-asca/agent-card"
+import { AgentList } from "@/components/run-asca/agent-list"
+import { AgentMetadataSummaryCard } from "@/components/run-asca/agent-metadata-summary-card"
 import { ConversationPanel } from "@/components/run-asca/conversation-panel"
-import { eventsByThread } from "@/components/run-asca/event-fixtures"
+import { eventsByAgent } from "@/components/run-asca/event-fixtures"
 import { EventView } from "@/components/run-asca/event-view"
 import {
-  buildDemonstrationThreads,
-  DEMO_THREAD_ID,
-  demoThreadMetadataSummaries,
+  buildDemonstrationAgents,
+  DEMO_AGENT_ID,
+  demoAgentMetadataSummaries,
   demoTokenUsageSummary,
-} from "@/components/run-asca/thread-metadata-fixtures"
-import { ThreadMetadataSummaryCard } from "@/components/run-asca/thread-metadata-summary-card"
-import { ThreadList } from "@/components/run-asca/thread-list"
+} from "@/components/run-asca/agent-metadata-fixtures"
 import { TokenUsageTrend } from "@/components/run-asca/token-usage-trend"
 import type {
+  Agent,
+  AgentId,
   AscaChatErrorPayload,
   ChatMessage,
-  Thread,
-  ThreadId,
 } from "@/components/run-asca/types"
 import { Button } from "@/components/ui/button"
 
@@ -33,7 +34,7 @@ function createAssistantGreeting(): ChatMessage {
   return {
     id: "assistant-welcome",
     role: "assistant",
-    content: "Ready for a focused A.S.C.A. demonstration thread.",
+    content: "Ready for a focused A.S.C.A. demonstration agent.",
     createdAt: "2026-06-25T00:00:00.000Z",
     status: "complete",
     copyState: "idle",
@@ -154,14 +155,13 @@ export type RunAscaChatProps = {
 }
 
 /**
- * Owns the local demonstration thread state and route calls for /run.
+ * Owns the local demonstration agent state and route calls for /run.
  */
 export function RunAscaChat({
   initialMessages = DEFAULT_INITIAL_MESSAGES,
 }: RunAscaChatProps) {
   const router = useRouter()
-  const [selectedThreadId, setSelectedThreadId] =
-    useState<ThreadId>(DEMO_THREAD_ID)
+  const [selectedAgentId, setSelectedAgentId] = useState<AgentId>(DEMO_AGENT_ID)
   const [prompt, setPrompt] = useState("")
   const [inputErrorMessage, setInputErrorMessage] = useState<string | null>(
     null
@@ -214,13 +214,13 @@ export function RunAscaChat({
     [status, uiMessages]
   )
 
-  const threads: Thread[] = useMemo(
-    () => buildDemonstrationThreads(messages, selectedThreadId),
-    [messages, selectedThreadId]
+  const agents: Agent[] = useMemo(
+    () => buildDemonstrationAgents(messages, selectedAgentId),
+    [messages, selectedAgentId]
   )
-  const selectedThread =
-    threads.find((thread) => thread.id === selectedThreadId) ?? threads[0]
-  const selectedEvents = eventsByThread[selectedThreadId]
+  const selectedAgent =
+    agents.find((agent) => agent.id === selectedAgentId) ?? agents[0]
+  const selectedEvents = eventsByAgent[selectedAgentId]
   const chatErrorMessage = useMemo(() => {
     if (status === "submitted" || status === "streaming") {
       return null
@@ -254,7 +254,7 @@ export function RunAscaChat({
 
     void sendMessage(
       { text: trimmedPrompt },
-      { body: { threadId: selectedThreadId } }
+      { body: { agentId: selectedAgentId } }
     ).catch(() => {
       // useChat exposes the failure through status/error; chatErrorMessage maps it.
     })
@@ -262,28 +262,30 @@ export function RunAscaChat({
 
   return (
     <div className="run-asca-workspace relative bg-muted/20">
-      <ThreadList
-        threads={threads}
-        selectedThreadId={selectedThreadId}
-        onSelectThread={setSelectedThreadId}
+      <AgentList
+        agents={agents}
+        selectedAgentId={selectedAgentId}
+        onSelectAgent={setSelectedAgentId}
       />
-      <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-3 sm:p-4">
+      <main className="flex min-h-0 flex-1 flex-col gap-3 overflow-visible p-3 sm:p-4 lg:overflow-hidden">
         <h1 className="sr-only">Run A.S.C.A.</h1>
+        <AgentCard agent={selectedAgent} />
         <section
-          aria-label="Thread metadata"
+          aria-label="Agent metadata"
+          role="region"
           className="grid shrink-0 grid-cols-4 gap-2"
         >
-          {demoThreadMetadataSummaries.map((summary) => (
-            <ThreadMetadataSummaryCard key={summary.id} summary={summary}>
+          {demoAgentMetadataSummaries.map((summary) => (
+            <AgentMetadataSummaryCard key={summary.id} summary={summary}>
               {summary.id === "tokens" ? (
                 <TokenUsageTrend points={demoTokenUsageSummary.points} />
               ) : null}
-            </ThreadMetadataSummaryCard>
+            </AgentMetadataSummaryCard>
           ))}
         </section>
-        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto grid grid-cols-[minmax(0,1fr)_30rem] overflow-hidden">
+        <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-visible lg:grid-cols-[minmax(0,1fr)_30rem] lg:overflow-hidden">
           <ConversationPanel
-            thread={selectedThread}
+            agent={selectedAgent}
             prompt={prompt}
             isSubmitting={isSubmitting}
             errorMessage={errorMessage}

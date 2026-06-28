@@ -25,15 +25,24 @@ type CopyState = "idle" | "copied" | "failed"
  */
 export type ChatMessageProps = {
   message: ChatMessageModel
+  agentName: string
 }
 
 /**
- * Renders a user or A.S.C.A. message with markdown display and clipboard copy.
+ * Renders a user or selected-agent message with markdown display and clipboard copy.
  */
-export function ChatMessage({ message }: ChatMessageProps) {
+export function ChatMessage({ message, agentName }: ChatMessageProps) {
   const [copyState, setCopyState] = useState<CopyState>(message.copyState)
-  const sender = message.role === "assistant" ? "A.S.C.A." : "You"
-  const fallback = message.role === "assistant" ? "AS" : "YO"
+  const sender = message.role === "assistant" ? agentName : "You"
+  const fallback =
+    message.role === "assistant"
+      ? agentName
+          .split(/\s+/)
+          .filter(Boolean)
+          .slice(0, 2)
+          .map((part) => part[0]?.toUpperCase())
+          .join("") || "AG"
+      : "YO"
 
   useEffect(() => {
     if (copyState === "idle") {

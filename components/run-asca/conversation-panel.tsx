@@ -3,16 +3,9 @@
 import { StickToBottom } from "use-stick-to-bottom"
 
 import { ChatMessage } from "@/components/run-asca/chat-message"
-import type { Thread } from "@/components/run-asca/types"
+import type { Agent } from "@/components/run-asca/types"
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardAction,
-} from "@/components/ui/card"
+import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import {
   PromptInput,
   PromptInputActions,
@@ -26,7 +19,7 @@ import { SendIcon } from "@/components/icons/lucide-send"
  * Props for the Run A.S.C.A. conversation panel.
  */
 export type ConversationPanelProps = {
-  thread: Thread
+  agent: Agent
   prompt: string
   isSubmitting: boolean
   errorMessage: string | null
@@ -38,7 +31,7 @@ export type ConversationPanelProps = {
  * Renders the active conversation, anchored prompt, loading, error, and scroll controls.
  */
 export function ConversationPanel({
-  thread,
+  agent,
   prompt,
   isSubmitting,
   errorMessage,
@@ -48,18 +41,9 @@ export function ConversationPanel({
   return (
     <Card
       size="sm"
-      className="min-h-[28rem] flex-1 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs ring-0"
+      className="h-[28rem] min-h-0 flex-1 gap-2 rounded-lg border border-border bg-background p-2 shadow-xs ring-0 lg:h-full"
       aria-label="Conversation"
     >
-      <CardHeader className="shrink-0 rounded-t-lg border-b border-border px-4 pb-[var(--card-spacing)] pt-3">
-        <CardTitle className="truncate text-lg font-semibold text-foreground">
-          {thread.title}
-        </CardTitle>
-        <CardAction className="row-span-0 row-start-0 self-center leading-none text-xs tabular-nums">
-          {thread.messages.length}{" "}
-          {thread.messages.length === 1 ? "message" : "messages"}
-        </CardAction>
-      </CardHeader>
       <CardContent className="relative min-h-0 flex-1 p-0">
         <StickToBottom className="h-full" resize="smooth" initial="instant">
           {(context) => (
@@ -73,13 +57,17 @@ export function ConversationPanel({
                   ref={context.contentRef}
                   className="mx-auto flex w-full max-w-4xl flex-col gap-5 px-4 py-6 sm:px-6"
                 >
-                  {thread.messages.length === 0 ? (
+                  {agent.messages.length === 0 ? (
                     <div className="rounded-lg border border-dashed border-border bg-muted/20 p-6 text-sm text-muted-foreground">
-                      Start the demonstration thread with a text prompt.
+                      Start the demonstration agent with a text prompt.
                     </div>
                   ) : (
-                    thread.messages.map((message) => (
-                      <ChatMessage key={message.id} message={message} />
+                    agent.messages.map((message) => (
+                      <ChatMessage
+                        key={message.id}
+                        message={message}
+                        agentName={agent.name}
+                      />
                     ))
                   )}
                 </div>

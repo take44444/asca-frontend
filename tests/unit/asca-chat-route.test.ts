@@ -110,7 +110,7 @@ describe("POST /api/asca/chat", () => {
 
     const response = await POST(
       createJsonRequest({
-        threadId: "demo",
+        agentId: "demo",
         messages: [createUserMessage("Hello")],
       })
     )
@@ -128,7 +128,7 @@ describe("POST /api/asca/chat", () => {
   it("returns 400 for invalid empty requests", async () => {
     const response = await POST(
       createJsonRequest({
-        threadId: "demo",
+        agentId: "demo",
         messages: [createUserMessage("   ")],
       })
     )
@@ -153,7 +153,7 @@ describe("POST /api/asca/chat", () => {
 
     await POST(
       createJsonRequest({
-        threadId: "demo",
+        agentId: "demo",
         messages: [userMessage],
       })
     )
@@ -170,7 +170,7 @@ describe("POST /api/asca/chat", () => {
   it("returns a UI message stream for a valid request", async () => {
     const response = await POST(
       createJsonRequest({
-        threadId: "demo",
+        agentId: "demo",
         messages: [createUserMessage("Hello")],
       })
     )
@@ -187,7 +187,7 @@ describe("POST /api/asca/chat", () => {
 
     const response = await POST(
       createJsonRequest({
-        threadId: "demo",
+        agentId: "demo",
         messages: [createUserMessage("Hello")],
       })
     )
@@ -217,7 +217,7 @@ describe("POST /api/asca/chat", () => {
 
     const response = await POST(
       createJsonRequest({
-        threadId: "demo",
+        agentId: "demo",
         messages: [createUserMessage("Hello")],
       })
     )
@@ -226,14 +226,25 @@ describe("POST /api/asca/chat", () => {
     expect(streamText).not.toHaveBeenCalled()
   })
 
-  it("returns 400 for unsupported thread id", async () => {
+  it("returns 400 for unsupported agent id", async () => {
     const response = await POST(
       createJsonRequest({
-        threadId: "other",
+        agentId: "other",
         messages: [createUserMessage("Hello")],
       })
     )
 
     expect(response.status).toBe(400)
+  })
+
+  it("accepts the renamed demonstration agent id contract", async () => {
+    const response = await POST(
+      createJsonRequest({
+        agentId: "demo",
+        messages: [createUserMessage("Hello agent")],
+      })
+    )
+
+    expect(response.status).toBe(200)
   })
 })
