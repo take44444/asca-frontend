@@ -117,7 +117,7 @@ async function expectNoOverlap(page: Page, selectors: string[]): Promise<void> {
 }
 
 test.describe("Run A.S.C.A.", () => {
-  test("shows thread-specific events and all five accessible sources", async ({
+  test("shows agent-specific events and all five accessible sources", async ({
     page,
     context,
   }) => {
@@ -125,7 +125,7 @@ test.describe("Run A.S.C.A.", () => {
     await page.goto("/run")
 
     const events = page.getByRole("complementary", {
-      name: "Events for current thread",
+      name: "Events for current agent",
     })
     await expect(events.getByRole("listitem")).toHaveCount(20)
     for (const source of [
@@ -155,7 +155,7 @@ test.describe("Run A.S.C.A.", () => {
 
     const conversation = page.getByLabel("Conversation")
     const events = page.getByRole("complementary", {
-      name: "Events for current thread",
+      name: "Events for current agent",
     })
     const viewport = page.getByTestId("event-viewport")
     const heading = events.getByRole("heading", { name: "Events" })
@@ -179,7 +179,7 @@ test.describe("Run A.S.C.A.", () => {
     expect(resizedEventsBox!.y).toBe(resizedConversationBox!.y)
     await expectNoOverlap(page, [
       "[aria-label='Conversation']",
-      "[aria-label='Events for current thread']",
+      "[aria-label='Events for current agent']",
     ])
   })
 
@@ -209,7 +209,10 @@ test.describe("Run A.S.C.A.", () => {
 
     await expect(page.getByText("Explain this workspace.")).toBeVisible()
     await expect(
-      page.getByText("A.S.C.A.", { exact: true }).first()
+      page
+        .getByLabel("Conversation")
+        .getByText("Demonstration Agent", { exact: true })
+        .first()
     ).toBeVisible()
     await expect(page.getByTestId("message-viewport")).toContainText(
       "Streaming"
@@ -231,8 +234,12 @@ test.describe("Run A.S.C.A.", () => {
     await page.goto("/run")
 
     const conversation = page.getByLabel("Conversation")
-    await expect(conversation).toContainText("Demonstration Thread")
-    await expect(conversation).toContainText("1 message")
+    await expect(conversation.locator("[data-slot='card-header']")).toHaveCount(
+      0
+    )
+    await expect(
+      conversation.getByText("Demonstration Agent", { exact: true })
+    ).toBeVisible()
     await expect(page.getByTestId("message-viewport")).toBeVisible()
     await expect(page.getByLabel("Prompt A.S.C.A.")).toBeVisible()
 
@@ -252,7 +259,7 @@ test.describe("Run A.S.C.A.", () => {
 
     await page.goto("/run")
 
-    const summaries = page.getByTestId("thread-metadata-summary")
+    const summaries = page.getByTestId("agent-metadata-summary")
     await expect(summaries).toHaveCount(4)
     await expect(page.getByLabel("Tasks summary")).toContainText("8 completed")
     await expect(page.getByLabel("Tasks summary")).toContainText("3 pending")
@@ -324,8 +331,8 @@ test.describe("Run A.S.C.A.", () => {
       await expect(page.getByLabel("Prompt A.S.C.A.")).toBeVisible()
 
       await expectNoOverlap(page, [
-        "[aria-label='Thread metadata']",
-        "[aria-label='Conversation'] [data-slot='card-header']",
+        "[aria-label='Agent details']",
+        "[aria-label='Agent metadata']",
         "[data-testid='message-viewport']",
         "[aria-label='Conversation'] form",
       ])
@@ -404,20 +411,20 @@ test.describe("Run A.S.C.A.", () => {
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0)
     await expect(page.locator("body")).toHaveCSS("overflow", "hidden")
 
-    const threadList = page.getByLabel("Run A.S.C.A. threads")
+    const agentList = page.getByLabel("Run A.S.C.A. agents")
     const conversation = page.getByLabel("Conversation")
-    const threadBox = await threadList.boundingBox()
+    const agentBox = await agentList.boundingBox()
     const conversationBox = await conversation.boundingBox()
 
-    expect(threadBox).not.toBeNull()
+    expect(agentBox).not.toBeNull()
     expect(conversationBox).not.toBeNull()
-    expect(threadBox!.x).toBeLessThan(conversationBox!.x)
+    expect(agentBox!.x).toBeLessThan(conversationBox!.x)
     await expect(
-      page.getByRole("button", { name: /Demonstration Thread/ })
+      agentList.getByRole("button", { name: "Demonstration Agent" })
     ).toHaveAttribute("aria-current", "page")
   })
 
-  test("shows the redesigned thread list with 20 accessible entries and a disabled create control", async ({
+  test("shows the redesigned agent list with 20 accessible entries and a disabled create control", async ({
     page,
     context,
   }) => {
@@ -426,30 +433,71 @@ test.describe("Run A.S.C.A.", () => {
 
     await page.goto("/run")
 
-    const threadRegion = page.getByRole("complementary", {
-      name: "Run A.S.C.A. threads",
+    const agentRegion = page.getByRole("complementary", {
+      name: "Run A.S.C.A. agents",
     })
-    const threadCard = threadRegion.getByTestId("thread-list-card")
-    await expect(threadRegion).toBeVisible()
-    await expect(threadRegion).not.toHaveClass(/md:border-r/)
-    await expect(threadCard).toBeVisible()
-    await expect(threadCard).toHaveClass(/bg-card/)
-    await expect(threadCard).toHaveClass(/shadow-lg/)
+    const agentCard = agentRegion.getByTestId("agent-list-card")
+    await expect(agentRegion).toBeVisible()
+    await expect(agentRegion).not.toHaveClass(/md:border-r/)
+    await expect(agentCard).toBeVisible()
+    await expect(agentCard).toHaveClass(/bg-card/)
+    await expect(agentCard).toHaveClass(/shadow-lg/)
     await expect(
-      page.getByRole("button", { name: "Create New Thread" })
+      page.getByRole("button", { name: "Create New Agent" })
     ).toBeDisabled()
-    await expect(threadRegion.getByRole("button")).toHaveCount(21)
+    await expect(agentRegion.getByRole("button")).toHaveCount(21)
     await expect(
-      page.getByRole("button", { name: /Demonstration Thread\s+1 message/ })
+      agentRegion.getByRole("button", { name: "Demonstration Agent" })
     ).toHaveAttribute("aria-current", "page")
     await expect(
-      page.getByRole("button", {
-        name: /Incident response rehearsal\s+3 messages/,
+      agentRegion.getByRole("button", {
+        name: "Incident response rehearsal",
       })
     ).toBeVisible()
   })
 
-  test("switches through static threads and updates the conversation content", async ({
+  test("shows and scrolls the selected agent role above metadata", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 800 })
+    await page.goto("/run")
+
+    const agentCard = page.getByRole("region", { name: "Agent details" })
+    const metadata = page.getByRole("region", { name: "Agent metadata" })
+    const configureAgent = agentCard.getByRole("button", {
+      name: "Configure Agent",
+    })
+
+    await expect(
+      agentCard.getByRole("heading", { name: "Demonstration Agent" })
+    ).toBeVisible()
+    await configureAgent.focus()
+    await expect(page.getByText("Configure Agent")).toBeVisible()
+    expect((await agentCard.boundingBox())!.y).toBeLessThan(
+      (await metadata.boundingBox())!.y
+    )
+
+    await page
+      .getByRole("complementary", { name: "Run A.S.C.A. agents" })
+      .getByRole("button", { name: "Long-running research synthesis" })
+      .click()
+    const roleViewport = page.getByTestId("agent-role-viewport")
+    expect(
+      await roleViewport.evaluate(
+        (node) => node.scrollHeight > node.clientHeight
+      )
+    ).toBe(true)
+    await roleViewport.evaluate((node) => {
+      node.scrollTop = node.scrollHeight
+    })
+    await expect(
+      roleViewport.getByText("Research responsibility 12")
+    ).toBeVisible()
+  })
+
+  test("switches through static agents and updates the conversation content", async ({
     page,
     context,
   }) => {
@@ -458,42 +506,48 @@ test.describe("Run A.S.C.A.", () => {
 
     await page.goto("/run")
 
-    for (const thread of [
+    for (const agent of [
       {
-        title: "Incident response rehearsal",
+        name: "Incident response rehearsal",
         message: "Confirm the escalation path and summarize owners.",
       },
       {
-        title: "Release readiness review",
+        name: "Release readiness review",
         message: "List blockers by severity before the release window.",
       },
       {
-        title: "Knowledge base grooming",
+        name: "Knowledge base grooming",
         message: "Group stale articles by owner and last reviewed date.",
       },
       {
-        title: "Customer onboarding draft",
+        name: "Customer onboarding draft",
         message: "Turn the kickoff notes into a first-week checklist.",
       },
       {
-        title: "Long-running research synthesis",
+        name: "Long-running research synthesis",
         message: "Research note 12: final recommendation and tradeoffs.",
       },
     ]) {
-      await page.getByRole("button", { name: new RegExp(thread.title) }).click()
+      await page
+        .getByRole("complementary", { name: "Run A.S.C.A. agents" })
+        .getByRole("button", { name: agent.name })
+        .click()
       await expect(
         page
-          .getByLabel("Conversation")
-          .locator("[data-slot='card-title']", { hasText: thread.title })
+          .getByRole("region", { name: "Agent details" })
+          .locator("[data-slot='card-header']")
+          .getByRole("heading", { name: agent.name })
       ).toBeVisible()
-      await expect(page.getByText(thread.message)).toBeVisible()
+      await expect(page.getByText(agent.message)).toBeVisible()
       await expect(
-        page.getByRole("button", { name: new RegExp(thread.title) })
+        page
+          .getByRole("complementary", { name: "Run A.S.C.A. agents" })
+          .getByRole("button", { name: agent.name })
       ).toHaveAttribute("aria-current", "page")
     }
   })
 
-  test("scrolls the long thread list independently while the conversation remains visible", async ({
+  test("scrolls the long agent list independently while the conversation remains visible", async ({
     page,
     context,
   }) => {
@@ -502,7 +556,7 @@ test.describe("Run A.S.C.A.", () => {
 
     await page.goto("/run")
 
-    const scrollArea = page.getByTestId("thread-list-scroll")
+    const scrollArea = page.getByTestId("agent-list-scroll")
     const canScroll = await scrollArea.evaluate(
       (node) => node.scrollHeight > node.clientHeight
     )
@@ -514,14 +568,14 @@ test.describe("Run A.S.C.A.", () => {
     })
 
     await expect(
-      page.getByRole("button", { name: /Thread list accessibility audit/ })
+      page.getByRole("button", { name: /Agent list accessibility audit/ })
     ).toBeVisible()
     await expect(page.getByLabel("Conversation")).toBeVisible()
     await expect(page.getByLabel("Prompt A.S.C.A.")).toBeVisible()
     await expect(page).toHaveURL(/\/run$/)
   })
 
-  test("keeps thread title, count, create control, and conversation content non-overlapping", async ({
+  test("keeps agent name, create control, details, and conversation content non-overlapping", async ({
     page,
     context,
   }) => {
@@ -534,19 +588,22 @@ test.describe("Run A.S.C.A.", () => {
       await page.setViewportSize(size)
       await page.goto("/run")
 
-      await expect(page.getByLabel("Run A.S.C.A. threads")).toBeVisible()
+      await expect(page.getByLabel("Run A.S.C.A. agents")).toBeVisible()
       await expect(
-        page.getByRole("button", { name: "Create New Thread" })
+        page.getByRole("button", { name: "Create New Agent" })
       ).toBeVisible()
       await expect(
-        page.getByRole("button", { name: /Demonstration Thread/ })
+        page
+          .getByLabel("Run A.S.C.A. agents")
+          .getByRole("button", { name: "Demonstration Agent" })
       ).toBeVisible()
       await expect(page.getByLabel("Conversation")).toBeVisible()
 
       await expectNoOverlap(page, [
-        "[aria-label='Run A.S.C.A. threads'] [data-slot='card-header']",
-        "[aria-label='Run A.S.C.A. threads'] [data-testid='thread-list-scroll']",
-        "[aria-label='Conversation'] [data-slot='card-header']",
+        "[aria-label='Run A.S.C.A. agents'] [data-slot='card-header']",
+        "[aria-label='Run A.S.C.A. agents'] [data-testid='agent-list-scroll']",
+        "[aria-label='Agent details'] [data-slot='card-header']",
+        "[aria-label='Agent details'] [data-testid='agent-role-viewport']",
         "[data-testid='message-viewport']",
         "[aria-label='Conversation'] form",
       ])
@@ -602,7 +659,7 @@ test.describe("Run A.S.C.A.", () => {
     })
     await page.goto("/run")
     await page
-      .getByRole("button", { name: "Copy A.S.C.A. message" })
+      .getByRole("button", { name: "Copy Demonstration Agent message" })
       .first()
       .click()
 

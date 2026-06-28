@@ -1,8 +1,8 @@
 import type {
+  AgentEvent,
+  AgentId,
   EventApp,
-  EventsByThread,
-  ThreadEvent,
-  ThreadId,
+  EventsByAgent,
 } from "@/components/run-asca/types"
 
 const eventApps: readonly EventApp[] = [
@@ -13,7 +13,7 @@ const eventApps: readonly EventApp[] = [
   "github",
 ]
 
-const nonDemoThreadIds: readonly Exclude<ThreadId, "demo">[] = [
+const nonDemoAgentIds: readonly Exclude<AgentId, "demo">[] = [
   "incident-response-rehearsal",
   "release-readiness-review",
   "knowledge-base-grooming",
@@ -32,14 +32,14 @@ const nonDemoThreadIds: readonly Exclude<ThreadId, "demo">[] = [
   "hiring-scorecard-review",
   "design-critique-capture",
   "retrospective-action-items",
-  "thread-list-accessibility-audit",
+  "agent-list-accessibility-audit",
 ]
 
-function createDemoEvent(index: number): ThreadEvent {
+function createDemoEvent(index: number): AgentEvent {
   const eventNumber = index + 1
   return {
     id: `demo-event-${eventNumber}`,
-    threadId: "demo",
+    agentId: "demo",
     app: eventApps[index % eventApps.length],
     sender:
       index === 0
@@ -56,36 +56,36 @@ function createDemoEvent(index: number): ThreadEvent {
     content:
       index === 0
         ? "A deliberately long event description verifies that imported activity wraps cleanly without overlapping its source, sender, badge, or date."
-        : `Demonstration event ${eventNumber} records deterministic activity for the selected A.S.C.A. thread.`,
+        : `Demonstration event ${eventNumber} records deterministic activity for the selected A.S.C.A. agent.`,
     occurredAt: `2026-06-${String(27 - Math.floor(index / 4)).padStart(2, "0")}T${String(9 + (index % 8)).padStart(2, "0")}:00:00.000Z`,
   }
 }
 
-function createThreadEvents(
-  threadId: Exclude<ThreadId, "demo">,
-  threadIndex: number
-): ThreadEvent[] {
-  const readableThread = threadId.replaceAll("-", " ")
+function createAgentEvents(
+  agentId: Exclude<AgentId, "demo">,
+  agentIndex: number
+): AgentEvent[] {
+  const readableAgent = agentId.replaceAll("-", " ")
   return Array.from({ length: 3 }, (_, index) => ({
-    id: `${threadId}-event-${index + 1}`,
-    threadId,
-    app: eventApps[(threadIndex * 3 + index) % eventApps.length],
-    sender: `Fixture contributor ${threadIndex + 1}.${index + 1}`,
-    ...(index === 1 ? { externalThread: `#${threadId}` } : {}),
-    content: `${readableThread.charAt(0).toUpperCase()}${readableThread.slice(1)} event ${index + 1} preserves activity associated with this thread.`,
-    occurredAt: `2026-06-${String(26 - (threadIndex % 10)).padStart(2, "0")}T${String(10 + index).padStart(2, "0")}:00:00.000Z`,
+    id: `${agentId}-event-${index + 1}`,
+    agentId,
+    app: eventApps[(agentIndex * 3 + index) % eventApps.length],
+    sender: `Fixture contributor ${agentIndex + 1}.${index + 1}`,
+    ...(index === 1 ? { externalThread: `#${agentId}` } : {}),
+    content: `${readableAgent.charAt(0).toUpperCase()}${readableAgent.slice(1)} event ${index + 1} preserves activity associated with this agent.`,
+    occurredAt: `2026-06-${String(26 - (agentIndex % 10)).padStart(2, "0")}T${String(10 + index).padStart(2, "0")}:00:00.000Z`,
   }))
 }
 
-const generatedThreadEvents = Object.fromEntries(
-  nonDemoThreadIds.map((threadId, index) => [
-    threadId,
-    createThreadEvents(threadId, index),
+const generatedAgentEvents = Object.fromEntries(
+  nonDemoAgentIds.map((agentId, index) => [
+    agentId,
+    createAgentEvents(agentId, index),
   ])
-) as Record<Exclude<ThreadId, "demo">, ThreadEvent[]>
+) as Record<Exclude<AgentId, "demo">, AgentEvent[]>
 
-/** Deterministic read-only event data for every demonstration thread. */
-export const eventsByThread: EventsByThread = {
+/** Deterministic read-only event data for every demonstration agent. */
+export const eventsByAgent: EventsByAgent = {
   demo: Array.from({ length: 20 }, (_, index) => createDemoEvent(index)),
-  ...generatedThreadEvents,
+  ...generatedAgentEvents,
 }

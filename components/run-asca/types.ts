@@ -1,9 +1,9 @@
 import type { UIMessage } from "ai"
 
 /**
- * Stable identifier for one of the supported demonstration threads.
+ * Stable identifier for one of the supported demonstration agents.
  */
-export type ThreadId =
+export type AgentId =
   | "demo"
   | "incident-response-rehearsal"
   | "release-readiness-review"
@@ -23,15 +23,15 @@ export type ThreadId =
   | "hiring-scorecard-review"
   | "design-critique-capture"
   | "retrospective-action-items"
-  | "thread-list-accessibility-audit"
+  | "agent-list-accessibility-audit"
 
-/** External application that produced a thread event. */
+/** External application that produced an agent event. */
 export type EventApp = "slack" | "microsoft-teams" | "discord" | "x" | "github"
 
-/** One read-only external event associated with a demonstration thread. */
-export type ThreadEvent = {
+/** One read-only external event associated with a demonstration agent. */
+export type AgentEvent = {
   id: string
-  threadId: ThreadId
+  agentId: AgentId
   app: EventApp
   sender: string
   externalThread?: string
@@ -39,12 +39,12 @@ export type ThreadEvent = {
   occurredAt: string
 }
 
-/** Complete local event fixture collection keyed by demonstration thread. */
-export type EventsByThread = Record<ThreadId, ThreadEvent[]>
+/** Complete local event fixture collection keyed by demonstration agent. */
+export type EventsByAgent = Record<AgentId, AgentEvent[]>
 
-/** Props for the selected thread's event presentation. */
+/** Props for the selected agent's event presentation. */
 export type EventViewProps = {
-  events: ThreadEvent[]
+  events: AgentEvent[]
 }
 
 /**
@@ -63,7 +63,7 @@ export type ChatMessageStatus = "complete" | "streaming" | "error"
 export type MessageCopyState = "idle" | "copied" | "failed"
 
 /**
- * One ordered message in the demonstration chat thread.
+ * One ordered message in the demonstration agent conversation.
  */
 export type ChatMessage = {
   id: string
@@ -75,29 +75,31 @@ export type ChatMessage = {
 }
 
 /**
- * Conversation container shown in the Run A.S.C.A. thread list.
+ * Conversation container shown in the Run A.S.C.A. agent list.
  */
-export type Thread = {
-  id: ThreadId
-  title: string
+export type Agent = {
+  id: AgentId
+  name: string
+  role: string
   isSelected: boolean
   messages: ChatMessage[]
 }
 
 /**
- * Static non-live demonstration thread data projected into the thread list.
+ * Static non-live demonstration agent data projected into the agent list.
  */
-export type StaticDemonstrationThread = {
-  id: Exclude<ThreadId, "demo">
-  title: string
+export type StaticDemonstrationAgent = {
+  id: Exclude<AgentId, "demo">
+  name: string
+  role: string
   messages: ChatMessage[]
 }
 
 /**
- * Current prompt input and submission lifecycle for the active thread.
+ * Current prompt input and submission lifecycle for the active agent.
  */
 export type PromptSubmission = {
-  threadId: ThreadId
+  agentId: AgentId
   input: string
   trimmedInput: string
   state: "idle" | "streaming" | "succeeded" | "failed"
@@ -135,7 +137,7 @@ export type StreamingAscaResponse = {
  * Request payload for POST /api/asca/chat.
  */
 export type AscaChatRequest = {
-  threadId: ThreadId
+  agentId: AgentId
   messages: UIMessage[]
 }
 
@@ -167,7 +169,7 @@ export type AscaChatErrorPayload = {
 /**
  * Compact metadata categories rendered above the active conversation.
  */
-export type ThreadMetadataSummaryId =
+export type AgentMetadataSummaryId =
   | "tasks"
   | "artifacts"
   | "knowledge"
@@ -176,21 +178,21 @@ export type ThreadMetadataSummaryId =
 /**
  * Visual tone used to distinguish one metadata summary category.
  */
-export type ThreadMetadataTone = "sky" | "emerald" | "violet" | "amber"
+export type AgentMetadataTone = "sky" | "emerald" | "violet" | "amber"
 
 /**
- * One compact contextual summary for the active Run A.S.C.A. thread.
+ * One compact contextual summary for the active Run A.S.C.A. agent.
  */
-export type ThreadMetadataSummary = {
-  id: ThreadMetadataSummaryId
+export type AgentMetadataSummary = {
+  id: AgentMetadataSummaryId
   label: string
   primaryValue: string
   supportingDetails: string[]
-  tone: ThreadMetadataTone
+  tone: AgentMetadataTone
 }
 
 /**
- * Static task counts associated with the demonstration thread.
+ * Static task counts associated with the demonstration agent.
  */
 export type TaskSummary = {
   completedCount: number
@@ -207,7 +209,7 @@ export type ArtifactSummary = {
 }
 
 /**
- * Static count of knowledge items acquired in the demonstration thread.
+ * Static count of knowledge items acquired by the demonstration agent.
  */
 export type KnowledgeSummary = {
   itemCount: number
@@ -223,7 +225,7 @@ export type TokenUsagePoint = {
 }
 
 /**
- * Static token usage summary for the last seven days of the demonstration thread.
+ * Static token usage summary for the last seven days of the demonstration agent.
  */
 export type TokenUsageSummary = {
   totalInputTokens: number
