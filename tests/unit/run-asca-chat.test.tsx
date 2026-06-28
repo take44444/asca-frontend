@@ -68,11 +68,11 @@ jest.mock("use-stick-to-bottom", () => {
     ...props
   }: {
     children:
-      | React.ReactNode
-      | ((context: {
-          scrollRef: React.RefCallback<HTMLElement>
-          contentRef: React.RefCallback<HTMLElement>
-        }) => React.ReactNode)
+    | React.ReactNode
+    | ((context: {
+      scrollRef: React.RefCallback<HTMLElement>
+      contentRef: React.RefCallback<HTMLElement>
+    }) => React.ReactNode)
     className?: string
   }) {
     const context = {
@@ -110,7 +110,7 @@ function createDeferredResponse(): {
   promise: Promise<Response>
   resolve: (response: Response) => void
 } {
-  let resolvePromise: (response: Response) => void = () => {}
+  let resolvePromise: (response: Response) => void = () => { }
   const promise = new Promise<Response>((resolve) => {
     resolvePromise = resolve
   })
@@ -494,7 +494,7 @@ describe("RunAscaChat", () => {
     const metadata = screen.getByRole("region", { name: "Agent metadata" })
     expect(
       agentCard.compareDocumentPosition(metadata) &
-        Node.DOCUMENT_POSITION_FOLLOWING
+      Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy()
 
     const conversation = screen.getByLabelText("Conversation")

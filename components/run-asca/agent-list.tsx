@@ -52,7 +52,7 @@ export function AgentList({
           className="min-h-0 flex-1 overflow-y-auto p-2"
           data-testid="agent-list-scroll"
         >
-          <ItemGroup className="gap-1 has-data-[size=sm]:gap-1">
+          <ItemGroup className="gap-1.5 has-data-[size=sm]:gap-1.5">
             {agents.map((agent) => (
               <Item
                 render={<button type="button" />}
