@@ -55,7 +55,6 @@ export const demoSocialSummary: SocialSummary = {
  * Static artifact summary used by the demonstration Run A.S.C.A. agent.
  */
 export const demoArtifactSummary: ArtifactSummary = {
-  researchCount: 4,
   documentCount: 2,
   imageCount: 1,
 }
@@ -97,12 +96,10 @@ export const demoAgentMetadataSummaries: AgentMetadataSummary[] = [
   {
     id: "artifacts",
     label: "Artifacts",
-    primaryValue: `${demoArtifactSummary.researchCount +
-      demoArtifactSummary.documentCount +
+    primaryValue: `${demoArtifactSummary.documentCount +
       demoArtifactSummary.imageCount
       }`,
     supportingDetails: [
-      `${demoArtifactSummary.researchCount} research`,
       `${demoArtifactSummary.documentCount} documents`,
       `${demoArtifactSummary.imageCount} images`,
     ],

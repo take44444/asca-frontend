@@ -263,9 +263,6 @@ test.describe("Run A.S.C.A.", () => {
     await expect(summaries).toHaveCount(4)
     await expect(page.getByLabel("Social summary")).toContainText("8 players")
     await expect(page.getByLabel("Artifacts summary")).toContainText(
-      "4 research"
-    )
-    await expect(page.getByLabel("Artifacts summary")).toContainText(
       "2 documents"
     )
     await expect(page.getByLabel("Artifacts summary")).toContainText("1 images")

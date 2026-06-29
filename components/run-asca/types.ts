@@ -202,7 +202,6 @@ export type SocialSummary = {
  * Static artifact counts grouped by artifact category.
  */
 export type ArtifactSummary = {
-  researchCount: number
   documentCount: number
   imageCount: number
 }
