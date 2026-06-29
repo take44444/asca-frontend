@@ -29,7 +29,7 @@ export function AgentCard({ agent }: AgentCardProps) {
       size="sm"
       role="region"
       aria-label="Agent details"
-      className="max-h-[min(12rem,25svh)] min-h-0 shrink-0 gap-0 rounded-lg border border-border bg-background p-2 shadow-xs ring-0"
+      className="h-[min(6rem,12svh)] shrink-0 gap-0 rounded-lg border border-border bg-background p-2 shadow-xs ring-0"
     >
       <CardHeader className="shrink-0 gap-0 items-center px-4 pt-1 pb-0">
         <CardTitle>

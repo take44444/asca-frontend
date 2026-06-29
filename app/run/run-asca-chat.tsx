@@ -7,14 +7,22 @@ import { useMemo, useState } from "react"
 
 import { AgentCard } from "@/components/run-asca/agent-card"
 import { AgentList } from "@/components/run-asca/agent-list"
-import { AgentMetadataSummaryCard } from "@/components/run-asca/agent-metadata-summary-card"
+import {
+  AgentMetadataSummaryCard,
+  ArtifactSummaryContent,
+  KnowledgeSummaryContent,
+  SocialSummaryContent,
+} from "@/components/run-asca/agent-metadata-summary-card"
 import { ConversationPanel } from "@/components/run-asca/conversation-panel"
 import { eventsByAgent } from "@/components/run-asca/event-fixtures"
 import { EventView } from "@/components/run-asca/event-view"
 import {
   buildDemonstrationAgents,
+  demoArtifacts,
   DEMO_AGENT_ID,
   demoAgentMetadataSummaries,
+  demoKnowledgeItems,
+  demoSocialPlayers,
   demoTokenUsageSummary,
 } from "@/components/run-asca/agent-metadata-fixtures"
 import { TokenUsageTrend } from "@/components/run-asca/token-usage-trend"
@@ -277,7 +285,13 @@ export function RunAscaChat({
         >
           {demoAgentMetadataSummaries.map((summary) => (
             <AgentMetadataSummaryCard key={summary.id} summary={summary}>
-              {summary.id === "tokens" ? (
+              {summary.id === "knowledge" ? (
+                <KnowledgeSummaryContent items={demoKnowledgeItems} />
+              ) : summary.id === "social" ? (
+                <SocialSummaryContent players={demoSocialPlayers} />
+              ) : summary.id === "artifacts" ? (
+                <ArtifactSummaryContent artifacts={demoArtifacts} />
+              ) : summary.id === "tokens" ? (
                 <TokenUsageTrend points={demoTokenUsageSummary.points} />
               ) : null}
             </AgentMetadataSummaryCard>

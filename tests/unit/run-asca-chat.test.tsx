@@ -12,9 +12,27 @@ import { RunAscaChat } from "@/app/run/run-asca-chat"
 import { eventsByAgent } from "@/components/run-asca/event-fixtures"
 import {
   demoAgentMetadataSummaries,
+  demoArtifacts,
+  demoArtifactSummary,
+  demoKnowledgeItems,
+  demoKnowledgeSummary,
+  demoSocialPlayers,
+  demoSocialSummary,
   demoTokenUsageSummary,
 } from "@/components/run-asca/agent-metadata-fixtures"
-import type { ChatMessage, AgentId } from "@/components/run-asca/types"
+import {
+  getPlayerInitials,
+  ArtifactSummaryContent,
+  KnowledgeSummaryContent,
+  SocialSummaryContent,
+} from "@/components/run-asca/agent-metadata-summary-card"
+import type {
+  AgentId,
+  Artifact,
+  ChatMessage,
+  KnowledgeItem,
+  SocialPlayer,
+} from "@/components/run-asca/types"
 import {
   createControlledUIMessageStream,
   createMockAscaUIStreamResponse,
@@ -68,11 +86,11 @@ jest.mock("use-stick-to-bottom", () => {
     ...props
   }: {
     children:
-    | React.ReactNode
-    | ((context: {
-      scrollRef: React.RefCallback<HTMLElement>
-      contentRef: React.RefCallback<HTMLElement>
-    }) => React.ReactNode)
+      | React.ReactNode
+      | ((context: {
+          scrollRef: React.RefCallback<HTMLElement>
+          contentRef: React.RefCallback<HTMLElement>
+        }) => React.ReactNode)
     className?: string
   }) {
     const context = {
@@ -110,7 +128,7 @@ function createDeferredResponse(): {
   promise: Promise<Response>
   resolve: (response: Response) => void
 } {
-  let resolvePromise: (response: Response) => void = () => { }
+  let resolvePromise: (response: Response) => void = () => {}
   const promise = new Promise<Response>((resolve) => {
     resolvePromise = resolve
   })
@@ -494,7 +512,7 @@ describe("RunAscaChat", () => {
     const metadata = screen.getByRole("region", { name: "Agent metadata" })
     expect(
       agentCard.compareDocumentPosition(metadata) &
-      Node.DOCUMENT_POSITION_FOLLOWING
+        Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy()
 
     const conversation = screen.getByLabelText("Conversation")
@@ -684,6 +702,182 @@ describe("RunAscaChat", () => {
     expect(screen.getByText("2 documents")).toBeVisible()
     expect(screen.getByText("1 images")).toBeVisible()
     expect(screen.getByText("14 items")).toBeVisible()
+  })
+
+  it("renders all deterministic knowledge records as a read-only grouped list", () => {
+    renderRunAscaChat()
+
+    expect(demoKnowledgeItems).toHaveLength(14)
+    expect(new Set(demoKnowledgeItems.map((item) => item.id)).size).toBe(14)
+    expect(demoKnowledgeSummary.itemCount).toBe(demoKnowledgeItems.length)
+
+    const card = screen.getByLabelText("Knowledge summary")
+    const list = within(card).getByRole("list", { name: "Agent knowledge" })
+    expect(within(list).getAllByRole("listitem")).toHaveLength(14)
+
+    for (const item of demoKnowledgeItems) {
+      expect(within(list).getByText(item.title)).toBeVisible()
+      expect(within(list).getByText(item.description)).toBeVisible()
+    }
+
+    expect(within(list).queryByRole("button")).not.toBeInTheDocument()
+    expect(within(list).queryByRole("link")).not.toBeInTheDocument()
+    expect(global.fetch).not.toHaveBeenCalled()
+  })
+
+  it("supports empty and blank knowledge records with bounded single-line content", () => {
+    const records: KnowledgeItem[] = [
+      { id: "blank", title: "", description: "" },
+      {
+        id: "long",
+        title: "UnbrokenKnowledgeTitle".repeat(12),
+        description: "UnbrokenKnowledgeDescription".repeat(12),
+      },
+    ]
+    const { rerender } = render(<KnowledgeSummaryContent items={records} />)
+
+    const viewport = screen.getByTestId("knowledge-viewport")
+    expect(viewport).toHaveClass("min-h-0", "overflow-y-auto")
+    expect(screen.getByRole("list", { name: "Agent knowledge" })).toHaveClass(
+      "min-w-0"
+    )
+    for (const slot of ["item-title", "item-description"]) {
+      for (const element of viewport.querySelectorAll(
+        `[data-slot='${slot}']`
+      )) {
+        expect(element).toHaveClass("min-w-0", "truncate")
+      }
+    }
+    expect(within(viewport).getAllByRole("listitem")[0]).toHaveTextContent("")
+
+    rerender(<KnowledgeSummaryContent items={[]} />)
+    expect(
+      screen.getByRole("list", { name: "Agent knowledge" })
+    ).toBeEmptyDOMElement()
+  })
+
+  it("renders all deterministic social players with local initials only", () => {
+    renderRunAscaChat()
+
+    expect(demoSocialPlayers).toHaveLength(8)
+    expect(new Set(demoSocialPlayers.map((player) => player.id)).size).toBe(8)
+    expect(demoSocialSummary.playerCount).toBe(demoSocialPlayers.length)
+
+    const card = screen.getByLabelText("Social summary")
+    const list = within(card).getByRole("list", { name: "Social players" })
+    expect(within(list).getAllByRole("listitem")).toHaveLength(8)
+    expect(list.querySelectorAll("img")).toHaveLength(0)
+    expect(within(list).queryByRole("button")).not.toBeInTheDocument()
+    expect(within(list).queryByRole("link")).not.toBeInTheDocument()
+    for (const player of demoSocialPlayers) {
+      expect(within(list).getByText(player.name)).toBeVisible()
+      expect(
+        within(list).getByLabelText(
+          `${player.name || "Unnamed player"} avatar: ${getPlayerInitials(player.name)}`
+        )
+      ).toBeVisible()
+    }
+    expect(global.fetch).not.toHaveBeenCalled()
+  })
+
+  it.each([
+    ["Ada", "A"],
+    ["Grace Brewster Hopper", "GH"],
+    ["!!!", "?"],
+    ["東京 太郎", "東太"],
+    ["", "?"],
+  ])("derives deterministic initials for %p", (name, expected) => {
+    const initials = getPlayerInitials(name)
+    expect(initials).toBe(expected)
+    expect(Array.from(initials).length).toBeLessThanOrEqual(2)
+    expect(initials).toBe(initials.toLocaleUpperCase())
+  })
+
+  it("supports empty and blank social records with a generic fallback", () => {
+    const players: SocialPlayer[] = [
+      { id: "blank", name: "" },
+      { id: "long", name: `Unbroken${"PlayerName".repeat(18)}` },
+    ]
+    const { rerender } = render(<SocialSummaryContent players={players} />)
+
+    const viewport = screen.getByTestId("social-viewport")
+    expect(viewport).toHaveClass("min-h-0", "overflow-y-auto")
+    expect(
+      within(viewport).getByLabelText("Unnamed player avatar: ?")
+    ).toBeVisible()
+    expect(viewport.querySelectorAll("img")).toHaveLength(0)
+    for (const title of viewport.querySelectorAll("[data-slot='item-title']")) {
+      expect(title).toHaveClass("min-w-0", "truncate")
+    }
+
+    rerender(<SocialSummaryContent players={[]} />)
+    expect(
+      screen.getByRole("list", { name: "Social players" })
+    ).toBeEmptyDOMElement()
+  })
+
+  it("renders three typed artifacts with derived totals and accessible type icons", () => {
+    renderRunAscaChat()
+
+    expect(demoArtifacts).toHaveLength(3)
+    expect(new Set(demoArtifacts.map((artifact) => artifact.id)).size).toBe(3)
+    expect(
+      demoArtifacts.filter((artifact) => artifact.type === "document")
+    ).toHaveLength(2)
+    expect(
+      demoArtifacts.filter((artifact) => artifact.type === "image")
+    ).toHaveLength(1)
+    expect(demoArtifactSummary.documentCount).toBe(2)
+    expect(demoArtifactSummary.imageCount).toBe(1)
+    expect(
+      demoArtifactSummary.documentCount + demoArtifactSummary.imageCount
+    ).toBe(demoArtifacts.length)
+
+    const card = screen.getByLabelText("Artifacts summary")
+    const list = within(card).getByRole("list", { name: "Agent artifacts" })
+    expect(within(list).getAllByRole("listitem")).toHaveLength(3)
+    expect(
+      within(list).getAllByRole("img", { name: "Document artifact" })
+    ).toHaveLength(2)
+    expect(
+      within(list).getAllByRole("img", { name: "Image artifact" })
+    ).toHaveLength(1)
+    for (const artifact of demoArtifacts) {
+      expect(within(list).getByText(artifact.name)).toBeVisible()
+      expect(within(list).getByText(artifact.dataSize)).toBeVisible()
+    }
+    expect(within(list).queryByRole("button")).not.toBeInTheDocument()
+    expect(within(list).queryByRole("link")).not.toBeInTheDocument()
+    expect(global.fetch).not.toHaveBeenCalled()
+    expect(demoTokenUsageSummary.points).toHaveLength(7)
+  })
+
+  it("supports empty, blank, zero-size, and unusually large artifact displays", () => {
+    const artifacts: Artifact[] = [
+      { id: "blank", name: "", type: "document", dataSize: "0 B" },
+      {
+        id: "large",
+        name: `Unbroken${"ArtifactName".repeat(18)}`,
+        type: "image",
+        dataSize: "999.9 TB",
+      },
+    ]
+    const { rerender } = render(
+      <ArtifactSummaryContent artifacts={artifacts} />
+    )
+
+    const viewport = screen.getByTestId("artifact-viewport")
+    expect(viewport).toHaveClass("min-h-0", "overflow-y-auto")
+    expect(within(viewport).getByText("0 B")).toBeVisible()
+    expect(within(viewport).getByText("999.9 TB")).toBeVisible()
+    for (const title of viewport.querySelectorAll("[data-slot='item-title']")) {
+      expect(title).toHaveClass("min-w-0", "truncate")
+    }
+
+    rerender(<ArtifactSummaryContent artifacts={[]} />)
+    expect(
+      screen.getByRole("list", { name: "Agent artifacts" })
+    ).toBeEmptyDOMElement()
   })
 
   it("renders seven chronological token points, includes zero values, and keeps derived totals consistent", async () => {

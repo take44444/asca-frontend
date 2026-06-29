@@ -191,25 +191,55 @@ export type AgentMetadataSummary = {
   tone: AgentMetadataTone
 }
 
-/**
- * Static player counts with whom the demonstration agent has social interactions.
- */
+/** One player in the demonstration agent's social context. */
+export type SocialPlayer = {
+  id: string
+  name: string
+}
+
+/** Read-only collection of social players. */
+export type SocialPlayerCollection = readonly SocialPlayer[]
+
+/** Static social players and their derived aggregate count. */
 export type SocialSummary = {
+  players: SocialPlayerCollection
   playerCount: number
 }
 
-/**
- * Static artifact counts grouped by artifact category.
- */
+/** Closed set of artifact types supported by the summary. */
+export type ArtifactType = "document" | "image"
+
+/** One deterministic file-like demonstration artifact. */
+export type Artifact = {
+  id: string
+  name: string
+  type: ArtifactType
+  dataSize: string
+}
+
+/** Read-only collection of demonstration artifacts. */
+export type ArtifactCollection = readonly Artifact[]
+
+/** Static artifacts and their derived type counts. */
 export type ArtifactSummary = {
+  artifacts: ArtifactCollection
   documentCount: number
   imageCount: number
 }
 
-/**
- * Static count of knowledge items.
- */
+/** One deterministic knowledge record shown for the demonstration agent. */
+export type KnowledgeItem = {
+  id: string
+  title: string
+  description: string
+}
+
+/** Read-only collection of knowledge records. */
+export type KnowledgeCollection = readonly KnowledgeItem[]
+
+/** Static knowledge records and their derived aggregate count. */
 export type KnowledgeSummary = {
+  items: KnowledgeCollection
   itemCount: number
 }
 
