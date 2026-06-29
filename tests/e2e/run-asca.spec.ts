@@ -1,6 +1,13 @@
 import { expect, type Page, test } from "@playwright/test"
 
 import {
+  demoKnowledgeItems,
+  demoSocialPlayers,
+  demoArtifacts,
+  demoTokenUsageSummary,
+} from "@/components/run-asca/agent-metadata-fixtures"
+
+import {
   clearAuthenticatedSession,
   setAuthenticatedSession,
 } from "./auth-test-helpers"
@@ -117,6 +124,184 @@ async function expectNoOverlap(page: Page, selectors: string[]): Promise<void> {
 }
 
 test.describe("Run A.S.C.A.", () => {
+  test("shows every knowledge record in an independently scrollable bounded list", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 560 })
+    await page.goto("/run")
+
+    const card = page.getByLabel("Knowledge summary")
+    const viewport = card.getByTestId("knowledge-viewport")
+    await expect(viewport.getByRole("listitem")).toHaveCount(14)
+    for (const item of demoKnowledgeItems) {
+      await expect(
+        viewport.getByText(item.title, { exact: true })
+      ).toBeAttached()
+      await expect(
+        viewport.getByText(item.description, { exact: true })
+      ).toBeAttached()
+    }
+
+    const workspaceBefore = await page.getByLabel("Conversation").boundingBox()
+    expect(
+      await viewport.evaluate((node) => node.scrollHeight > node.clientHeight)
+    ).toBe(true)
+    await viewport.evaluate((node) => {
+      node.scrollTop = node.scrollHeight
+      node.dispatchEvent(new Event("scroll", { bubbles: true }))
+    })
+    await expect(
+      viewport.getByText(demoKnowledgeItems.at(-1)!.title, { exact: true })
+    ).toBeVisible()
+    expect(await page.getByLabel("Conversation").boundingBox()).toEqual(
+      workspaceBefore
+    )
+
+    for (const slot of ["item-title", "item-description"]) {
+      const longText = viewport.locator(`[data-slot='${slot}']`).filter({
+        hasText: "Unbroken",
+      })
+      await expect(longText).toHaveCount(1)
+      expect(
+        await longText.evaluate((node) => node.scrollWidth > node.clientWidth)
+      ).toBe(true)
+    }
+  })
+
+  test("keeps knowledge details unavailable below the established breakpoint", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 767, height: 844 })
+    await page.goto("/run")
+
+    await expect(page.getByLabel("Knowledge summary")).toBeVisible()
+    await expect(page.getByTestId("knowledge-viewport")).toHaveCount(0)
+  })
+
+  test("shows every social player with local initials in an independent read-only list", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 560 })
+    await page.goto("/run")
+
+    const card = page.getByLabel("Social summary")
+    const viewport = card.getByTestId("social-viewport")
+    await expect(viewport.getByRole("listitem")).toHaveCount(8)
+    await expect(card.locator("img")).toHaveCount(0)
+    for (const player of demoSocialPlayers) {
+      await expect(
+        viewport.getByText(player.name, { exact: true })
+      ).toBeAttached()
+    }
+
+    expect(
+      await viewport.evaluate((node) => node.scrollHeight > node.clientHeight)
+    ).toBe(true)
+    await viewport.evaluate((node) => {
+      node.scrollTop = node.scrollHeight
+      node.dispatchEvent(new Event("scroll", { bubbles: true }))
+    })
+    await expect(
+      viewport.getByText(demoSocialPlayers.at(-1)!.name, { exact: true })
+    ).toBeVisible()
+
+    const longName = viewport
+      .locator("[data-slot='item-title']")
+      .filter({ hasText: "Unbroken" })
+    expect(
+      await longName.evaluate((node) => node.scrollWidth > node.clientWidth)
+    ).toBe(true)
+
+    const url = page.url()
+    const firstRow = viewport.getByRole("listitem").first()
+    const unexpectedRequests: string[] = []
+    page.on("request", (request) => {
+      if (
+        request.resourceType() === "image" ||
+        request.url().includes("/api/asca/chat")
+      ) {
+        unexpectedRequests.push(request.url())
+      }
+    })
+    await firstRow.click()
+    await firstRow.press("Enter")
+    await expect(page).toHaveURL(url)
+    expect(unexpectedRequests).toEqual([])
+  })
+
+  test("shows typed artifacts with accessible icons without interaction or token changes", async ({
+    page,
+    context,
+  }) => {
+    await setAuthenticatedSession(context)
+    await page.setViewportSize({ width: 1280, height: 560 })
+    await page.goto("/run")
+
+    const card = page.getByLabel("Artifacts summary")
+    const viewport = card.getByTestId("artifact-viewport")
+    await expect(viewport.getByRole("listitem")).toHaveCount(3)
+    await expect(
+      viewport.getByRole("img", { name: "Document artifact" })
+    ).toHaveCount(2)
+    await expect(
+      viewport.getByRole("img", { name: "Image artifact" })
+    ).toHaveCount(1)
+    for (const artifact of demoArtifacts) {
+      await expect(
+        viewport.getByText(artifact.name, { exact: true })
+      ).toBeAttached()
+      await expect(
+        viewport.getByText(artifact.dataSize, { exact: true })
+      ).toBeAttached()
+    }
+
+    expect(
+      await viewport.evaluate((node) => node.scrollHeight > node.clientHeight)
+    ).toBe(true)
+    await viewport.evaluate((node) => {
+      node.scrollTop = node.scrollHeight
+      node.dispatchEvent(new Event("scroll", { bubbles: true }))
+    })
+    await expect(
+      viewport.getByText(demoArtifacts.at(-1)!.name, { exact: true })
+    ).toBeVisible()
+    const longName = viewport
+      .locator("[data-slot='item-title']")
+      .filter({ hasText: "Unbroken" })
+    expect(
+      await longName.evaluate((node) => node.scrollWidth > node.clientWidth)
+    ).toBe(true)
+
+    const expectedTokens = (
+      demoTokenUsageSummary.totalInputTokens +
+      demoTokenUsageSummary.totalOutputTokens
+    ).toLocaleString()
+    await expect(page.getByLabel("Total Tokens summary")).toContainText(
+      expectedTokens
+    )
+    const url = page.url()
+    const firstRow = viewport.getByRole("listitem").first()
+    await firstRow.click()
+    await firstRow.press("Enter")
+    await expect(page).toHaveURL(url)
+    await expect(page.getByLabel("Total Tokens summary")).toContainText(
+      expectedTokens
+    )
+
+    await expectNoOverlap(page, [
+      "[aria-label='Knowledge summary']",
+      "[aria-label='Social summary']",
+      "[aria-label='Artifacts summary']",
+      "[aria-label='Total Tokens summary']",
+    ])
+  })
+
   test("shows agent-specific events and all five accessible sources", async ({
     page,
     context,

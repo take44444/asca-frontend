@@ -1,12 +1,15 @@
 import type {
   ArtifactSummary,
+  ArtifactCollection,
   Agent,
   AgentId,
   AgentMetadataSummary,
   ChatMessage,
+  KnowledgeCollection,
   KnowledgeSummary,
   StaticDemonstrationAgent,
   SocialSummary,
+  SocialPlayerCollection,
   TokenUsagePoint,
   TokenUsageSummary,
 } from "@/components/run-asca/types"
@@ -44,26 +47,153 @@ const totalOutputTokens = tokenUsagePoints.reduce(
   0
 )
 
+/** Deterministic knowledge records shown in the Knowledge summary. */
+export const demoKnowledgeItems: KnowledgeCollection = [
+  {
+    id: "knowledge-operating-model",
+    title: "A.S.C.A. operating model",
+    description:
+      "Roles, responsibilities, and escalation paths for agent-assisted work.",
+  },
+  {
+    id: "knowledge-unbroken-text",
+    title: `Unbroken${"KnowledgeTitle".repeat(14)}`,
+    description: `Unbroken${"KnowledgeDescription".repeat(14)}`,
+  },
+  {
+    id: "knowledge-incident-response",
+    title: "Incident response handbook",
+    description:
+      "Severity definitions, response checklists, and communication templates.",
+  },
+  {
+    id: "knowledge-release-process",
+    title: "Release readiness process",
+    description:
+      "Quality gates and rollback requirements for production releases.",
+  },
+  {
+    id: "knowledge-customer-onboarding",
+    title: "Customer onboarding guide",
+    description:
+      "Access, training, success metrics, and stakeholder handoff guidance.",
+  },
+  {
+    id: "knowledge-security-controls",
+    title: "Security control catalog",
+    description:
+      "Approved controls for identity, data handling, retention, and auditability.",
+  },
+  {
+    id: "knowledge-api-conventions",
+    title: "API conventions",
+    description:
+      "Request contracts, error shapes, versioning, and retry expectations.",
+  },
+  {
+    id: "knowledge-research-standards",
+    title: "Research quality standards",
+    description:
+      "Evidence grading, source confidence, and recommendation practices.",
+  },
+  {
+    id: "knowledge-accessibility",
+    title: "Accessibility checklist",
+    description:
+      "Keyboard, naming, focus, contrast, and responsive-content requirements.",
+  },
+  {
+    id: "knowledge-support-playbook",
+    title: "Support triage playbook",
+    description:
+      "Issue grouping, ownership, priority, and customer communication guidance.",
+  },
+  {
+    id: "knowledge-architecture-decisions",
+    title: "Architecture decision records",
+    description:
+      "Accepted technical decisions with context, tradeoffs, and consequences.",
+  },
+  {
+    id: "knowledge-experimentation",
+    title: "Experiment review framework",
+    description:
+      "Evaluation criteria for outcomes, confidence, and follow-up experiments.",
+  },
+  {
+    id: "knowledge-partner-integrations",
+    title: "Partner integration handbook",
+    description:
+      "Milestones for sandbox access, mapping, pilots, and launch readiness.",
+  },
+  {
+    id: "knowledge-evaluation-archive",
+    title: "Agent evaluation archive",
+    description:
+      "Historical evaluation findings, remediation notes, and tracked outcomes.",
+  },
+]
+
+/** Deterministic players shown in the Social summary without avatar URLs. */
+export const demoSocialPlayers: SocialPlayerCollection = [
+  { id: "player-ada", name: "Ada" },
+  { id: "player-grace-hopper", name: "Grace Brewster Hopper" },
+  { id: "player-punctuation", name: "!!!" },
+  { id: "player-taro", name: "東京 太郎" },
+  { id: "player-jose", name: "José Álvarez" },
+  { id: "player-oneil", name: "O'Neil" },
+  { id: "player-long", name: `Unbroken${"PlayerName".repeat(18)}` },
+  { id: "player-mina", name: "Mina Chen" },
+]
+
+/** Deterministic document and image records shown in the Artifacts summary. */
+export const demoArtifacts: ArtifactCollection = [
+  {
+    id: "artifact-agent-brief",
+    name: "Agent operating brief.pdf",
+    type: "document",
+    dataSize: "2.4 MB",
+  },
+  {
+    id: "artifact-research-notes",
+    name: `Unbroken${"ArtifactName".repeat(18)}.txt`,
+    type: "document",
+    dataSize: "184 KB",
+  },
+  {
+    id: "artifact-workflow-map",
+    name: "Workflow relationship map.png",
+    type: "image",
+    dataSize: "6.8 MB",
+  },
+]
+
 /**
  * Static social summary used by the demonstration Run A.S.C.A. agent.
  */
 export const demoSocialSummary: SocialSummary = {
-  playerCount: 8,
+  players: demoSocialPlayers,
+  playerCount: demoSocialPlayers.length,
 }
 
 /**
  * Static artifact summary used by the demonstration Run A.S.C.A. agent.
  */
 export const demoArtifactSummary: ArtifactSummary = {
-  documentCount: 2,
-  imageCount: 1,
+  artifacts: demoArtifacts,
+  documentCount: demoArtifacts.filter(
+    (artifact) => artifact.type === "document"
+  ).length,
+  imageCount: demoArtifacts.filter((artifact) => artifact.type === "image")
+    .length,
 }
 
 /**
  * Static knowledge summary used by the demonstration Run A.S.C.A. agent.
  */
 export const demoKnowledgeSummary: KnowledgeSummary = {
-  itemCount: 14,
+  items: demoKnowledgeItems,
+  itemCount: demoKnowledgeItems.length,
 }
 
 /**
@@ -96,9 +226,9 @@ export const demoAgentMetadataSummaries: AgentMetadataSummary[] = [
   {
     id: "artifacts",
     label: "Artifacts",
-    primaryValue: `${demoArtifactSummary.documentCount +
-      demoArtifactSummary.imageCount
-      }`,
+    primaryValue: `${
+      demoArtifactSummary.documentCount + demoArtifactSummary.imageCount
+    }`,
     supportingDetails: [
       `${demoArtifactSummary.documentCount} documents`,
       `${demoArtifactSummary.imageCount} images`,
@@ -153,9 +283,10 @@ function createFixtureMessages(
 const longRunningResearchMessages = Array.from(
   { length: 12 },
   (_, index) =>
-    `Research note ${index + 1}: ${index === 11
-      ? "final recommendation and tradeoffs."
-      : "capture evidence, risks, and source confidence."
+    `Research note ${index + 1}: ${
+      index === 11
+        ? "final recommendation and tradeoffs."
+        : "capture evidence, risks, and source confidence."
     }`
 )
 
