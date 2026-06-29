@@ -54,8 +54,9 @@ One file-like demonstration resource associated with the agent.
 **Validation rules**
 - Fixture ids are unique.
 - The demonstration collection contains exactly three records: two documents and one image.
+- Empty names are renderable as blank display text and must not widen or activate an item.
 - `dataSize` is display-only; no file transfer or numeric conversion is performed.
-- Missing, zero, or unusually large display values remain contained and do not add interaction.
+- Zero or unusually large display values remain contained and do not add interaction.
 
 ## Metadata Summary Aggregates
 

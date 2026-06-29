@@ -62,11 +62,11 @@ As a user viewing an agent, I want the artifact summary to list each artifact's 
 
 ### Edge Cases
 
-- A knowledge title, knowledge description, player name, or artifact name is empty, unusually long, or contains one long unbroken string.
+- A knowledge title, knowledge description, player name, or artifact name is empty, unusually long, or contains one long unbroken string. Empty display text remains blank rather than being replaced with invented content; an empty player name uses the generic avatar fallback.
 - A player name has one word, multiple words, punctuation, non-Latin characters, or no usable characters from which to derive conventional initials.
 - A summary dataset is empty even though the demonstration fixtures normally contain records.
 - A summary contains enough records to overflow its available height on a short viewport.
-- An artifact has an unsupported type or a missing, zero, or unusually large data size.
+- An artifact has an unsupported type or a zero or unusually large data size.
 - The workspace is displayed at a width where summary-card content is intentionally unavailable under the existing responsive behavior.
 - A user attempts to click, tap, or activate a knowledge, player, or artifact item.
 
@@ -94,7 +94,7 @@ As a user viewing an agent, I want the artifact summary to list each artifact's 
 - **FR-018**: Existing token-usage summary content and behavior MUST remain unchanged.
 - **FR-019**: The detailed summary content MUST preserve the existing responsive availability of metadata card content and MUST NOT overlap adjacent cards or workspace content at supported viewport sizes.
 - **FR-020**: If a summary dataset is empty, its grouped list MUST contain no record items while the summary total remains zero; this feature does not add an asynchronous loading or error state.
-- **FR-021**: This feature MUST NOT add backend interaction, remote avatar retrieval, item-detail views, item editing, item selection, or item navigation; the supplied environment credential is not required for this feature.
+- **FR-021**: This feature MUST NOT add backend interaction, item-detail views, or item editing; the supplied environment credential is not required for this feature.
 
 ### Key Entities
 

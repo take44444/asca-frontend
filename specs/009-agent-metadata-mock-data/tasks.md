@@ -43,7 +43,7 @@
 
 ### Tests for User Story 1 (write first and observe failure) ⚠️
 
-- [ ] T004 [P] [US1] Add failing unit coverage for 14 deterministic knowledge records, unique IDs, derived totals, semantic grouped-list structure, title and description content, single-line truncation classes, empty records, read-only rows, and no metadata fetch in `tests/unit/run-asca-chat.test.tsx`
+- [ ] T004 [P] [US1] Add failing unit coverage for 14 deterministic knowledge records, unique IDs, derived totals, semantic grouped-list structure, title and description content, blank rendering for empty title and description values, single-line truncation classes, empty records, read-only rows, and no metadata fetch in `tests/unit/run-asca-chat.test.tsx`
 - [ ] T005 [P] [US1] Add failing authenticated Playwright coverage for all 14 reachable knowledge items, long-title and long-description truncation geometry, knowledge-only scrolling to the final record, stationary surrounding workspace content, and below-breakpoint content availability in `tests/e2e/run-asca.spec.ts`
 - [ ] T006 [US1] Run the new User Story 1 cases from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that they fail for missing knowledge records and list content, and make no production change in this task
 
@@ -66,7 +66,7 @@
 
 ### Tests for User Story 2 (write first and observe failure) ⚠️
 
-- [ ] T011 [P] [US2] Add failing unit coverage for eight deterministic players, unique IDs, derived totals, empty records, semantic grouped-list rows, initials for one-word, multi-word, punctuation-only, and non-Latin names, at-most-two-uppercase-character output, initials-only avatars, truncation classes, read-only rows, and zero remote avatar requests in `tests/unit/run-asca-chat.test.tsx`
+- [ ] T011 [P] [US2] Add failing unit coverage for eight deterministic players, unique IDs, derived totals, empty records, semantic grouped-list rows, initials for empty, one-word, multi-word, punctuation-only, and non-Latin names, blank display text plus the generic avatar fallback for an empty name, at-most-two-uppercase-character output, initials-only avatars, truncation classes, read-only rows, and zero remote avatar requests in `tests/unit/run-asca-chat.test.tsx`
 - [ ] T012 [P] [US2] Add failing authenticated Playwright coverage for all eight reachable player names and local avatar fallbacks, long-name truncation geometry, social-only scrolling to the final player, no avatar network request, and no effect from pointer or keyboard activation attempts in `tests/e2e/run-asca.spec.ts`
 - [ ] T013 [US2] Run the new User Story 2 cases from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that they fail for missing player records, initials, and list content, and make no production change in this task
 
@@ -89,7 +89,7 @@
 
 ### Tests for User Story 3 (write first and observe failure) ⚠️
 
-- [ ] T018 [P] [US3] Add failing unit coverage for exactly three unique artifacts, the two-document/one-image breakdown, derived totals, supported empty collections, display-only data sizes, exhaustive icon mapping and accessible type names, name truncation classes, read-only rows, no fetch, and unchanged seven-point token data in `tests/unit/run-asca-chat.test.tsx`
+- [ ] T018 [P] [US3] Add failing unit coverage for exactly three unique artifacts, the two-document/one-image breakdown, derived totals, supported empty collections, blank rendering for an empty artifact name, display-only zero and unusually large data sizes, exhaustive icon mapping and accessible type names, name truncation classes, read-only rows, no fetch, and unchanged seven-point token data in `tests/unit/run-asca-chat.test.tsx`
 - [ ] T019 [P] [US3] Add failing authenticated Playwright coverage for all three artifact names and data sizes, two text-document symbols and one image-file symbol, long-name truncation geometry, artifact-only scrolling when overflow is forced, pointer and keyboard non-interaction, unchanged token totals, and metadata-card non-overlap in `tests/e2e/run-asca.spec.ts`
 - [ ] T020 [US3] Run the new User Story 3 cases from `tests/unit/run-asca-chat.test.tsx` and `tests/e2e/run-asca.spec.ts`, record that they fail for missing artifact records, type symbols, and list content, and make no production change in this task
 
@@ -108,7 +108,7 @@
 
 **Purpose**: Validate accessibility, type safety, responsive containment, coverage, and every repository quality gate across the completed feature.
 
-- [ ] T025 [P] Audit grouped-list semantics, icon and avatar accessible names, keyboard non-interaction, empty collections, long unbroken text, bounded scrolling, responsive content availability, and backend boundaries against `specs/009-agent-metadata-mock-data/contracts/ui-contract.md` in `components/run-asca/agent-metadata-summary-card.tsx` and `app/run/run-asca-chat.tsx`
+- [ ] T025 [P] Audit grouped-list semantics, icon and avatar accessible names, keyboard non-interaction, empty collections, blank field rendering and generic empty-name avatar fallback, long unbroken text, bounded scrolling, responsive content availability, and backend boundaries against `specs/009-agent-metadata-mock-data/contracts/ui-contract.md` in `components/run-asca/agent-metadata-summary-card.tsx` and `app/run/run-asca-chat.tsx`
 - [ ] T026 [P] Review exported metadata types, fixtures, helpers, and component props for docstrings, explicit stable types, closed artifact mapping, unique fixture IDs, derived aggregates, and absence of `any` in `components/run-asca/types.ts`, `components/run-asca/agent-metadata-fixtures.ts`, and `components/run-asca/agent-metadata-summary-card.tsx`
 - [ ] T027 Run the `npm run format`, `npm run lint`, and `npm run typecheck` gates defined in `package.json`, resolving failures only in `app/run/run-asca-chat.tsx`, `components/run-asca/agent-metadata-fixtures.ts`, `components/run-asca/agent-metadata-summary-card.tsx`, `components/run-asca/types.ts`, `tests/unit/run-asca-chat.test.tsx`, and `tests/e2e/run-asca.spec.ts`
 - [ ] T028 Run `npm run test` and `npm run test:coverage` using `package.json` and `jest.config.ts`, and verify new or changed metadata behavior in `tests/unit/run-asca-chat.test.tsx` remains at or above 80% coverage
