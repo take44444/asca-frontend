@@ -54,7 +54,7 @@ function useIsSmViewport(smBreakpointQuery: string): boolean {
   return useSyncExternalStore(
     (notify) => {
       if (!window.matchMedia) {
-        return () => {}
+        return () => { }
       }
 
       const mediaQuery = window.matchMedia(smBreakpointQuery)
@@ -95,7 +95,7 @@ export function KnowledgeSummaryContent({
   return (
     <div
       data-testid="knowledge-viewport"
-      className="mt-2 max-h-24 min-h-0 min-w-0 overflow-y-auto"
+      className="mt-1 max-h-26 min-h-0 min-w-0 overflow-y-auto"
     >
       <ItemGroup aria-label="Agent knowledge" className="min-w-0 gap-1">
         {items.map((item) => (
@@ -103,7 +103,7 @@ export function KnowledgeSummaryContent({
             key={item.id}
             role="listitem"
             size="xs"
-            className="min-w-0 flex-nowrap px-1 py-1"
+            className="min-w-0 flex-nowrap rounded-sm bg-primary/10 px-2 py-1"
           >
             <ItemContent className="min-w-0">
               <ItemTitle className="w-full min-w-0 truncate text-xs">
@@ -157,7 +157,7 @@ export function SocialSummaryContent({ players }: SocialSummaryContentProps) {
   return (
     <div
       data-testid="social-viewport"
-      className="mt-2 max-h-24 min-h-0 min-w-0 overflow-y-auto"
+      className="mt-1 max-h-26 min-h-0 min-w-0 overflow-y-auto"
     >
       <ItemGroup aria-label="Social players" className="min-w-0 gap-1">
         {players.map((player) => {
@@ -169,7 +169,7 @@ export function SocialSummaryContent({ players }: SocialSummaryContentProps) {
               key={player.id}
               role="listitem"
               size="xs"
-              className="min-w-0 flex-nowrap px-1 py-1"
+              className="min-w-0 flex-nowrap rounded-xl bg-primary/10 px-1 py-1"
             >
               <ItemMedia>
                 <Avatar
@@ -217,9 +217,9 @@ export function ArtifactSummaryContent({
   return (
     <div
       data-testid="artifact-viewport"
-      className="mt-2 max-h-24 min-h-0 min-w-0 overflow-y-auto"
+      className="mt-1 max-h-26 min-h-0 min-w-0 overflow-y-auto"
     >
-      <ItemGroup aria-label="Agent artifacts" className="min-w-0 gap-1">
+      <ItemGroup aria-label="Agent artifacts" className="min-w-0">
         {artifacts.map((artifact) => {
           const { Icon, accessibleName } =
             artifactPresentationByType[artifact.type]
@@ -228,8 +228,9 @@ export function ArtifactSummaryContent({
             <Item
               key={artifact.id}
               role="listitem"
+              variant="muted"
               size="xs"
-              className="min-w-0 flex-nowrap px-1 py-1"
+              className="min-w-0 flex-nowrap rounded-sm bg-primary/10 px-2 py-1"
             >
               <ItemMedia variant="icon">
                 <Icon

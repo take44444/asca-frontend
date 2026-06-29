@@ -40,7 +40,7 @@ export function TokenUsageTrend({ points }: TokenUsageTrendProps) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="aspect-auto h-24 w-full"
+      className="mt-1 aspect-auto h-26 w-full"
       initialDimension={{ width: 280, height: 96 }}
     >
       <LineChart
