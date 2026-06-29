@@ -261,8 +261,7 @@ test.describe("Run A.S.C.A.", () => {
 
     const summaries = page.getByTestId("agent-metadata-summary")
     await expect(summaries).toHaveCount(4)
-    await expect(page.getByLabel("Tasks summary")).toContainText("8 completed")
-    await expect(page.getByLabel("Tasks summary")).toContainText("3 pending")
+    await expect(page.getByLabel("Social summary")).toContainText("8 players")
     await expect(page.getByLabel("Artifacts summary")).toContainText(
       "4 research"
     )
@@ -270,9 +269,7 @@ test.describe("Run A.S.C.A.", () => {
       "2 documents"
     )
     await expect(page.getByLabel("Artifacts summary")).toContainText("1 images")
-    await expect(page.getByLabel("Knowledge summary")).toContainText(
-      "14 acquired items"
-    )
+    await expect(page.getByLabel("Knowledge summary")).toContainText("14 items")
 
     const firstTop = await summaries
       .nth(0)
@@ -322,7 +319,7 @@ test.describe("Run A.S.C.A.", () => {
       await page.setViewportSize(size)
       await page.goto("/run")
 
-      await expect(page.getByLabel("Tasks summary")).toBeVisible()
+      await expect(page.getByLabel("Social summary")).toBeVisible()
       await expect(page.getByLabel("Artifacts summary")).toBeVisible()
       await expect(page.getByLabel("Knowledge summary")).toBeVisible()
       await expect(page.getByLabel("Total Tokens summary")).toBeVisible()

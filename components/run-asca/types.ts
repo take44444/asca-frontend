@@ -170,9 +170,9 @@ export type AscaChatErrorPayload = {
  * Compact metadata categories rendered above the active conversation.
  */
 export type AgentMetadataSummaryId =
-  | "tasks"
-  | "artifacts"
   | "knowledge"
+  | "social"
+  | "artifacts"
   | "tokens"
 
 /**
@@ -192,11 +192,10 @@ export type AgentMetadataSummary = {
 }
 
 /**
- * Static task counts associated with the demonstration agent.
+ * Static player counts with whom the demonstration agent has social interactions.
  */
-export type TaskSummary = {
-  completedCount: number
-  pendingCount: number
+export type SocialSummary = {
+  playerCount: number
 }
 
 /**
@@ -209,7 +208,7 @@ export type ArtifactSummary = {
 }
 
 /**
- * Static count of knowledge items acquired by the demonstration agent.
+ * Static count of knowledge items.
  */
 export type KnowledgeSummary = {
   itemCount: number

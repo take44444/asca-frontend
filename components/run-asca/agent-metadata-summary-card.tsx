@@ -3,7 +3,7 @@
 import { BrainCircuitIcon } from "@/components/icons/lucide-brain-circuit"
 import { PackageCheckIcon } from "@/components/icons/lucide-package-check"
 import { ChartSplineIcon } from "@/components/icons/lucide-chart-spline"
-import { ListTodoIcon } from "@/components/icons/lucide-list-todo"
+import { UsersIcon } from "@/components/icons/lucide-users"
 import { useSyncExternalStore, type ReactNode } from "react"
 
 import type { AgentMetadataSummary } from "@/components/run-asca/types"
@@ -17,9 +17,9 @@ import {
 import { cn } from "@/lib/utils"
 
 const iconBySummaryId: Record<AgentMetadataSummary["id"], React.ElementType> = {
-  tasks: ListTodoIcon,
-  artifacts: PackageCheckIcon,
   knowledge: BrainCircuitIcon,
+  social: UsersIcon,
+  artifacts: PackageCheckIcon,
   tokens: ChartSplineIcon,
 }
 

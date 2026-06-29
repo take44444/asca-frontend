@@ -6,7 +6,7 @@ import type {
   ChatMessage,
   KnowledgeSummary,
   StaticDemonstrationAgent,
-  TaskSummary,
+  SocialSummary,
   TokenUsagePoint,
   TokenUsageSummary,
 } from "@/components/run-asca/types"
@@ -45,11 +45,10 @@ const totalOutputTokens = tokenUsagePoints.reduce(
 )
 
 /**
- * Static task summary used by the demonstration Run A.S.C.A. agent.
+ * Static social summary used by the demonstration Run A.S.C.A. agent.
  */
-export const demoTaskSummary: TaskSummary = {
-  completedCount: 8,
-  pendingCount: 3,
+export const demoSocialSummary: SocialSummary = {
+  playerCount: 8,
 }
 
 /**
@@ -82,36 +81,32 @@ export const demoTokenUsageSummary: TokenUsageSummary = {
  */
 export const demoAgentMetadataSummaries: AgentMetadataSummary[] = [
   {
-    id: "tasks",
-    label: "Tasks",
-    primaryValue: `${demoTaskSummary.completedCount + demoTaskSummary.pendingCount}`,
-    supportingDetails: [
-      `${demoTaskSummary.completedCount} completed`,
-      `${demoTaskSummary.pendingCount} pending`,
-    ],
+    id: "knowledge",
+    label: "Knowledge",
+    primaryValue: `${demoKnowledgeSummary.itemCount}`,
+    supportingDetails: [`${demoKnowledgeSummary.itemCount} items`],
+    tone: "violet",
+  },
+  {
+    id: "social",
+    label: "Social",
+    primaryValue: `${demoSocialSummary.playerCount}`,
+    supportingDetails: [`${demoSocialSummary.playerCount} players`],
     tone: "emerald",
   },
   {
     id: "artifacts",
     label: "Artifacts",
-    primaryValue: `${
-      demoArtifactSummary.researchCount +
+    primaryValue: `${demoArtifactSummary.researchCount +
       demoArtifactSummary.documentCount +
       demoArtifactSummary.imageCount
-    }`,
+      }`,
     supportingDetails: [
       `${demoArtifactSummary.researchCount} research`,
       `${demoArtifactSummary.documentCount} documents`,
       `${demoArtifactSummary.imageCount} images`,
     ],
     tone: "sky",
-  },
-  {
-    id: "knowledge",
-    label: "Knowledge",
-    primaryValue: `${demoKnowledgeSummary.itemCount}`,
-    supportingDetails: [`${demoKnowledgeSummary.itemCount} acquired items`],
-    tone: "violet",
   },
   {
     id: "tokens",
@@ -161,10 +156,9 @@ function createFixtureMessages(
 const longRunningResearchMessages = Array.from(
   { length: 12 },
   (_, index) =>
-    `Research note ${index + 1}: ${
-      index === 11
-        ? "final recommendation and tradeoffs."
-        : "capture evidence, risks, and source confidence."
+    `Research note ${index + 1}: ${index === 11
+      ? "final recommendation and tradeoffs."
+      : "capture evidence, risks, and source confidence."
     }`
 )
 
